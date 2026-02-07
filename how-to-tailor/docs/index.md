@@ -7,5 +7,10 @@ In order to establish such a recipe book, we must look to real-world problems an
 The purpose of this Dagstuhl Seminar is to audit the current experience that exists in the field, pool it, and start to describe that experience in a way that goes beyond anecdote (although anecdotes can be useful) and moves us toward advice or recipes that actually work in practice. To achieve this, we aim to bring together researchers from a diverse range of backgrounds involved in real-world optimization from the customer side, the algorithm design or theoretical side, or practitioners who have already experienced successes and failures in the endeavor of tailoring algorithms to problems. The format of our seminar will be structured so that we hear from the cross-section of experienced and inexperienced practitioners, algorithm designers and customers, right from the start. We will then self-organize to achieve our aim of sharing our pooled experience and shaping it into practical, searchable and up-to-date advice on leveraging domain knowledge.
 
 [1] L. Davis, Handbook of genetic algorithms. Chapman & Hall, London, 1991.
+
+
+## Example Collection
+
+As a first step, we are aiming to collect examples.
         
         
