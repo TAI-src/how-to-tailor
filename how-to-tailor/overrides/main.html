@@ -5,6 +5,7 @@
 
   {% set issue_url = config.extra.github_repo ~ "/issues/new" 
    ~ "?template=edit.yml"
+   ~ "&title=[Edit]%20" ~ page.file.src_path|urlencode
    ~ "&page=" ~ page.file.src_path|urlencode %}
 
 

@@ -1,6 +1,6 @@
 name: Suggest an edit
 description: Propose a change or correction to the wiki
-title: "[Edit Suggestion] {{ inputs['Page URL'] }}"
+title: [Edit]
 labels: ["edit-suggestion"]
 body:
   - type: input
