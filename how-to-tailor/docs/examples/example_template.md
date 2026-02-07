@@ -1,29 +1,34 @@
 ---
-title: {{ title }}
+title: ${TITLE}
 authors:
-  - {{ author }}
-date: {{ date }}
-link: {{ link }}
-id: {{ id }}
+  - ${AUTHOR}
+date: ${DATE}
+links: ${LINKS}
+id: ${ID}
 ---
 
-# [{{ title }}]({{ link }})
+# [${TITLE}](${LINKS})
 
 ## Problem Description
-{{ problem }}
+
+${PROBLEM}
 
 ## Why was tailoring needed?
-{{ why }}
+
+${WHY}
 
 ## Baseline algorithm
-{{ baseline }}
+
+${BASELINE}
 
 ## Tailoring process
-{{ process }}
+
+${PROCESS}
 
 ## What was tailored
-{{ what }}
+
+${WHAT}
 
 ## Main problem characteristics
-{{ char }}
 
+${CHAR}

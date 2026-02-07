@@ -10,45 +10,49 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-
-      - name: Parse issue body (Markdown → variables)
-        id: parse
+      - name: Parse issue fields and export
+        shell: bash
         run: |
-         BODY="${{ github.event.issue.body }}"
+          BODY="${{ github.event.issue.body }}"
 
-         extract_field() {
-          local start="$1"
-          local end="$2"
-          echo "$BODY" | sed -n "/^### $start/,/^### $end/p" | tail -n +2 | sed '/^###/d'
-         }
-         AUTHOR=$(extract_field "Author Name" "Links to publication / code")
-         LINKS=$(extract_field "Links to publication / code" "Problem description")
-         PROBLEM=$(extract_field "Problem description" "Why was tailoring needed")
-         WHY=$(extract_field "Why was tailoring needed" "Baseline algorithm")
-         BASELINE=$(extract_field "Baseline algorithm" "Tailoring process")
-         PROCESS=$(extract_field "Tailoring process" "What was tailored")
-         WHAT=$(extract_field "What was tailored" "Main problem characteristics")
-         CHAR=$(echo "$BODY" | sed -n '/^### Main problem characteristics/,$p' | tail -n +2)
+          # Fields and headers
+          FIELDS=("AUTHOR" "LINKS" "PROBLEM" "WHY" "BASELINE" "PROCESS" "WHAT" "CHAR")
+          HEADERS=("Author Name" "Links to publication / code" "Problem description" "Why was tailoring needed" "Baseline algorithm" "Tailoring process" "What was tailored" "Main problem characteristics")
 
-         # Trim leading/trailing whitespace
-         AUTHOR=$(echo "$AUTHOR" | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')
-         LINKS=$(echo "$LINKS" | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')
-         PROBLEM=$(echo "$PROBLEM" | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')
-         WHY=$(echo "$WHY" | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')
-         BASELINE=$(echo "$BASELINE" | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')
-         PROCESS=$(echo "$PROCESS" | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')
-         WHAT=$(echo "$WHAT" | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')
-         CHAR=$(echo "$CHAR" | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')
+          # Use awk to extract between headings
+          extract_field() {
+            local start="$1"
+            local end="$2"
+            awk -v start="### $start" -v end="### $end" '
+              $0 ~ start {flag=1; next}
+              $0 ~ end {flag=0}
+              flag {print}
+            ' <<< "$BODY"
+          }
 
-         # Export to environment
-         echo "AUTHOR=$AUTHOR" >> $GITHUB_ENV
-         echo "LINKS=$LINKS" >> $GITHUB_ENV
-         echo "PROBLEM=$PROBLEM" >> $GITHUB_ENV
-         echo "WHY=$WHY" >> $GITHUB_ENV
-         echo "BASELINE=$BASELINE" >> $GITHUB_ENV
-         echo "PROCESS=$PROCESS" >> $GITHUB_ENV
-         echo "WHAT=$WHAT" >> $GITHUB_ENV
-         echo "CHAR=$CHAR" >> $GITHUB_ENV
+          # Extract all fields
+          for i in "${!FIELDS[@]}"; do
+            VAR="${FIELDS[i]}"
+            HEADER="${HEADERS[i]}"
+            if [ $i -eq $((${#FIELDS[@]}-1)) ]; then
+              VALUE=$(awk -v start="### $HEADER" ' $0 ~ start {flag=1; next} flag {print}' <<< "$BODY")
+            else
+              NEXT_HEADER="${HEADERS[i+1]}"
+              VALUE=$(extract_field "$HEADER" "$NEXT_HEADER")
+            fi
+            # Trim whitespace
+            VALUE="$(echo "$VALUE" | sed '/^[[:space:]]*$/d')"
+            # Fallback
+            [ -z "$VALUE" ] && VALUE="_No response_"
+            # Exort to GitHub environment with multiline support
+            {
+              echo "$VAR<<EOF"
+              echo "$VALUE"
+              echo "EOF"
+            } >> $GITHUB_ENV
+          done
+          # Also export the list of fields for later iteration
+          echo "FIELDS=${FIELDS[*]}" >> $GITHUB_ENV
 
       - name: Create Markdown from template
         run: |
@@ -56,18 +60,15 @@ jobs:
           LAST_ID=$(ls example_*.md 2>/dev/null | xargs -n1 basename | sed 's/[^0-9]*//g' | sort -n | tail -n1)
           if [ -z "$LAST_ID" ]; then LAST_ID=0; fi
           NEW_ID=$((LAST_ID + 1))
+          # Export metadata
           export TITLE="${{ github.event.issue.title }}"
-          export AUTHOR="$AUTHOR"
-          export LINKS="$LINKS"
-          export PROBLEM="$PROBLEM"
-          export WHY="$WHY"
-          export BASELINE="$BASELINE"
-          export PROCESS="$PROCESS"
-          export WHAT="$WHAT"
-          export CHAR="$CHAR"
           export DATE=$(date +%Y-%m-%d)
           export ID="$NEW_ID"
 
+          # Iterate over fields exported from previous step
+          for VAR in $FIELDS; do
+            export "$VAR=${!VAR}"
+          done
           envsubst < ../example_template.md > example_${NEW_ID}.md
 
       - name: Create Pull Request
