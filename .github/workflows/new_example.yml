@@ -69,7 +69,7 @@ jobs:
           for VAR in $FIELDS; do
             export "$VAR=${!VAR}"
           done
-          envsubst < ../example_template.md > example_${NEW_ID}.md
+          envsubst < example_template.md > example_${NEW_ID}.md
 
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v5
