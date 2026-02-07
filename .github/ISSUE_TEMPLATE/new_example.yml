@@ -1,10 +1,19 @@
 name: Add a tailoring example
 description: Add a new tailoring example
+title: "[New Example] {{ inputs['Example title'] }}"
+labels: ["new-example"]
 body:
   - type: input
     attributes:
       label: Author Name
       description: Please enter your name
+    validations:
+      required: true
+
+  - type: input
+    attributes:
+      label: Example title
+      description: Provide a concise title for your example
     validations:
       required: true
 

@@ -5,9 +5,7 @@
 
   {% set issue_url = config.extra.github_repo ~ "/issues/new" 
    ~ "?template=edit.yml"
-   ~ "&title=Edit%20suggestion:%20" ~ page.title|urlencode
-   ~ "&page=" ~ page.file.src_path|urlencode
-   ~ "&labels=edit-suggestion" %}
+   ~ "&page=" ~ page.file.src_path|urlencode %}
 
 
   {% set edit_url = config.extra.github_repo
@@ -17,8 +15,7 @@
   %}
 
   {% set example_url = config.extra.github_repo
-    ~ "/issues/new?template=new_example.yml"
-    ~ "&labels=new-example" %}
+    ~ "/issues/new?template=new_example.yml" %}
 
   <hr>
   <p style="font-size: 0.9em;">
