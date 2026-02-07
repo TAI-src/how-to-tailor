@@ -79,5 +79,6 @@ jobs:
           title: "Add new example: ${{ github.event.issue.title }}"
           body: |
             This PR adds a new example generated from issue #${{ github.event.issue.number }}.
+            Closes #${{ github.event.issue.number }}.
           labels: example-added
 
