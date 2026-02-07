@@ -1,0 +1,22 @@
+name: Suggest an edit
+description: Propose a change or correction to the wiki
+body:
+  - type: input
+    attributes:
+      label: Page URL
+      description: Which page are you suggesting a change for?
+    validations:
+      required: true
+
+  - type: textarea
+    attributes:
+      label: Proposed change
+      description: What should be changed or added?
+    validations:
+      required: true
+
+  - type: textarea
+    attributes:
+      label: Source / citation (if applicable)
+      description: Links, papers, or references
+
