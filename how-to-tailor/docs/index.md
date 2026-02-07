@@ -17,5 +17,3 @@ For full documentation visit [mkdocs.org](https://www.mkdocs.org).
         ...       # Other markdown pages, images and other files.
         
         
- **[Suggest an edit](https://github.com/TAI-src/how-to-tailor/issues/new?template=edit.yml)**
-

@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block content %}
+  {{ super() }}
+
+  {% set issue_url = config.extra.github_repo ~ "/issues/new" 
+   ~ "?template=edit.yml"
+   ~ "&title=Edit%20suggestion:%20" ~ page.title|urlencode
+   ~ "&page=" ~ page.file.src_path|urlencode
+   ~ "&labels=edit-suggestion" %}
+
+
+  {% set edit_url = config.extra.github_repo
+    ~ "/edit/main/"
+    ~ config.extra.page_path ~ "/"
+    ~ page.file.src_path
+  %}
+
+  {% set example_url = config.extra.github_repo
+    ~ "/issues/new?template=new_example.yml"
+    ~ "&labels=new-example" %}
+
+  <hr>
+  <p style="font-size: 0.9em;">
+    💡 Found an issue?
+    <a href="{{ issue_url }}">
+      Suggest an edit
+    </a>
+    or
+    <a href="{{ edit_url }}">
+       Edit this page on GitHub
+    </a>
+  </p>
+  <p style="font-size: 0.9em;">
+     Contribute an example
+     <a href="{{ example_url }}">
+        Add new example
+    </a>
+  </p>
+
+{% endblock %}
+

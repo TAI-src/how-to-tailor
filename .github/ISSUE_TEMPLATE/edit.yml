@@ -2,6 +2,7 @@ name: Suggest an edit
 description: Propose a change or correction to the wiki
 body:
   - type: input
+    id: page
     attributes:
       label: Page URL
       description: Which page are you suggesting a change for?
