@@ -2,43 +2,55 @@ name: Add a tailoring example
 description: Add a new tailoring example
 labels: ["new-example"]
 body:
-  - type: input
-    attributes:
-      label: Author Name
-      description: Please enter your name
-    validations:
-      required: true
+- type: input
+  id: author
+  attributes:
+    label: Author Name
+    description: Please enter your name
+  validations:
+    required: true
 
-  - type: input
-    attributes:
-      label: Links to publication / code
-      description: If your example is based on a publication or code repository, please provide the link here
+- type: input
+  id: links
+  attributes:
+    label: Links to publication / code
+    description: If your example is based on a publication or code repository, please provide the link here
 
-  - type: textarea
-    attributes:
-      label: Problem description
-      description: Describe the application context and the problem you are trying to solve
+- type: textarea
+  id: problem_description
+  attributes:
+    label: Problem description
+    description: Describe the application context and the problem you are trying to solve
 
-  - type: textarea
-    attributes:
-      label: Why was tailoring needed?
-      description: Explain why existing methods were not sufficient and why tailoring was necessary.
+- type: textarea
+  id: why_tailoring
+  attributes:
+    label: Why was tailoring needed?
+    description: Explain why existing methods were not sufficient and why tailoring was necessary.
 
-  - type: textarea
-    attributes:
-      label: Baseline algorithm
-      description: Name the algorithm you started from (if it exists) and explain the choice.
+- type: textarea
+  id: baseline_algorithm
+  attributes:
+    label: Baseline algorithm
+    description: Name the algorithm you started from (if it exists) and explain the choice.
 
-  - type: textarea
-    attributes: 
-      label: Tailoring process
-      description: Describe the steps you took to tailor the algorithm including unsuccessful attempts.
+- type: textarea
+  id: tailoring_process
+  attributes: 
+    label: Tailoring process
+    description: Describe the steps you took to tailor the algorithm including unsuccessful attempts.
 
-  - type: textarea
-    attributes:
-      label: Main problem characteristics
-      description: Describe the main characteristics of the problem. Provide comma-separated keywords.
+- type: textarea
+  id: what_was_tailored
+  attributes:
+    label: What was tailored?
+    description: Problem model, mutation operator, etc?
 
+- type: textarea
+  id: main_characteristics
+  attributes:
+    label: Main problem characteristics
+    description: Describe the main characteristics of the problem. Provide comma-separated keywords.
 
 
 

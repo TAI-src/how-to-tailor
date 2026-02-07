@@ -1,0 +1,89 @@
+name: Create Example PR
+
+on:
+  issues:
+    types: [opened]
+
+jobs:
+  create_pr:
+    if: contains(github.event.issue.labels.*.name, 'new-example')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Parse issue body (Markdown → variables)
+        id: parse
+        run: |
+          BODY="${{ github.event.issue.body }}"
+          AUTHOR=$(echo "$BODY" | sed -n '/Author Name:/,/Links to publication \/ code:/p' | tail -n +2 | sed '/^$/d')
+          LINKS=$(echo "$BODY" | sed -n '/Links to publication \/ code:/,/Problem description:/p' | tail -n +2 | sed '/^$/d')
+          PROBLEM=$(echo "$BODY" | sed -n '/Problem description:/,/Why was tailoring needed?:/p' | tail -n +2 | sed '/^$/d')
+          WHY=$(echo "$BODY" | sed -n '/Why was tailoring needed?:/,/Baseline algorithm:/p' | tail -n +2 | sed '/^$/d')
+          BASELINE=$(echo "$BODY" | sed -n '/Baseline algorithm:/,/Tailoring process:/p' | tail -n +2 | sed '/^$/d')
+          PROCESS=$(echo "$BODY" | sed -n '/Tailoring process:/,/What was tailored:/p' | tail -n +2 | sed '/^$/d')
+          WHAT=$(echo "$BODY" | sed -n '/What was tailored:/,/Main problem characteristics:/p' | tail -n +2 | sed '/^$/d')
+          CHAR=$(echo "$BODY" | sed -n '/Main problem characteristics:/,$p' | tail -n +2)
+          echo "AUTHOR=$AUTHOR" >> $GITHUB_ENV
+          echo "LINKS=$LINKS" >> $GITHUB_ENV
+          echo "PROBLEM=$PROBLEM" >> $GITHUB_ENV
+          echo "WHY=$WHY" >> $GITHUB_ENV
+          echo "BASELINE=$BASELINE" >> $GITHUB_ENV
+          echo "PROCESS=$PROCESS" >> $GITHUB_ENV
+          echo "WHAT=$WHAT" >> $GITHUB_ENV
+          echo "CHAR=$CHAR" >> $GITHUB_ENV
+
+      - name: Create Markdown file
+        run: |
+          # Navigate to the examples directory
+          cd how-to-tailor/docs/examples || exit 1
+
+          # Create a unique ID (max ID in docs + 1)
+          LAST_ID=$(ls example_*.md 2>/dev/null | xargs -n1 basename | sed 's/[^0-9]*//g' | sort -n | tail -n1)
+          if [ -z "$LAST_ID" ]; then LAST_ID=0; fi
+          NEW_ID=$((LAST_ID + 1))
+
+          # Filename
+          FILENAME="example_${NEW_ID}.md"
+
+          # Create the Markdown file
+          cat > "$FILENAME" <<EOF
+---
+title: ${{ github.event.issue.title }}
+authors:
+  - $AUTHOR
+date: $(date +%Y-%m-%d)
+links: $LINKS
+id: $NEW_ID
+---
+
+# [${{ github.event.issue.title }}]($LINKS)
+
+## Problem Description
+$PROBLEM
+
+## Why was tailoring needed?
+$WHY
+
+## Baseline algorithm
+$BASELINE
+
+## Tailoring process
+$PROCESS
+
+## What was tailored
+$WHAT
+
+## Main problem characteristics
+$CHAR
+EOF
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v5
+        with:
+          commit-message: "Add new example from issue #${{ github.event.issue.number }}"
+          branch: "new-example-${{ github.event.issue.number }}"
+          title: "Add new example: ${{ github.event.issue.title }}"
+          body: |
+            This PR adds a new example generated from issue #${{ github.event.issue.number }}.
+          labels: example-added
+
