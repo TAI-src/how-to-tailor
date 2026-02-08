@@ -27,13 +27,24 @@ def glob(pattern, hide=None, page_path=None, current_page=None):
         try:
             text = f.read_text(encoding="utf-8")
             # YAML frontmatter is usually at the top
-            if text.startswith("---"):
-                end = text.find("---", 3)
-                yaml_text = text[3:end].strip()
-                data = yaml.safe_load(yaml_text)
-                title = data.get("title", title)
-                authors = ", ".join(data.get("authors", authors))
-                title = data["title"]
+            lines = text.splitlines()
+            if lines and lines[0].strip() == "---":
+                # Find closing '---' on its own line
+                end_index = None
+                for i, line in enumerate(lines[1:], start=1):
+                    if line.strip() == "---":
+                        end_index = i
+                        break
+                if end_index is not None:
+                    yaml_text = "\n".join(lines[1:end_index]).strip()
+                    if yaml_text:
+                        data = yaml.safe_load(yaml_text)
+                        if isinstance(data, dict):
+                            title = data.get("title", title)
+                            authors = ", ".join(data.get("authors", authors))
+                            # If 'title' is present, prefer it explicitly
+                            if "title" in data:
+                                title = data["title"]
         except Exception:
             pass
         
