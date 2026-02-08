@@ -35,12 +35,10 @@ surrogate-based optimization. To reduce the required number of function evaluati
   * same as proposed approach but pure greedy (epsilon=0) → got stuck in local optima
   * Bayesian optimization with Gaussian processes
   * a more white-box approach that tried to linearize the problem
-
-**Result**
-
-* good enough solution found within 2 minutes, with 3000 function evaluations
-* solution 3000 times faster than Bayesian optimization with Gaussian processes
-* solution twice as good as a predict-then-optimize approach with the same surrogate model
+* **Result**
+  * good enough solution found within 2 minutes, with 3000 function evaluations
+  * solution 3000 times faster than Bayesian optimization with Gaussian processes
+  * solution twice as good as a predict-then-optimize approach with the same surrogate model
 
 ## What was tailored
 
