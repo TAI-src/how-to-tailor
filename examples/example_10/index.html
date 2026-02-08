@@ -6,9 +6,9 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         
         
-        <link rel="canonical" href="https://tai-src.github.io/how-to-tailor/examples/example_1/">
+        <link rel="canonical" href="https://tai-src.github.io/how-to-tailor/examples/example_10/">
         <link rel="shortcut icon" href="../../img/favicon.ico">
-        <title>Optimisation for a Fleet of Healthcare Vehicles - How to Tailor</title>
+        <title>Aircraft design - How to Tailor</title>
         <link href="../../css/bootstrap.min.css" rel="stylesheet">
         <link href="../../css/fontawesome.min.css" rel="stylesheet">
         <link href="../../css/brands.min.css" rel="stylesheet">
@@ -46,11 +46,11 @@
 </li>
                                     
 <li>
-    <a href="./" class="dropdown-item active" aria-current="page">Optimisation for a Fleet of Healthcare Vehicles</a>
+    <a href="../example_1/" class="dropdown-item">Optimisation for a Fleet of Healthcare Vehicles</a>
 </li>
                                     
 <li>
-    <a href="../example_10/" class="dropdown-item">Aircraft design</a>
+    <a href="./" class="dropdown-item active" aria-current="page">Aircraft design</a>
 </li>
                                     
 <li>
@@ -95,12 +95,12 @@
                             </a>
                         </li>
                             <li class="nav-item">
-                                <a rel="prev" href="../" class="nav-link">
+                                <a rel="prev" href="../example_1/" class="nav-link">
                                     <i class="fa fa-arrow-left"></i> Previous
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a rel="next" href="../example_10/" class="nav-link">
+                                <a rel="next" href="../example_2/" class="nav-link">
                                     Next <i class="fa fa-arrow-right"></i>
                                 </a>
                             </li>
@@ -123,7 +123,7 @@
     <div id="toc-collapse" class="navbar-collapse collapse card bg-body-tertiary">
         <ul class="nav flex-column">
             
-            <li class="nav-item" data-bs-level="1"><a href="#optimisation-for-a-fleet-of-healthcare-vehicles" class="nav-link">Optimisation for a Fleet of Healthcare Vehicles</a>
+            <li class="nav-item" data-bs-level="1"><a href="#aircraft-design" class="nav-link">Aircraft design</a>
               <ul class="nav flex-column">
             <li class="nav-item" data-bs-level="2"><a href="#problem-description" class="nav-link">Problem Description</a>
               <ul class="nav flex-column">
@@ -164,29 +164,32 @@
 </div></div>
                     <div class="col-md-9" role="main">
 
-<h1 id="optimisation-for-a-fleet-of-healthcare-vehicles"><a href="https://dl.acm.org/doi/abs/10.1145/3638530.3664137">Optimisation for a Fleet of Healthcare Vehicles</a><a class="headerlink" href="#optimisation-for-a-fleet-of-healthcare-vehicles" title="Permanent link">&para;</a></h1>
+<h1 id="aircraft-design"><a href="https://arc.aiaa.org/doi/abs/10.2514/1.J065252">Aircraft design</a><a class="headerlink" href="#aircraft-design" title="Permanent link">&para;</a></h1>
 <h2 id="problem-description">Problem Description<a class="headerlink" href="#problem-description" title="Permanent link">&para;</a></h2>
-<p>A healthcare provider in a region of Scotland (Argyll and Bute) wanted to reduce their vehicle fleet size while still being able to cater for all trips. They provided 4 months of historical data about where their existing fleet were based and the trips they conducted, including start and end times and geographic location. We were also given information about the vehicle types and which vehicles were allowed to do which trips.</p>
+<p>The problem was to solve an optimisation problem to lower the weight of an aircraft wing. During this optimisation many constraints arising from multiple disciplines need to be taken into account to ensure feasibility of the design (e.g. structural stability, manufacturability, …). </p>
 <h2 id="why-was-tailoring-needed">Why was tailoring needed?<a class="headerlink" href="#why-was-tailoring-needed" title="Permanent link">&para;</a></h2>
-<p>Not too much tailoring was needed but there were some particulars that had to be accounted for:</p>
-<ol>
-<li>Jobs (i.e. trips) have a type of vehicle which (historically) executed them, but if needed certain other types of vehicles can do the trip.  For example, a small car originally did the trip, can be done by a van.</li>
-<li>Vehicles can be swapped between geographical bases if needed and if the swap does not mean that the vehicle home base cannot cover its own trips.</li>
-<li>It does not make sense to try and remove a type of vehicle from a base if there are none there or maybe if there are a small amount there. This led to a semi-guided mutation design.</li>
-</ol>
+<p>To reach the best design possible, one ideally wants to define as many design variables as possible to increase the design freedom of the system. That very quickly poses a high-dimensional design problem. Additionally, in BO black-box constraints are usually taken into account via separate surrogate models. In cases where the number of constraints is high (&gt;10^3) this quickly becomes a bottleneck in terms of computational resources. </p>
 <h2 id="baseline-algorithm">Baseline algorithm<a class="headerlink" href="#baseline-algorithm" title="Permanent link">&para;</a></h2>
-<p>Upper level: stochastic local search; lower level: constructive heuristic.</p>
-<p>Motivations for choice: we wanted to keep it simple as possible and explainable for the user. No need to use fancy algorithms if a simple approach can obtain results.</p>
+<p>Since the constraints computed via the respective disciplines can be either highly nonlinear, discontinuous or being computed via commercial solvers that do not provide gradients BO was chosen as a starting point.</p>
 <h2 id="tailoring-process">Tailoring process<a class="headerlink" href="#tailoring-process" title="Permanent link">&para;</a></h2>
-<p>Adding in constraints (part of the operators); added additional vehicle/machine swap operation; semi-guided mutation.</p>
+<p>Developed were two approaches that leverage dimensionality reduction in the input and/or output space, respectively, reducing the number of needed GPs. The acquisition function uses a trust region heuristic to mitigate the curse of dimensionality. </p>
 <h2 id="what-was-tailored">What was tailored<a class="headerlink" href="#what-was-tailored" title="Permanent link">&para;</a></h2>
-<p>Aspects of the algorithmic operators were tailored. This included the nature of the mutation operator and how it ensured that mutated solutions are feasible within the specific constraints of the problem.</p>
+<p><em>No response</em></p>
 <h2 id="main-problem-characteristics">Main problem characteristics<a class="headerlink" href="#main-problem-characteristics" title="Permanent link">&para;</a></h2>
-<p>Choose most important ones: low-dimensional at upper level, high-dimensional at lower level; highly constrained (some soft and some hard); offline; there is an existing solution that works(current fleet); is a simplified version of what is eventually sought (optimising routes, carbon as well); low data sensitivity.</p>
+<ul>
+<li>Cont. variables</li>
+<li>single objective</li>
+<li>“High-dimensionality”</li>
+<li>Budget is limited</li>
+<li>parallelisation possible</li>
+</ul>
 <h2 id="references">References<a class="headerlink" href="#references" title="Permanent link">&para;</a></h2>
 <p><em>No response</em></p>
+<h3 id="contact-information-optional">Contact information (optional)<a class="headerlink" href="#contact-information-optional" title="Permanent link">&para;</a></h3>
+<p><em>No response</em></p>
 <h2 id="author">Author<a class="headerlink" href="#author" title="Permanent link">&para;</a></h2>
-<p>Sarah Thomson</p></div>
+<p>Hauke Maathuis
+<em>No response</em></p></div>
 
   
 
@@ -198,11 +201,11 @@
   <hr>
   <p style="font-size: 0.9em;">
     💡 Found an issue?
-    <a href="https://github.com/TAI-src/how-to-tailor/issues/new?template=edit.yml&title=[Edit]%20examples/example_1.md&page=examples/example_1.md">
+    <a href="https://github.com/TAI-src/how-to-tailor/issues/new?template=edit.yml&title=[Edit]%20examples/example_10.md&page=examples/example_10.md">
       Suggest an edit
     </a>
     or
-    <a href="https://github.com/TAI-src/how-to-tailor/edit/main/how-to-tailor/docs/examples/example_1.md">
+    <a href="https://github.com/TAI-src/how-to-tailor/edit/main/how-to-tailor/docs/examples/example_10.md">
        Edit this page on GitHub
     </a>
   </p>
