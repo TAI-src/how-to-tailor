@@ -29,16 +29,19 @@ surrogate-based optimization. To reduce the required number of function evaluati
 * The chosen acquisition function was a type of epsilon-greedy exploration with local perturbations. This allowed for a fast convergence towards a local optimum, while not getting stuck at a local optimum. It avoided the need of spending computation time on calculating covariances or optimizing surrogate model hyperparameters.
 * Hyperparameters of the approach were chosen based on expertise and initial experiments. For example, the number of basis functions was a hyperparameter that needed to be chosen such that it balances computational efficiency and performance.
 * What was not successful:
-  * Nelder-Mead simplex method
-  * Powell’s method
-  * using a quadratic surrogate model
-  * same as proposed approach but pure greedy (epsilon=0) → got stuck in local optima
-  * Bayesian optimization with Gaussian processes
-  * a more white-box approach that tried to linearize the problem
+
+    * Nelder-Mead simplex method
+    * Powell’s method
+    * using a quadratic surrogate model
+    * same as proposed approach but pure greedy (epsilon=0) → got stuck in local optima
+    * Bayesian optimization with Gaussian processes
+    * a more white-box approach that tried to linearize the problem
+
 * **Result**
-  * good enough solution found within 2 minutes, with 3000 function evaluations
-  * solution 3000 times faster than Bayesian optimization with Gaussian processes
-  * solution twice as good as a predict-then-optimize approach with the same surrogate model
+
+    * good enough solution found within 2 minutes, with 3000 function evaluations
+    * solution 3000 times faster than Bayesian optimization with Gaussian processes
+    * solution twice as good as a predict-then-optimize approach with the same surrogate model
 
 ## What was tailored
 
