@@ -4,7 +4,7 @@ authors:
   - Mathijs de Weerdt
 date: 2026-02-08
 link: https://tulipaenergy.github.io/TulipaEnergyModel.jl/stable/
-id: 5
+id: 16
 ---
 
 # [Energy System Optimization](https://tulipaenergy.github.io/TulipaEnergyModel.jl/stable/)
