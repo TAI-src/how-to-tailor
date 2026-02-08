@@ -39,4 +39,5 @@ ${REFERENCES}
 
 ## Author
 
-${AUTHOR} <${CONTACT}>
+${AUTHOR}
+${CONTACT}
