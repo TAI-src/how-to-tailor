@@ -14,4 +14,3 @@ The purpose of this Dagstuhl Seminar is to audit the current experience that exi
 As a first step, we are aiming to collect examples. Please add your examples (see below).
 
         
-        
