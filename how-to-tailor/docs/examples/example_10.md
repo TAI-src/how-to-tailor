@@ -4,7 +4,7 @@ authors:
   - Hauke Maathuis
 date: 2026-02-08
 link: https://arc.aiaa.org/doi/abs/10.2514/1.J065252
-id: 5
+id: 10
 ---
 
 # [Aircraft design](https://arc.aiaa.org/doi/abs/10.2514/1.J065252)
