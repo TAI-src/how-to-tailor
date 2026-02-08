@@ -4,7 +4,7 @@ authors:
   - Anton Bouter
 date: 2026-02-08
 link: https://www.sciencedirect.com/science/article/pii/S1538472123016781
-id: 5
+id: 13
 ---
 
 # [Brachytherapy treatment planning](https://www.sciencedirect.com/science/article/pii/S1538472123016781)
