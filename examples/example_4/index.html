@@ -154,17 +154,25 @@
 <li>The chosen surrogate model was a Random Fourier Expansion, as it is efficient to train and to update, does not slow down over time like Gaussian processes, and has theoretical guarantees available.</li>
 <li>The chosen acquisition function was a type of epsilon-greedy exploration with local perturbations. This allowed for a fast convergence towards a local optimum, while not getting stuck at a local optimum. It avoided the need of spending computation time on calculating covariances or optimizing surrogate model hyperparameters.</li>
 <li>Hyperparameters of the approach were chosen based on expertise and initial experiments. For example, the number of basis functions was a hyperparameter that needed to be chosen such that it balances computational efficiency and performance.</li>
-<li>What was not successful:</li>
+<li>
+<p>What was not successful:</p>
+<ul>
 <li>Nelder-Mead simplex method</li>
 <li>Powell’s method</li>
 <li>using a quadratic surrogate model</li>
 <li>same as proposed approach but pure greedy (epsilon=0) → got stuck in local optima</li>
 <li>Bayesian optimization with Gaussian processes</li>
 <li>a more white-box approach that tried to linearize the problem</li>
-<li><strong>Result</strong></li>
+</ul>
+</li>
+<li>
+<p><strong>Result</strong></p>
+<ul>
 <li>good enough solution found within 2 minutes, with 3000 function evaluations</li>
 <li>solution 3000 times faster than Bayesian optimization with Gaussian processes</li>
 <li>solution twice as good as a predict-then-optimize approach with the same surrogate model</li>
+</ul>
+</li>
 </ul>
 <h2 id="what-was-tailored">What was tailored</h2>
 <p>an algorithm was developed from scratch, with the same framework as other surrogate-based optimization algorithms.</p>
