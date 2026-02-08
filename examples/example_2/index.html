@@ -42,6 +42,10 @@
                                 <ul class="dropdown-menu">
                                     
 <li>
+    <a href="../" class="dropdown-item">Example Index</a>
+</li>
+                                    
+<li>
     <a href="../example_1/" class="dropdown-item">Optimisation for a Fleet of Healthcare Vehicles</a>
 </li>
                                     
@@ -55,10 +59,6 @@
                                     
 <li>
     <a href="../example_4/" class="dropdown-item">Antenna control</a>
-</li>
-                                    
-<li>
-    <a href="../example_template/" class="dropdown-item">${TITLE}</a>
 </li>
                                 </ul>
                             </li>
@@ -140,18 +140,18 @@
 </div></div>
                     <div class="col-md-9" role="main">
 
-<h1 id="building-spatial-design"><a href="https://hdl.handle.net/1887/81789">Building spatial design</a></h1>
-<h2 id="problem-description">Problem Description</h2>
+<h1 id="building-spatial-design"><a href="https://hdl.handle.net/1887/81789">Building spatial design</a><a class="headerlink" href="#building-spatial-design" title="Permanent link">&para;</a></h1>
+<h2 id="problem-description">Problem Description<a class="headerlink" href="#problem-description" title="Permanent link">&para;</a></h2>
 <p>Optimise the spatial layout of a building to</p>
 <ul>
 <li>Minimise energy consumption for climate control, and</li>
 <li>Minimise the strain on the structure</li>
 </ul>
-<h2 id="why-was-tailoring-needed">Why was tailoring needed?</h2>
+<h2 id="why-was-tailoring-needed">Why was tailoring needed?<a class="headerlink" href="#why-was-tailoring-needed" title="Permanent link">&para;</a></h2>
 <p>Many infeasible solutions exist. No algorithm existed/was found that could handle both multiple objectives, and a mixed-variable search space.</p>
-<h2 id="baseline-algorithm">Baseline algorithm</h2>
+<h2 id="baseline-algorithm">Baseline algorithm<a class="headerlink" href="#baseline-algorithm" title="Permanent link">&para;</a></h2>
 <p>SMS-EMOA. This performed best after initial tailoring steps needed to be able to run an algorithm at all, that were applied to both SMS-EMOA and NSGA-II.</p>
-<h2 id="tailoring-process">Tailoring process</h2>
+<h2 id="tailoring-process">Tailoring process<a class="headerlink" href="#tailoring-process" title="Permanent link">&para;</a></h2>
 <ul>
 <li>Design a superstructure <strong>problem representation</strong> to ensure the number of variables stays fixed (the existing representation would change the number of variables regularly). This made it possible to use standard EA frameworks .</li>
 <li>Modify algorithms designed for a single variable type to handle two variable types. (<strong>Add existing</strong> standard mutation + crossover <strong>operators to handle variable types</strong> the algorithm cannot handle natively.) This made it possible to run an algorithm at all.</li>
@@ -165,9 +165,9 @@
 <li>Add a local search step to try to improve solutions further by fixing the binary variables and optimising the continuous variables within that subspace.. This did not make much of a difference in the quality of the Pareto front approximation.</li>
 <li><strong>Partial success</strong>: Although the developed approach worked in principle, it was quite <strong>limited in the size of the designs</strong> it could handle. For larger designs more modifications would be needed to ensure the problem-specific operators would not get stuck in a (fairly) local region of the search space. This was because the probability of finding a feasible mutation decreased when more modifications were made to the parent. (For small enough designs, the whole space would be local enough for things to work.)</li>
 </ul>
-<h2 id="what-was-tailored">What was tailored</h2>
+<h2 id="what-was-tailored">What was tailored<a class="headerlink" href="#what-was-tailored" title="Permanent link">&para;</a></h2>
 <p><em>No response</em></p>
-<h2 id="main-problem-characteristics">Main problem characteristics</h2>
+<h2 id="main-problem-characteristics">Main problem characteristics<a class="headerlink" href="#main-problem-characteristics" title="Permanent link">&para;</a></h2>
 <ul>
 <li>Many hard constraints (simulator cannot evaluate the solution if these are violated) / Large part of the search space was infeasible. Checking if / how many constraints are violated is cheap.</li>
 <li>Mixed-variable search space (continuous + binary)</li>
@@ -175,9 +175,9 @@
 <li>(Somewhat) expensive solution evaluations; with larger designs being more expensive. E.g., rough 1 second per evaluation for the smallest considered design, and roughly 40 seconds for the larger designs we considered. (Even the larger designs we considered are still relatively small for the considered problem.)</li>
 <li>Because of the above, we restricted ourselves to 2500 evaluations, but this was not a strict requirement.</li>
 </ul>
-<h2 id="references">References</h2>
+<h2 id="references">References<a class="headerlink" href="#references" title="Permanent link">&para;</a></h2>
 <p><em>No response</em></p>
-<h2 id="author">Author</h2>
+<h2 id="author">Author<a class="headerlink" href="#author" title="Permanent link">&para;</a></h2>
 <p>Koen van der Blom</p></div>
 
   
