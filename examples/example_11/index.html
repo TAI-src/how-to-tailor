@@ -6,9 +6,9 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         
         
-        <link rel="canonical" href="https://tai-src.github.io/how-to-tailor/examples/example_2/">
+        <link rel="canonical" href="https://tai-src.github.io/how-to-tailor/examples/example_11/">
         <link rel="shortcut icon" href="../../img/favicon.ico">
-        <title>Building spatial design - How to Tailor</title>
+        <title>Optimization of a GC-MS (mass spectrometer) for high-throughput analysis of biomedical samples - Development of ParEGO - How to Tailor</title>
         <link href="../../css/bootstrap.min.css" rel="stylesheet">
         <link href="../../css/fontawesome.min.css" rel="stylesheet">
         <link href="../../css/brands.min.css" rel="stylesheet">
@@ -54,11 +54,11 @@
 </li>
                                     
 <li>
-    <a href="../example_11/" class="dropdown-item">Optimization of a GC-MS (mass spectrometer) for high-throughput analysis of biomedical samples - Development of ParEGO</a>
+    <a href="./" class="dropdown-item active" aria-current="page">Optimization of a GC-MS (mass spectrometer) for high-throughput analysis of biomedical samples - Development of ParEGO</a>
 </li>
                                     
 <li>
-    <a href="./" class="dropdown-item active" aria-current="page">Building spatial design</a>
+    <a href="../example_2/" class="dropdown-item">Building spatial design</a>
 </li>
                                     
 <li>
@@ -99,12 +99,12 @@
                             </a>
                         </li>
                             <li class="nav-item">
-                                <a rel="prev" href="../example_11/" class="nav-link">
+                                <a rel="prev" href="../example_10/" class="nav-link">
                                     <i class="fa fa-arrow-left"></i> Previous
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a rel="next" href="../example_3/" class="nav-link">
+                                <a rel="next" href="../example_2/" class="nav-link">
                                     Next <i class="fa fa-arrow-right"></i>
                                 </a>
                             </li>
@@ -127,7 +127,7 @@
     <div id="toc-collapse" class="navbar-collapse collapse card bg-body-tertiary">
         <ul class="nav flex-column">
             
-            <li class="nav-item" data-bs-level="1"><a href="#building-spatial-design" class="nav-link">Building spatial design</a>
+            <li class="nav-item" data-bs-level="1"><a href="#optimization-of-a-gc-ms-mass-spectrometer-for-high-throughput-analysis-of-biomedical-samples-development-of-parego" class="nav-link">Optimization of a GC-MS (mass spectrometer) for high-throughput analysis of biomedical samples - Development of ParEGO</a>
               <ul class="nav flex-column">
             <li class="nav-item" data-bs-level="2"><a href="#problem-description" class="nav-link">Problem Description</a>
               <ul class="nav flex-column">
@@ -168,45 +168,74 @@
 </div></div>
                     <div class="col-md-9" role="main">
 
-<h1 id="building-spatial-design"><a href="https://hdl.handle.net/1887/81789">Building spatial design</a><a class="headerlink" href="#building-spatial-design" title="Permanent link">&para;</a></h1>
+<h1 id="optimization-of-a-gc-ms-mass-spectrometer-for-high-throughput-analysis-of-biomedical-samples-development-of-parego"><a href="https://ieeexplore.ieee.org/document/1583627/">Optimization of a GC-MS (mass spectrometer) for high-throughput analysis of biomedical samples - Development of ParEGO</a><a class="headerlink" href="#optimization-of-a-gc-ms-mass-spectrometer-for-high-throughput-analysis-of-biomedical-samples-development-of-parego" title="Permanent link">&para;</a></h1>
 <h2 id="problem-description">Problem Description<a class="headerlink" href="#problem-description" title="Permanent link">&para;</a></h2>
-<p>Optimise the spatial layout of a building to</p>
-<ul>
-<li>Minimise energy consumption for climate control, and</li>
-<li>Minimise the strain on the structure</li>
-</ul>
+<p>Configure the parameters of an analytical instrument (a GC-MS machine) such that it would obtain a high-resolution identification of all the constituents of a complex sample (such as human blood with all the metabolic products in it identified). No simulator of the GC-MS was available or would be realistic. Only one GC-MS machine was available (i.e., parallelization is not possible). Evaluation of one configuration on one sample requires of the order of 15 minutes to 75 minutes, depending on settings. Minimizing the processing time of the GC-MS machine to produce its output was an additional important objective.</p>
 <h2 id="why-was-tailoring-needed">Why was tailoring needed?<a class="headerlink" href="#why-was-tailoring-needed" title="Permanent link">&para;</a></h2>
-<p>Many infeasible solutions exist. No algorithm existed/was found that could handle both multiple objectives, and a mixed-variable search space.</p>
+<p>Baselines considered were multiobjective evolutionary algorithms. The motivations were three-fold
+* No analytical function: black-box setting
+* Multiple objectives, at least 3: number of peaks, signal-to-noise, processing time
+* Familiarity with multiobjective EAs
+Tailoring was needed because these methods require order 1000’s of evaluations and are not designed for optimization under a much more limited budget. Our budget was set at 120 experiments, initially.</p>
 <h2 id="baseline-algorithm">Baseline algorithm<a class="headerlink" href="#baseline-algorithm" title="Permanent link">&para;</a></h2>
-<p>SMS-EMOA. This performed best after initial tailoring steps needed to be able to run an algorithm at all, that were applied to both SMS-EMOA and NSGA-II.</p>
+<p><em>No response</em></p>
 <h2 id="tailoring-process">Tailoring process<a class="headerlink" href="#tailoring-process" title="Permanent link">&para;</a></h2>
 <ul>
-<li>Design a superstructure <strong>problem representation</strong> to ensure the number of variables stays fixed (the existing representation would change the number of variables regularly). This made it possible to use standard EA frameworks .</li>
-<li>Modify algorithms designed for a single variable type to handle two variable types. (<strong>Add existing</strong> standard mutation + crossover <strong>operators to handle variable types</strong> the algorithm cannot handle natively.) This made it possible to run an algorithm at all.</li>
-<li>Add equal <strong>penalty</strong> value for any solution that is <strong>infeasible</strong>. This led to only a very small number of feasible solutions, and not much optimisation yet.</li>
-<li><strong>Penalty</strong> value based on the number of <strong>constraint violations</strong> (larger penalty for more violations). This led to more feasible solutions, and actually being able to optimise something.</li>
-<li><strong>Design a problem-specific</strong> initialisation <strong>operator</strong> to ensure all initial solutions are feasible. This, combined with the next three steps, led to much better Pareto front approximations.</li>
-<li><strong>Design a problem-specific</strong> mutation <strong>operator</strong> for the binary variables to ensure (standard operator was used for continuous variables, since there were no constraints on those)</li>
-<li><strong>Remove the standard</strong> crossover <strong>operator</strong>, because it would cause many constraint violations (a new problem-specific crossover operator might be designed later, but proved to be very difficult to do)</li>
-<li><strong>Add repair function</strong> was used to proportionally scale the continuous variables after mutation to match an equality constraint on them.</li>
-<li>Tune algorithm parameters to further improve performance. This led to further Pareto front approximation improvements.</li>
-<li>Add a local search step to try to improve solutions further by fixing the binary variables and optimising the continuous variables within that subspace.. This did not make much of a difference in the quality of the Pareto front approximation.</li>
-<li><strong>Partial success</strong>: Although the developed approach worked in principle, it was quite <strong>limited in the size of the designs</strong> it could handle. For larger designs more modifications would be needed to ensure the problem-specific operators would not get stuck in a (fairly) local region of the search space. This was because the probability of finding a feasible mutation decreased when more modifications were made to the parent. (For small enough designs, the whole space would be local enough for things to work.)</li>
+<li>We first tailored PAES, PESA, and NSGA-II as leading EMO algorithms of the time</li>
+<li>Mostly this is about reducing the population size significantly, and trying to find reasonable mutation rates. All of this was done in simulation of course, because you cannot tune on the real problem!</li>
+<li>We then investigated single-objective methods for expensive problems. We chose to adapt EGO (Jones et al), which by today’s classification is a Bayesian optimization method, but at that time was known as a DACE-model- or Kriging-metamodel-based method. </li>
+<li>We then tailored (really, generalized) EGO for the multiobjective case by introducing a randomized sampling of scalarization functions, and</li>
+<li>Adding archiving methods, and</li>
+<li>Experimenting with searching over the Kriging metamodel (“acquistion function”) with alternatives to branch-and-bound or downhill simplex (used in the original EGO paper); eventually we used an inner EA with niching to ensure good search of this multimodal landscape. </li>
 </ul>
 <h2 id="what-was-tailored">What was tailored<a class="headerlink" href="#what-was-tailored" title="Permanent link">&para;</a></h2>
 <p><em>No response</em></p>
 <h2 id="main-problem-characteristics">Main problem characteristics<a class="headerlink" href="#main-problem-characteristics" title="Permanent link">&para;</a></h2>
 <ul>
-<li>Many hard constraints (simulator cannot evaluate the solution if these are violated) / Large part of the search space was infeasible. Checking if / how many constraints are violated is cheap.</li>
-<li>Mixed-variable search space (continuous + binary)</li>
-<li>Multiple objectives</li>
-<li>(Somewhat) expensive solution evaluations; with larger designs being more expensive. E.g., rough 1 second per evaluation for the smallest considered design, and roughly 40 seconds for the larger designs we considered. (Even the larger designs we considered are still relatively small for the considered problem.)</li>
-<li>Because of the above, we restricted ourselves to 2500 evaluations, but this was not a strict requirement.</li>
+<li>Problem properties<ul>
+<li>Blackbox - a real physical experiment</li>
+<li>No gradients</li>
+<li>No models (initially)</li>
+<li>Noisy</li>
+<li>List of feasible algorithms: PAES, PESA, NSGA-II, or adapt EGO to the multiobjective case, i.e., develop ParEGO</li>
+<li>Existing alternatives / solutions: none</li>
+</ul>
+</li>
+<li>Search space<ul>
+<li>Continuous / mixed</li>
+<li>Low - up to 15</li>
+</ul>
+</li>
+<li>Objective Space<ul>
+<li>3 objectives - finding good tradeoffs very important </li>
+<li>15 minutes-75 minutes for one evaluation (of all objectives) of one solution</li>
+<li>Noise in fitness evaluation</li>
+<li>The definition of the objective(s) were changing during the first few evaluations as we honed our ability to measure signal-noise ratio and to count peaks in the output chromatograms.</li>
+</ul>
+</li>
+<li>Constraints<ul>
+<li>Constraint-types: mixed. Some constraints were known a priori; some we learnt as we progressed, i.e., the machine failed for some settings</li>
+</ul>
+</li>
+<li>User needs<ul>
+<li>Biggest factor was time on the machine. We needed to optimize the settings for a much larger study so that thousands of samples could be analysed using the “optimal” settings. We had weeks to achieve this.</li>
+<li>So all tuning and algorithm design decisions have to be made offline, e.g. using either intuition or tuning on other functions.</li>
+<li>A team with very different expertise was needed to undertake this whole process of developing an optimized GC-MS setting. Communication was very challenging. 
+A notable remark from the senior scientist (to me) was, “Josh, your algorithm appears to be doing entirely random experiments”. (I suggest, now that ParEGO is quite well established, he was wrong. But of course it looked like that from an onlooker perspective).
+Notice that to tune and compare algorithms, we simplified functions in the multiobjective EA test suites of the day. The simplification is motivated and described properly in the ParEGO paper cited above.</li>
+</ul>
+</li>
 </ul>
 <h2 id="references">References<a class="headerlink" href="#references" title="Permanent link">&para;</a></h2>
+<p>Closed-Loop, Multiobjective Optimization of Analytical Instrumentation:  Gas Chromatography/Time-of-Flight Mass Spectrometry of the Metabolomes of Human Serum and of Yeast Fermentations
+Steve O'Hagan, Warwick B. Dunn, Marie Brown, Joshua D. Knowles, and Douglas B. Kell. Analytical Chemistry 2005 77 (1), 290-303. DOI: <a href="https://pubs.acs.org/doi/10.1021/ac049146x">10.1021/ac049146x</a>
+ParEGO: a hybrid algorithm with on-line landscape approximation for expensive multiobjective optimization problems
+Joshua Knowles. IEEE Transactions on Evolutionary Computation 2006 10(1), 50-66.  <a href="https://ieeexplore.ieee.org/document/1583627/">doi: 10.1109/TEVC.2005.851274</a></p>
+<h3 id="contact-information-optional">Contact information (optional)<a class="headerlink" href="#contact-information-optional" title="Permanent link">&para;</a></h3>
 <p><em>No response</em></p>
 <h2 id="author">Author<a class="headerlink" href="#author" title="Permanent link">&para;</a></h2>
-<p>Koen van der Blom</p></div>
+<p>Joshua Knowles
+<em>No response</em></p></div>
 
   
 
@@ -218,11 +247,11 @@
   <hr>
   <p style="font-size: 0.9em;">
     💡 Found an issue?
-    <a href="https://github.com/TAI-src/how-to-tailor/issues/new?template=edit.yml&title=[Edit]%20examples/example_2.md&page=examples/example_2.md">
+    <a href="https://github.com/TAI-src/how-to-tailor/issues/new?template=edit.yml&title=[Edit]%20examples/example_11.md&page=examples/example_11.md">
       Suggest an edit
     </a>
     or
-    <a href="https://github.com/TAI-src/how-to-tailor/edit/main/how-to-tailor/docs/examples/example_2.md">
+    <a href="https://github.com/TAI-src/how-to-tailor/edit/main/how-to-tailor/docs/examples/example_11.md">
        Edit this page on GitHub
     </a>
   </p>
