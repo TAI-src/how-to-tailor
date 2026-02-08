@@ -4,7 +4,7 @@ authors:
   - Joshua Knowles
 date: 2026-02-08
 link: https://ieeexplore.ieee.org/document/1583627/
-id: 5
+id: 11
 ---
 
 # [Optimization of a GC-MS (mass spectrometer) for high-throughput analysis of biomedical samples - Development of ParEGO](https://ieeexplore.ieee.org/document/1583627/)
