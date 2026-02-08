@@ -37,8 +37,6 @@ jobs:
       # 5️⃣ Deploy the built site to gh-pages
       - name: Deploy to gh-pages
         uses: peaceiris/actions-gh-pages@v4
-        permissions:
-          contents: write
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: site        # MkDocs build output folder
