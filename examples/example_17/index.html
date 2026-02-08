@@ -6,9 +6,9 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         
         
-        <link rel="canonical" href="https://tai-src.github.io/how-to-tailor/examples/example_6/">
+        <link rel="canonical" href="https://tai-src.github.io/how-to-tailor/examples/example_17/">
         <link rel="shortcut icon" href="../../img/favicon.ico">
-        <title>MarioGAN - How to Tailor</title>
+        <title>Automatic Train Operation - How to Tailor</title>
         <link href="../../css/bootstrap.min.css" rel="stylesheet">
         <link href="../../css/fontawesome.min.css" rel="stylesheet">
         <link href="../../css/brands.min.css" rel="stylesheet">
@@ -78,7 +78,7 @@
 </li>
                                     
 <li>
-    <a href="../example_17/" class="dropdown-item">Automatic Train Operation</a>
+    <a href="./" class="dropdown-item active" aria-current="page">Automatic Train Operation</a>
 </li>
                                     
 <li>
@@ -98,7 +98,7 @@
 </li>
                                     
 <li>
-    <a href="./" class="dropdown-item active" aria-current="page">MarioGAN</a>
+    <a href="../example_6/" class="dropdown-item">MarioGAN</a>
 </li>
                                     
 <li>
@@ -123,12 +123,12 @@
                             </a>
                         </li>
                             <li class="nav-item">
-                                <a rel="prev" href="../example_5/" class="nav-link">
+                                <a rel="prev" href="../example_16/" class="nav-link">
                                     <i class="fa fa-arrow-left"></i> Previous
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a rel="next" href="../example_7/" class="nav-link">
+                                <a rel="next" href="../example_2/" class="nav-link">
                                     Next <i class="fa fa-arrow-right"></i>
                                 </a>
                             </li>
@@ -151,7 +151,7 @@
     <div id="toc-collapse" class="navbar-collapse collapse card bg-body-tertiary">
         <ul class="nav flex-column">
             
-            <li class="nav-item" data-bs-level="1"><a href="#mariogan" class="nav-link">MarioGAN</a>
+            <li class="nav-item" data-bs-level="1"><a href="#automatic-train-operation" class="nav-link">Automatic Train Operation</a>
               <ul class="nav flex-column">
             <li class="nav-item" data-bs-level="2"><a href="#problem-description" class="nav-link">Problem Description</a>
               <ul class="nav flex-column">
@@ -192,34 +192,35 @@
 </div></div>
                     <div class="col-md-9" role="main">
 
-<h1 id="mariogan"><a href="https://arxiv.org/abs/1805.00728">MarioGAN</a><a class="headerlink" href="#mariogan" title="Permanent link">&para;</a></h1>
+<h1 id="automatic-train-operation"><a href="_No response_">Automatic Train Operation</a><a class="headerlink" href="#automatic-train-operation" title="Permanent link">&para;</a></h1>
 <h2 id="problem-description">Problem Description<a class="headerlink" href="#problem-description" title="Permanent link">&para;</a></h2>
-<p>Generate (snippets of) Super Mario levels.</p>
+<p>Automatic Train Operation Pipeline. Optimizing parameter values of the modules in the automation pipeline, minimizing energy consumption &amp; driving duration</p>
 <h2 id="why-was-tailoring-needed">Why was tailoring needed?<a class="headerlink" href="#why-was-tailoring-needed" title="Permanent link">&para;</a></h2>
-<p>Existing approaches usually use an encoding of the search space that maps tiles in the level directly to an entry in a matrix. This space then contains lots of unrealistic and unplayable levels, so it is unnecessarily big. We instead created a latent spaces that ideally only contains sensible levels and is easily searchable.</p>
+<p>Baseline algorithm that was tailored (if it exists), motivation for choice: MO-SMAC (large search space and low budget), NSGA-II</p>
 <h2 id="baseline-algorithm">Baseline algorithm<a class="headerlink" href="#baseline-algorithm" title="Permanent link">&para;</a></h2>
-<p>Algorithm was not tailored, just the encoding. Since it was then turned into a single-objective continuous problem, we use cma-es (state-of-the-art)</p>
+<p><em>No response</em></p>
 <h2 id="tailoring-process">Tailoring process<a class="headerlink" href="#tailoring-process" title="Permanent link">&para;</a></h2>
-<p>Colleagues had done latent variable search on another application, so we wanted to try it out here. There were some modifications later that changed the encoding further to prevent the creation of invalid levels (broken pipes). Lots of different objectives were also tried (since there is no clear given objective, it is a benchmarking problem)</p>
+<ul>
+<li>What was tailored (Problem model, mutation operator)</li>
+<li>Faster evaluations through a more efficient implementation</li>
+<li>Add penalty if solution is not applicable</li>
+</ul>
 <h2 id="what-was-tailored">What was tailored<a class="headerlink" href="#what-was-tailored" title="Permanent link">&para;</a></h2>
 <p><em>No response</em></p>
 <h2 id="main-problem-characteristics">Main problem characteristics<a class="headerlink" href="#main-problem-characteristics" title="Permanent link">&para;</a></h2>
 <ul>
-<li>Instances exist, search space is scalable</li>
-<li>Simulation-based evaluation with big spikes (adding one more tile to a pipe might make it unplayable) and large plateaus</li>
-<li>Not terribly expensive, but also not cheap</li>
-<li>Non-normal noise distribution (simulation of playthroughs is non-deterministic, and Mario tends to get stuck at specific points)</li>
+<li>10 dimensions</li>
+<li>Multi-objective (2 objectives)</li>
+<li>Mixed types of variables (continuous, discrete)</li>
+<li>Deterministic</li>
+<li>Evaluations (~5-30mins)</li>
 </ul>
 <h2 id="references">References<a class="headerlink" href="#references" title="Permanent link">&para;</a></h2>
-<ul>
-<li>https://arxiv.org/abs/1805.00728</li>
-<li>https://github.com/CIGbalance/DagstuhlGAN</li>
-<li>https://www.sciencedirect.com/science/article/pii/S1568494623001394</li>
-</ul>
+<p><em>No response</em></p>
 <h3 id="contact-information-optional">Contact information (optional)<a class="headerlink" href="#contact-information-optional" title="Permanent link">&para;</a></h3>
 <p><em>No response</em></p>
 <h2 id="author">Author<a class="headerlink" href="#author" title="Permanent link">&para;</a></h2>
-<p>Vanessa Volz
+<p>Carolin Mensendiek
 <em>No response</em></p></div>
 
   
@@ -232,11 +233,11 @@
   <hr>
   <p style="font-size: 0.9em;">
     💡 Found an issue?
-    <a href="https://github.com/TAI-src/how-to-tailor/issues/new?template=edit.yml&title=[Edit]%20examples/example_6.md&page=examples/example_6.md">
+    <a href="https://github.com/TAI-src/how-to-tailor/issues/new?template=edit.yml&title=[Edit]%20examples/example_17.md&page=examples/example_17.md">
       Suggest an edit
     </a>
     or
-    <a href="https://github.com/TAI-src/how-to-tailor/edit/main/how-to-tailor/docs/examples/example_6.md">
+    <a href="https://github.com/TAI-src/how-to-tailor/edit/main/how-to-tailor/docs/examples/example_17.md">
        Edit this page on GitHub
     </a>
   </p>
