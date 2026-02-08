@@ -6,9 +6,9 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         
         
-        <link rel="canonical" href="https://tai-src.github.io/how-to-tailor/examples/example_8/">
+        <link rel="canonical" href="https://tai-src.github.io/how-to-tailor/examples/example_12/">
         <link rel="shortcut icon" href="../../img/favicon.ico">
-        <title>Optimizing Container turnover rate for a container yard by tuning parameters of a blackbox decision support system - How to Tailor</title>
+        <title>Identifying several diverse solutions rather than a single good one - How to Tailor</title>
         <link href="../../css/bootstrap.min.css" rel="stylesheet">
         <link href="../../css/fontawesome.min.css" rel="stylesheet">
         <link href="../../css/brands.min.css" rel="stylesheet">
@@ -58,7 +58,7 @@
 </li>
                                     
 <li>
-    <a href="../example_12/" class="dropdown-item">Identifying several diverse solutions rather than a single good one</a>
+    <a href="./" class="dropdown-item active" aria-current="page">Identifying several diverse solutions rather than a single good one</a>
 </li>
                                     
 <li>
@@ -86,7 +86,7 @@
 </li>
                                     
 <li>
-    <a href="./" class="dropdown-item active" aria-current="page">Optimizing Container turnover rate for a container yard by tuning parameters of a blackbox decision support system</a>
+    <a href="../example_8/" class="dropdown-item">Optimizing Container turnover rate for a container yard by tuning parameters of a blackbox decision support system</a>
 </li>
                                     
 <li>
@@ -103,12 +103,12 @@
                             </a>
                         </li>
                             <li class="nav-item">
-                                <a rel="prev" href="../example_7/" class="nav-link">
+                                <a rel="prev" href="../example_11/" class="nav-link">
                                     <i class="fa fa-arrow-left"></i> Previous
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a rel="next" href="../example_9/" class="nav-link">
+                                <a rel="next" href="../example_2/" class="nav-link">
                                     Next <i class="fa fa-arrow-right"></i>
                                 </a>
                             </li>
@@ -131,7 +131,7 @@
     <div id="toc-collapse" class="navbar-collapse collapse card bg-body-tertiary">
         <ul class="nav flex-column">
             
-            <li class="nav-item" data-bs-level="1"><a href="#optimizing-container-turnover-rate-for-a-container-yard-by-tuning-parameters-of-a-blackbox-decision-support-system" class="nav-link">Optimizing Container turnover rate for a container yard by tuning parameters of a blackbox decision support system</a>
+            <li class="nav-item" data-bs-level="1"><a href="#identifying-several-diverse-solutions-rather-than-a-single-good-one" class="nav-link">Identifying several diverse solutions rather than a single good one</a>
               <ul class="nav flex-column">
             <li class="nav-item" data-bs-level="2"><a href="#problem-description" class="nav-link">Problem Description</a>
               <ul class="nav flex-column">
@@ -172,33 +172,34 @@
 </div></div>
                     <div class="col-md-9" role="main">
 
-<h1 id="optimizing-container-turnover-rate-for-a-container-yard-by-tuning-parameters-of-a-blackbox-decision-support-system"><a href="_No response_">Optimizing Container turnover rate for a container yard by tuning parameters of a blackbox decision support system</a><a class="headerlink" href="#optimizing-container-turnover-rate-for-a-container-yard-by-tuning-parameters-of-a-blackbox-decision-support-system" title="Permanent link">&para;</a></h1>
+<h1 id="identifying-several-diverse-solutions-rather-than-a-single-good-one"><a href="https://arxiv.org/abs/2502.13730">Identifying several diverse solutions rather than a single good one</a><a class="headerlink" href="#identifying-several-diverse-solutions-rather-than-a-single-good-one" title="Permanent link">&para;</a></h1>
 <h2 id="problem-description">Problem Description<a class="headerlink" href="#problem-description" title="Permanent link">&para;</a></h2>
-<p>Company running a container yard in port of Antwerp decides where to put incoming containers on the yard based upon a black-box decision support system. The system requires 6 parameters as input, and then decides on the best spot for each container coming in (based on weight, port of destination,...).  The input parameters have been fixed for a long time, and have been decided upon using some rough-cut search. The location decisions  have an important impact on the container turnover rate (= the number of containers that can be handled per hour by the cranes used for put-away/pick-up of containers). The company wishes to optimize the inputs in order to maximize the resulting container turnover rate. A simulation model (expensive in run time) is available to evaluate how a change in inputs affects the outcome. </p>
+<p><em>No response</em></p>
 <h2 id="why-was-tailoring-needed">Why was tailoring needed?<a class="headerlink" href="#why-was-tailoring-needed" title="Permanent link">&para;</a></h2>
-<p>Very flat response surface, 6 dimensional space, optimizing MEI using local optimization from different starting points BUT no significant improvements</p>
+<p>Rather than outputting a single good solution, users (for example in engineering) may prefer to see a set of diverse solutions that are all reasonable alternatives. Common approaches such as multimodal optimizers or quality-diversity algorithms don't have a guarantee on the diversity in the configuration space, which we request to be a minimal distance between any two solutions in the batch that is output. We also investigated the quality of the batches that can be obtained from the search trajectories of high-performing solvers such as cma-es. Since none of these approaches gave satisfying results, we developed a parallel CMA-ES variant that uses cascading taboo regions that encode the diversity criterion. </p>
 <h2 id="baseline-algorithm">Baseline algorithm<a class="headerlink" href="#baseline-algorithm" title="Permanent link">&para;</a></h2>
-<p>LHS design (20 points) as starting design; BO with stochastic kriging (GP with heterogenous noise) as surrogate model and Modified Expected Improvement (MEI) as AF
-Heterogenous noise present (but rather small), number of dimensions doable for GP, continuous inputs and output</p>
+<p>CMA-ES, because
+1.  it is known to perform well when searching for a single good solution, 
+2.  it is easy to adapt (well-maintained and documented code),
+3. we are familiar enough with the algorithm to adjust it (and to trust its performance)</p>
 <h2 id="tailoring-process">Tailoring process<a class="headerlink" href="#tailoring-process" title="Permanent link">&para;</a></h2>
-<ul>
-<li>triangulation points: explodes! So not very useful for this nr of dimensions</li>
-<li>pattern search = very useful</li>
-</ul>
+<p>We tried several other ideas such as repelling swarm algorithms but after some initial tests decided to go with this algorithm and to tailor it. Some specific details had to be figured out, we used standard benchmarking routines in the development process. 
+What was tailored (Problem model, mutation operator)
+Algorithm (new: parallelization and cascading taboo regions)</p>
 <h2 id="what-was-tailored">What was tailored<a class="headerlink" href="#what-was-tailored" title="Permanent link">&para;</a></h2>
 <p><em>No response</em></p>
 <h2 id="main-problem-characteristics">Main problem characteristics<a class="headerlink" href="#main-problem-characteristics" title="Permanent link">&para;</a></h2>
 <ul>
-<li>Heterogenous noise</li>
-<li>6 dimensions</li>
-<li>continuous search space</li>
+<li>Choose most important ones</li>
+<li>Interest in having batches of diverse solutions came from infeasibility constraints that are not encoded in the objective function (e.g., manufacturing constraints)</li>
 </ul>
 <h2 id="references">References<a class="headerlink" href="#references" title="Permanent link">&para;</a></h2>
-<p><em>No response</em></p>
+<p>https://arxiv.org/abs/2502.13730 for an algorithm 
+https://arxiv.org/abs/2408.16393 for why tailoring was needed</p>
 <h3 id="contact-information-optional">Contact information (optional)<a class="headerlink" href="#contact-information-optional" title="Permanent link">&para;</a></h3>
 <p><em>No response</em></p>
 <h2 id="author">Author<a class="headerlink" href="#author" title="Permanent link">&para;</a></h2>
-<p>Inneke Van Nieuwenhuyse
+<p>Carola Doerr
 <em>No response</em></p></div>
 
   
@@ -211,11 +212,11 @@ Heterogenous noise present (but rather small), number of dimensions doable for G
   <hr>
   <p style="font-size: 0.9em;">
     💡 Found an issue?
-    <a href="https://github.com/TAI-src/how-to-tailor/issues/new?template=edit.yml&title=[Edit]%20examples/example_8.md&page=examples/example_8.md">
+    <a href="https://github.com/TAI-src/how-to-tailor/issues/new?template=edit.yml&title=[Edit]%20examples/example_12.md&page=examples/example_12.md">
       Suggest an edit
     </a>
     or
-    <a href="https://github.com/TAI-src/how-to-tailor/edit/main/how-to-tailor/docs/examples/example_8.md">
+    <a href="https://github.com/TAI-src/how-to-tailor/edit/main/how-to-tailor/docs/examples/example_12.md">
        Edit this page on GitHub
     </a>
   </p>
