@@ -6,9 +6,9 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         
         
-        <link rel="canonical" href="https://tai-src.github.io/how-to-tailor/examples/example_4/">
+        <link rel="canonical" href="https://tai-src.github.io/how-to-tailor/examples/example_13/">
         <link rel="shortcut icon" href="../../img/favicon.ico">
-        <title>Antenna control - How to Tailor</title>
+        <title>Brachytherapy treatment planning - How to Tailor</title>
         <link href="../../css/bootstrap.min.css" rel="stylesheet">
         <link href="../../css/fontawesome.min.css" rel="stylesheet">
         <link href="../../css/brands.min.css" rel="stylesheet">
@@ -62,7 +62,7 @@
 </li>
                                     
 <li>
-    <a href="../example_13/" class="dropdown-item">Brachytherapy treatment planning</a>
+    <a href="./" class="dropdown-item active" aria-current="page">Brachytherapy treatment planning</a>
 </li>
                                     
 <li>
@@ -74,7 +74,7 @@
 </li>
                                     
 <li>
-    <a href="./" class="dropdown-item active" aria-current="page">Antenna control</a>
+    <a href="../example_4/" class="dropdown-item">Antenna control</a>
 </li>
                                     
 <li>
@@ -107,12 +107,12 @@
                             </a>
                         </li>
                             <li class="nav-item">
-                                <a rel="prev" href="../example_3/" class="nav-link">
+                                <a rel="prev" href="../example_12/" class="nav-link">
                                     <i class="fa fa-arrow-left"></i> Previous
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a rel="next" href="../example_5/" class="nav-link">
+                                <a rel="next" href="../example_2/" class="nav-link">
                                     Next <i class="fa fa-arrow-right"></i>
                                 </a>
                             </li>
@@ -135,7 +135,7 @@
     <div id="toc-collapse" class="navbar-collapse collapse card bg-body-tertiary">
         <ul class="nav flex-column">
             
-            <li class="nav-item" data-bs-level="1"><a href="#antenna-control" class="nav-link">Antenna control</a>
+            <li class="nav-item" data-bs-level="1"><a href="#brachytherapy-treatment-planning" class="nav-link">Brachytherapy treatment planning</a>
               <ul class="nav flex-column">
             <li class="nav-item" data-bs-level="2"><a href="#problem-description" class="nav-link">Problem Description</a>
               <ul class="nav flex-column">
@@ -176,54 +176,41 @@
 </div></div>
                     <div class="col-md-9" role="main">
 
-<h1 id="antenna-control"><a href="https://doi.org/10.1109/TNNLS.2016.2615134">Antenna control</a><a class="headerlink" href="#antenna-control" title="Permanent link">&para;</a></h1>
+<h1 id="brachytherapy-treatment-planning"><a href="https://www.sciencedirect.com/science/article/pii/S1538472123016781">Brachytherapy treatment planning</a><a class="headerlink" href="#brachytherapy-treatment-planning" title="Permanent link">&para;</a></h1>
 <h2 id="problem-description">Problem Description<a class="headerlink" href="#problem-description" title="Permanent link">&para;</a></h2>
-<p>tune a phased array antenna to steer it towards a target satellite, for telecommunication</p>
+<p>Brachytherapy is a form of internal radiation therapy, which is used to treat patients with, e.g., prostate, cervical, or breast cancer. Radiation is delivered by a radioactive source that is guided through catheters inserted into the target volume. Optimization parameters are so-called dwell times, which determine for how long the radioactive source is halted at each of the predetermined dwell positions, delivering dose to the tissue surrounding the dwell position. Objectives concern delivering a sufficient amount of dose to the target volume, and sparing the surrounding healthy organs, based on values specified by a clinical protocol.</p>
 <h2 id="why-was-tailoring-needed">Why was tailoring needed?<a class="headerlink" href="#why-was-tailoring-needed" title="Permanent link">&para;</a></h2>
-<p>existing algorithms were either too inefficient, or required too many function evaluations</p>
+<p>Conventional methods optimize a simplified objective function that does not correlate well with values in clinical protocol that are evaluated by clinicians. Relative weights between clinical aims are difficult to establish and depend on patient characteristics that are difficult to establish.</p>
 <h2 id="baseline-algorithm">Baseline algorithm<a class="headerlink" href="#baseline-algorithm" title="Permanent link">&para;</a></h2>
-<p>surrogate-based optimization. To reduce the required number of function evaluations.</p>
+<p>Multi-objective real-valued gene-pool optimal mixing evolutionary algorithm (MO-RV-GOMEA). Was shown to perform best among multi-objective EAs. Key strength is the gene-pool optimal mixing (GOM) variation operator, offering high selection pressure and structure-informed variation.</p>
 <h2 id="tailoring-process">Tailoring process<a class="headerlink" href="#tailoring-process" title="Permanent link">&para;</a></h2>
 <ul>
-<li>The goal was to develop an algorithm that is efficient in the number of required function evaluations, but also in the computation time needed to propose a new candidate solution.</li>
-<li>The chosen framework was the same as in surrogate-based optimization: start with a candidate solution, evaluate the solution, update a surrogate model on the data gathered so far, then use the surrogate model to guide the search towards the optimal solution. The idea was that this framework would need less function evaluations than other black-box optimization algorithms such as evolutionary algorithms, though this was not tested.</li>
-<li>The chosen surrogate model was a Random Fourier Expansion, as it is efficient to train and to update, does not slow down over time like Gaussian processes, and has theoretical guarantees available.</li>
-<li>The chosen acquisition function was a type of epsilon-greedy exploration with local perturbations. This allowed for a fast convergence towards a local optimum, while not getting stuck at a local optimum. It avoided the need of spending computation time on calculating covariances or optimizing surrogate model hyperparameters.</li>
-<li>Hyperparameters of the approach were chosen based on expertise and initial experiments. For example, the number of basis functions was a hyperparameter that needed to be chosen such that it balances computational efficiency and performance.</li>
-<li>What was not successful:<ul>
-<li>Nelder-Mead simplex method</li>
-<li>Powell’s method</li>
-<li>using a quadratic surrogate model</li>
-<li>same as proposed approach but pure greedy (epsilon=0) → got stuck in local optima</li>
-<li>Bayesian optimization with Gaussian processes</li>
-<li>a more white-box approach that tried to linearize the problem</li>
-</ul>
-</li>
-<li><strong>Result</strong><ul>
-<li>good enough solution found within 2 minutes, with 3000 function evaluations</li>
-<li>solution 3000 times faster than Bayesian optimization with Gaussian processes</li>
-<li>solution twice as good as a predict-then-optimize approach with the same surrogate model</li>
-</ul>
-</li>
+<li><strong>Problem formulation</strong>: Aggregation of clinical aims into 2/3 objectives that are optimized in a worst-case manner with respect to aim in clinical protocol. Due to worst-case formulation, objective value indicates whether all clinical aims are satisfied. Many-objective optimization with 10-20 objectives was attempted, but did not have satisfactory results in the most interesting region of the search space.</li>
+<li><strong>Additional constraints/objectives</strong> were added in an iterative process, e.g., to prevent dose hotspots or excessive dose in specific regions. Satisfaction of all aims in the clinical protocol was not sufficient to obtain high-quality treatment plans.</li>
+<li><strong>Parallelisation of evaluation function</strong>: Clinical workflow requires optimization within at most a few minutes, which initial implementations did not satisfy. This parallelisation requires full knowledge of the dose calculation model used during the evaluation.</li>
+<li>Dependency structure: Knowledge of the optimization problem is used to specify a dependency structure for the GOM variation operator, based on Euclidean distance of dwell positions in 3D space.</li>
+<li>Partial evaluations: More efficient evaluation after partial variation, as is done in GOM. Requires problem knowledge.</li>
+<li>Tuning of population size/hyperparameters</li>
 </ul>
 <h2 id="what-was-tailored">What was tailored<a class="headerlink" href="#what-was-tailored" title="Permanent link">&para;</a></h2>
-<p>an algorithm was developed from scratch, with the same framework as other surrogate-based optimization algorithms.</p>
+<p><em>No response</em></p>
 <h2 id="main-problem-characteristics">Main problem characteristics<a class="headerlink" href="#main-problem-characteristics" title="Permanent link">&para;</a></h2>
 <ul>
-<li>24 continuous variables with lower and upper bounds defined and no other constraints</li>
-<li>relatively cheap but noisy objective</li>
-<li>black-box, single-objective, single-fidelity, no parallelization</li>
-<li>Time constraint of 2 minutes (8 years ago, maybe now it would be 1 second or something)</li>
-<li>Function evaluation constraint of 3000</li>
-<li>tested on a simulator, with the goal of eventually being applied on a physical system</li>
+<li>Real-valued</li>
+<li>100-500 dimensional depending on patient</li>
+<li>Multi/many-objective</li>
+<li>Non-convex</li>
+<li>Constrained (generally easy to satisfy)</li>
+<li>Adjustable accuracy of objective function for higher computational cost</li>
+<li>Parallelisation beyond population-level; resulting in relatively inexpensive evaluation</li>
+<li>&lt;5min runtime budget</li>
 </ul>
 <h2 id="references">References<a class="headerlink" href="#references" title="Permanent link">&para;</a></h2>
-<p><a href="https://doi.org/10.1109/TNNLS.2016.2615134">optimal beam-forming network tuning</a>
-<a href="https://opg.optica.org/jlt/abstract.cfm?uri=jlt-37-19-4976">more information on the application (not the algorithm)</a></p>
+<p><em>No response</em></p>
 <h3 id="contact-information-optional">Contact information (optional)<a class="headerlink" href="#contact-information-optional" title="Permanent link">&para;</a></h3>
 <p><em>No response</em></p>
 <h2 id="author">Author<a class="headerlink" href="#author" title="Permanent link">&para;</a></h2>
-<p>Laurens Bliek
+<p>Anton Bouter
 <em>No response</em></p></div>
 
   
@@ -236,11 +223,11 @@
   <hr>
   <p style="font-size: 0.9em;">
     💡 Found an issue?
-    <a href="https://github.com/TAI-src/how-to-tailor/issues/new?template=edit.yml&title=[Edit]%20examples/example_4.md&page=examples/example_4.md">
+    <a href="https://github.com/TAI-src/how-to-tailor/issues/new?template=edit.yml&title=[Edit]%20examples/example_13.md&page=examples/example_13.md">
       Suggest an edit
     </a>
     or
-    <a href="https://github.com/TAI-src/how-to-tailor/edit/main/how-to-tailor/docs/examples/example_4.md">
+    <a href="https://github.com/TAI-src/how-to-tailor/edit/main/how-to-tailor/docs/examples/example_13.md">
        Edit this page on GitHub
     </a>
   </p>
