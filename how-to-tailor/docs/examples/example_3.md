@@ -26,7 +26,7 @@ _No response_
 
 * Changed the target into a piecewise definition by evaluating first if the underlying structure complied with the boundary conditions. In other words, at least there was material connecting the structure from the support and there was material next to the load application.
 * We adapted the function to handle constraints in an Augmented Lagrangian Fashion. We observed not so many works in the intersection of small feasible regions of search spaces and high-dimensional settings. However this may be counterproductive for Bayesian Optimization due to the discontinuity of the intersection of the feasible and unfeasible regions.
-<img width=554 height=649 alt=Image src="<https://github.com/user-attachments/assets/d2045a44-795e-414e-aa53-a79aea2b0fb0>" />
+<img width=554 height=649 alt=Image src="https://github.com/user-attachments/assets/d2045a44-795e-414e-aa53-a79aea2b0fb0" />
 
 ## What was tailored
 
