@@ -4,7 +4,7 @@ authors:
   - Carola Doerr
 date: 2026-02-08
 link: https://arxiv.org/abs/2502.13730
-id: 5
+id: 12
 ---
 
 # [Identifying several diverse solutions rather than a single good one](https://arxiv.org/abs/2502.13730)
