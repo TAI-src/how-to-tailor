@@ -4,7 +4,7 @@ authors:
   - Tea Tušar
 date: 2026-02-08
 link: https://dis.ijs.si/tea/Publications/Tusar23Multistep.pdf
-id: 5
+id: 15
 ---
 
 # [Electric Motor Design Optimization](https://dis.ijs.si/tea/Publications/Tusar23Multistep.pdf)
