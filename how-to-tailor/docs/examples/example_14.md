@@ -4,7 +4,7 @@ authors:
   - Robin Purshouse
 date: 2026-02-08
 link: https://doi.org/10.1016/j.ejor.2022.08.032
-id: 5
+id: 14
 ---
 
 # [Engine design optimization](https://doi.org/10.1016/j.ejor.2022.08.032)
