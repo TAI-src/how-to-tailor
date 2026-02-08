@@ -7,3 +7,17 @@ theme:
 extra:
   github_repo: https://github.com/TAI-src/how-to-tailor
   page_path: how-to-tailor/docs
+markdown_extensions:
+  - sane_lists
+  - admonition
+  - toc:
+      permalink: true
+  - md_in_html
+plugins:
+  - search
+  - macros:
+      module_name: main
+  - exclude:
+      glob:
+        - "examples/example_template.md"
+
