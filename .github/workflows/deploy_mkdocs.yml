@@ -39,7 +39,7 @@ jobs:
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: how-to-tailor/how-to-tailor/site        # MkDocs build output folder
+          publish_dir: how-to-tailor/site        # MkDocs build output folder
           publish_branch: gh-pages
           force_orphan: false       # Important: avoids force push
           keep_files: false         # Overwrites old files in gh-pages branch
