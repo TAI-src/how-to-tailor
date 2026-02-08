@@ -3,7 +3,7 @@ title: Building spatial design
 authors:
   - Koen van der Blom
 date: 2026-02-08
-links: https://hdl.handle.net/1887/81789
+link: https://hdl.handle.net/1887/81789
 id: 2
 ---
 
@@ -12,6 +12,7 @@ id: 2
 ## Problem Description
 
 Optimise the spatial layout of a building to
+
 * Minimise energy consumption for climate control, and
 * Minimise the strain on the structure
 
@@ -48,3 +49,11 @@ _No response_
 * Multiple objectives
 * (Somewhat) expensive solution evaluations; with larger designs being more expensive. E.g., rough 1 second per evaluation for the smallest considered design, and roughly 40 seconds for the larger designs we considered. (Even the larger designs we considered are still relatively small for the considered problem.)
 * Because of the above, we restricted ourselves to 2500 evaluations, but this was not a strict requirement.
+
+## References
+
+_No response_
+
+## Author
+
+Koen van der Blom

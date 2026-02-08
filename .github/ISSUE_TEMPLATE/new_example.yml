@@ -58,7 +58,7 @@ body:
     label: References
     description: Provide any additional references, links, or citations related to your example.
 
-- type: textinput
+- type: input
   id: contact
   attributes:
     label: Contact information (optional)
