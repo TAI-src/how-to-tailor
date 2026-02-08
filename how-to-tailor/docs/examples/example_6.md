@@ -4,7 +4,7 @@ authors:
   - Vanessa Volz
 date: 2026-02-08
 link: https://arxiv.org/abs/1805.00728
-id: 5
+id: 6
 ---
 
 # [MarioGAN](https://arxiv.org/abs/1805.00728)
