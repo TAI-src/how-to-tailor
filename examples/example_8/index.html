@@ -6,9 +6,9 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         
         
-        <link rel="canonical" href="https://tai-src.github.io/how-to-tailor/examples/example_4/">
+        <link rel="canonical" href="https://tai-src.github.io/how-to-tailor/examples/example_8/">
         <link rel="shortcut icon" href="../../img/favicon.ico">
-        <title>Antenna control - How to Tailor</title>
+        <title>Optimizing Container turnover rate for a container yard by tuning parameters of a blackbox decision support system - How to Tailor</title>
         <link href="../../css/bootstrap.min.css" rel="stylesheet">
         <link href="../../css/fontawesome.min.css" rel="stylesheet">
         <link href="../../css/brands.min.css" rel="stylesheet">
@@ -58,7 +58,7 @@
 </li>
                                     
 <li>
-    <a href="./" class="dropdown-item active" aria-current="page">Antenna control</a>
+    <a href="../example_4/" class="dropdown-item">Antenna control</a>
 </li>
                                     
 <li>
@@ -74,7 +74,7 @@
 </li>
                                     
 <li>
-    <a href="../example_8/" class="dropdown-item">Optimizing Container turnover rate for a container yard by tuning parameters of a blackbox decision support system</a>
+    <a href="./" class="dropdown-item active" aria-current="page">Optimizing Container turnover rate for a container yard by tuning parameters of a blackbox decision support system</a>
 </li>
                                 </ul>
                             </li>
@@ -87,12 +87,12 @@
                             </a>
                         </li>
                             <li class="nav-item">
-                                <a rel="prev" href="../example_3/" class="nav-link">
+                                <a rel="prev" href="../example_7/" class="nav-link">
                                     <i class="fa fa-arrow-left"></i> Previous
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a rel="next" href="../example_5/" class="nav-link">
+                                <a rel="next" class="nav-link disabled">
                                     Next <i class="fa fa-arrow-right"></i>
                                 </a>
                             </li>
@@ -115,7 +115,7 @@
     <div id="toc-collapse" class="navbar-collapse collapse card bg-body-tertiary">
         <ul class="nav flex-column">
             
-            <li class="nav-item" data-bs-level="1"><a href="#antenna-control" class="nav-link">Antenna control</a>
+            <li class="nav-item" data-bs-level="1"><a href="#optimizing-container-turnover-rate-for-a-container-yard-by-tuning-parameters-of-a-blackbox-decision-support-system" class="nav-link">Optimizing Container turnover rate for a container yard by tuning parameters of a blackbox decision support system</a>
               <ul class="nav flex-column">
             <li class="nav-item" data-bs-level="2"><a href="#problem-description" class="nav-link">Problem Description</a>
               <ul class="nav flex-column">
@@ -156,54 +156,33 @@
 </div></div>
                     <div class="col-md-9" role="main">
 
-<h1 id="antenna-control"><a href="https://doi.org/10.1109/TNNLS.2016.2615134">Antenna control</a><a class="headerlink" href="#antenna-control" title="Permanent link">&para;</a></h1>
+<h1 id="optimizing-container-turnover-rate-for-a-container-yard-by-tuning-parameters-of-a-blackbox-decision-support-system"><a href="_No response_">Optimizing Container turnover rate for a container yard by tuning parameters of a blackbox decision support system</a><a class="headerlink" href="#optimizing-container-turnover-rate-for-a-container-yard-by-tuning-parameters-of-a-blackbox-decision-support-system" title="Permanent link">&para;</a></h1>
 <h2 id="problem-description">Problem Description<a class="headerlink" href="#problem-description" title="Permanent link">&para;</a></h2>
-<p>tune a phased array antenna to steer it towards a target satellite, for telecommunication</p>
+<p>Company running a container yard in port of Antwerp decides where to put incoming containers on the yard based upon a black-box decision support system. The system requires 6 parameters as input, and then decides on the best spot for each container coming in (based on weight, port of destination,...).  The input parameters have been fixed for a long time, and have been decided upon using some rough-cut search. The location decisions  have an important impact on the container turnover rate (= the number of containers that can be handled per hour by the cranes used for put-away/pick-up of containers). The company wishes to optimize the inputs in order to maximize the resulting container turnover rate. A simulation model (expensive in run time) is available to evaluate how a change in inputs affects the outcome. </p>
 <h2 id="why-was-tailoring-needed">Why was tailoring needed?<a class="headerlink" href="#why-was-tailoring-needed" title="Permanent link">&para;</a></h2>
-<p>existing algorithms were either too inefficient, or required too many function evaluations</p>
+<p>Very flat response surface, 6 dimensional space, optimizing MEI using local optimization from different starting points BUT no significant improvements</p>
 <h2 id="baseline-algorithm">Baseline algorithm<a class="headerlink" href="#baseline-algorithm" title="Permanent link">&para;</a></h2>
-<p>surrogate-based optimization. To reduce the required number of function evaluations.</p>
+<p>LHS design (20 points) as starting design; BO with stochastic kriging (GP with heterogenous noise) as surrogate model and Modified Expected Improvement (MEI) as AF
+Heterogenous noise present (but rather small), number of dimensions doable for GP, continuous inputs and output</p>
 <h2 id="tailoring-process">Tailoring process<a class="headerlink" href="#tailoring-process" title="Permanent link">&para;</a></h2>
 <ul>
-<li>The goal was to develop an algorithm that is efficient in the number of required function evaluations, but also in the computation time needed to propose a new candidate solution.</li>
-<li>The chosen framework was the same as in surrogate-based optimization: start with a candidate solution, evaluate the solution, update a surrogate model on the data gathered so far, then use the surrogate model to guide the search towards the optimal solution. The idea was that this framework would need less function evaluations than other black-box optimization algorithms such as evolutionary algorithms, though this was not tested.</li>
-<li>The chosen surrogate model was a Random Fourier Expansion, as it is efficient to train and to update, does not slow down over time like Gaussian processes, and has theoretical guarantees available.</li>
-<li>The chosen acquisition function was a type of epsilon-greedy exploration with local perturbations. This allowed for a fast convergence towards a local optimum, while not getting stuck at a local optimum. It avoided the need of spending computation time on calculating covariances or optimizing surrogate model hyperparameters.</li>
-<li>Hyperparameters of the approach were chosen based on expertise and initial experiments. For example, the number of basis functions was a hyperparameter that needed to be chosen such that it balances computational efficiency and performance.</li>
-<li>What was not successful:<ul>
-<li>Nelder-Mead simplex method</li>
-<li>Powell’s method</li>
-<li>using a quadratic surrogate model</li>
-<li>same as proposed approach but pure greedy (epsilon=0) → got stuck in local optima</li>
-<li>Bayesian optimization with Gaussian processes</li>
-<li>a more white-box approach that tried to linearize the problem</li>
-</ul>
-</li>
-<li><strong>Result</strong><ul>
-<li>good enough solution found within 2 minutes, with 3000 function evaluations</li>
-<li>solution 3000 times faster than Bayesian optimization with Gaussian processes</li>
-<li>solution twice as good as a predict-then-optimize approach with the same surrogate model</li>
-</ul>
-</li>
+<li>triangulation points: explodes! So not very useful for this nr of dimensions</li>
+<li>pattern search = very useful</li>
 </ul>
 <h2 id="what-was-tailored">What was tailored<a class="headerlink" href="#what-was-tailored" title="Permanent link">&para;</a></h2>
-<p>an algorithm was developed from scratch, with the same framework as other surrogate-based optimization algorithms.</p>
+<p><em>No response</em></p>
 <h2 id="main-problem-characteristics">Main problem characteristics<a class="headerlink" href="#main-problem-characteristics" title="Permanent link">&para;</a></h2>
 <ul>
-<li>24 continuous variables with lower and upper bounds defined and no other constraints</li>
-<li>relatively cheap but noisy objective</li>
-<li>black-box, single-objective, single-fidelity, no parallelization</li>
-<li>Time constraint of 2 minutes (8 years ago, maybe now it would be 1 second or something)</li>
-<li>Function evaluation constraint of 3000</li>
-<li>tested on a simulator, with the goal of eventually being applied on a physical system</li>
+<li>Heterogenous noise</li>
+<li>6 dimensions</li>
+<li>continuous search space</li>
 </ul>
 <h2 id="references">References<a class="headerlink" href="#references" title="Permanent link">&para;</a></h2>
-<p><a href="https://doi.org/10.1109/TNNLS.2016.2615134">optimal beam-forming network tuning</a>
-<a href="https://opg.optica.org/jlt/abstract.cfm?uri=jlt-37-19-4976">more information on the application (not the algorithm)</a></p>
+<p><em>No response</em></p>
 <h3 id="contact-information-optional">Contact information (optional)<a class="headerlink" href="#contact-information-optional" title="Permanent link">&para;</a></h3>
 <p><em>No response</em></p>
 <h2 id="author">Author<a class="headerlink" href="#author" title="Permanent link">&para;</a></h2>
-<p>Laurens Bliek
+<p>Inneke Van Nieuwenhuyse
 <em>No response</em></p></div>
 
   
@@ -216,11 +195,11 @@
   <hr>
   <p style="font-size: 0.9em;">
     💡 Found an issue?
-    <a href="https://github.com/TAI-src/how-to-tailor/issues/new?template=edit.yml&title=[Edit]%20examples/example_4.md&page=examples/example_4.md">
+    <a href="https://github.com/TAI-src/how-to-tailor/issues/new?template=edit.yml&title=[Edit]%20examples/example_8.md&page=examples/example_8.md">
       Suggest an edit
     </a>
     or
-    <a href="https://github.com/TAI-src/how-to-tailor/edit/main/how-to-tailor/docs/examples/example_4.md">
+    <a href="https://github.com/TAI-src/how-to-tailor/edit/main/how-to-tailor/docs/examples/example_8.md">
        Edit this page on GitHub
     </a>
   </p>
