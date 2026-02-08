@@ -6,9 +6,9 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         
         
-        <link rel="canonical" href="https://tai-src.github.io/how-to-tailor/examples/example_template/">
+        <link rel="canonical" href="https://tai-src.github.io/how-to-tailor/examples/example_3/">
         <link rel="shortcut icon" href="../../img/favicon.ico">
-        <title>${TITLE} - How to Tailor</title>
+        <title>Combined Topology and Fibre-Orientation via Moving Morphable Components and Lamination Parameters - How to Tailor</title>
         <link href="../../css/bootstrap.min.css" rel="stylesheet">
         <link href="../../css/fontawesome.min.css" rel="stylesheet">
         <link href="../../css/brands.min.css" rel="stylesheet">
@@ -50,11 +50,11 @@
 </li>
                                     
 <li>
-    <a href="../example_3/" class="dropdown-item">Combined Topology and Fibre-Orientation via Moving Morphable Components and Lamination Parameters</a>
+    <a href="./" class="dropdown-item active" aria-current="page">Combined Topology and Fibre-Orientation via Moving Morphable Components and Lamination Parameters</a>
 </li>
                                     
 <li>
-    <a href="./" class="dropdown-item active" aria-current="page">${TITLE}</a>
+    <a href="../example_template/" class="dropdown-item">${TITLE}</a>
 </li>
                                 </ul>
                             </li>
@@ -67,12 +67,12 @@
                             </a>
                         </li>
                             <li class="nav-item">
-                                <a rel="prev" href="../example_3/" class="nav-link">
+                                <a rel="prev" href="../example_2/" class="nav-link">
                                     <i class="fa fa-arrow-left"></i> Previous
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a rel="next" class="nav-link disabled">
+                                <a rel="next" href="../example_template/" class="nav-link">
                                     Next <i class="fa fa-arrow-right"></i>
                                 </a>
                             </li>
@@ -95,7 +95,7 @@
     <div id="toc-collapse" class="navbar-collapse collapse card bg-body-tertiary">
         <ul class="nav flex-column">
             
-            <li class="nav-item" data-bs-level="1"><a href="#title" class="nav-link">${TITLE}</a>
+            <li class="nav-item" data-bs-level="1"><a href="#combined-topology-and-fibre-orientation-via-moving-morphable-components-and-lamination-parameters" class="nav-link">Combined Topology and Fibre-Orientation via Moving Morphable Components and Lamination Parameters</a>
               <ul class="nav flex-column">
             <li class="nav-item" data-bs-level="2"><a href="#problem-description" class="nav-link">Problem Description</a>
               <ul class="nav flex-column">
@@ -128,19 +128,30 @@
 </div></div>
                     <div class="col-md-9" role="main">
 
-<h1 id="title"><a href="${LINKS}">${TITLE}</a></h1>
+<h1 id="combined-topology-and-fibre-orientation-via-moving-morphable-components-and-lamination-parameters"><a href="https://github.com/BayesOptApp/Topology_Optimization/tree/main">Combined Topology and Fibre-Orientation via Moving Morphable Components and Lamination Parameters</a></h1>
 <h2 id="problem-description">Problem Description</h2>
-<p>${PROBLEM}</p>
+<p>The idea is to optimize the topology or layout of a structure and the internal material layout. The topology was modelled via Moving Morphable Components (MMCs) wherein prescribed shapes are used to deform and move throughout a design 2D space. On the other hand, the fiber orientation was optimized by using the Lamination Parameter Formulation, which requires setting two parameters with global effects at some master nodes and the local fiber orientations are found by interpolation of these two parameters with respect to proximality to the master nodes.</p>
 <h2 id="why-was-tailoring-needed">Why was tailoring needed?</h2>
-<p>${WHY}</p>
+<ul>
+<li>Normally, Topology Optimization requires more than 1000 design variables in most used formulations for this matter. Therefore, the Moving Morphable Components formulation was used to reduce dimensionality in a way that is tractable for black-box optimizers, but paying the cost of a much more reduced solution space.</li>
+<li>Simulation malfunctions required to be included as “objective constraints” since some design combinations are numerically infeasible in the way the structure became kinematic and the underlying boundary conditions of the Finite Element solver weren’t fulfilled. By evaluating the target for those sections of the search space, the algorithms get stuck since the target values are uninformative. For surrogate assisted optimization this is a big problem due to spurious correlations and discontinuities.</li>
+</ul>
 <h2 id="baseline-algorithm">Baseline algorithm</h2>
-<p>${BASELINE}</p>
+<p><em>No response</em></p>
 <h2 id="tailoring-process">Tailoring process</h2>
-<p>${PROCESS}</p>
+<ul>
+<li>Changed the target into a piecewise definition by evaluating first if the underlying structure complied with the boundary conditions. In other words, at least there was material connecting the structure from the support and there was material next to the load application.</li>
+<li>We adapted the function to handle constraints in an Augmented Lagrangian Fashion. We observed not so many works in the intersection of small feasible regions of search spaces and high-dimensional settings. However this may be counterproductive for Bayesian Optimization due to the discontinuity of the intersection of the feasible and unfeasible regions.
+<img width=554 height=649 alt=Image src=https://github.com/user-attachments/assets/d2045a44-795e-414e-aa53-a79aea2b0fb0 /></li>
+</ul>
 <h2 id="what-was-tailored">What was tailored</h2>
-<p>${WHAT}</p>
+<p><em>No response</em></p>
 <h2 id="main-problem-characteristics">Main problem characteristics</h2>
-<p>${CHAR}</p></div>
+<ul>
+<li>Continuous formulation of an inherent combinatorial high-dimensional space.</li>
+<li>Small feasible region or highly constrained</li>
+<li>Not all the search space can be evaluated and are meaningful.</li>
+</ul></div>
 
   
 
@@ -152,11 +163,11 @@
   <hr>
   <p style="font-size: 0.9em;">
     💡 Found an issue?
-    <a href="https://github.com/TAI-src/how-to-tailor/issues/new?template=edit.yml&title=[Edit]%20examples/example_template.md&page=examples/example_template.md">
+    <a href="https://github.com/TAI-src/how-to-tailor/issues/new?template=edit.yml&title=[Edit]%20examples/example_3.md&page=examples/example_3.md">
       Suggest an edit
     </a>
     or
-    <a href="https://github.com/TAI-src/how-to-tailor/edit/main/how-to-tailor/docs/examples/example_template.md">
+    <a href="https://github.com/TAI-src/how-to-tailor/edit/main/how-to-tailor/docs/examples/example_3.md">
        Edit this page on GitHub
     </a>
   </p>
