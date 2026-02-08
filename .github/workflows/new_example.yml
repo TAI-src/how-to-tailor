@@ -16,8 +16,8 @@ jobs:
           BODY="${{ github.event.issue.body }}"
 
           # Fields and headers
-          FIELDS=("AUTHOR" "LINKS" "PROBLEM" "WHY" "BASELINE" "PROCESS" "WHAT" "CHAR")
-          HEADERS=("Author Name" "Links to publication / code" "Problem description" "Why was tailoring needed" "Baseline algorithm" "Tailoring process" "What was tailored" "Main problem characteristics")
+          FIELDS=("AUTHOR" "LINK" "PROBLEM" "WHY" "BASELINE" "PROCESS" "WHAT" "CHAR" "REFERENCES" "CONTACT")
+          HEADERS=("Author Name" "Link to publication / code" "Problem description" "Why was tailoring needed?" "Baseline algorithm" "Tailoring process" "What was tailored?" "Main problem characteristics" "References" "Contact information (optional)")
 
           # Use awk to extract between headings
           extract_field() {

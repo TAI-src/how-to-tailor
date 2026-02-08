@@ -3,7 +3,7 @@ title: Optimisation for a Fleet of Healthcare Vehicles
 authors:
     - Sarah Thomson
 date: 2026-01-16
-links: https://dl.acm.org/doi/abs/10.1145/3638530.3664137
+link: https://dl.acm.org/doi/abs/10.1145/3638530.3664137
 id: 1
 ---
 
@@ -38,3 +38,11 @@ Aspects of the algorithmic operators were tailored. This included the nature of 
 ## Main problem characteristics
 
 Choose most important ones: low-dimensional at upper level, high-dimensional at lower level; highly constrained (some soft and some hard); offline; there is an existing solution that works(current fleet); is a simplified version of what is eventually sought (optimising routes, carbon as well); low data sensitivity.
+
+## References
+
+_No response_
+
+## Author
+
+Sarah Thomson
