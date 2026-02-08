@@ -6,9 +6,9 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         
         
-        <link rel="canonical" href="https://tai-src.github.io/how-to-tailor/examples/example_1/">
+        <link rel="canonical" href="https://tai-src.github.io/how-to-tailor/examples/example_16/">
         <link rel="shortcut icon" href="../../img/favicon.ico">
-        <title>Optimisation for a Fleet of Healthcare Vehicles - How to Tailor</title>
+        <title>Energy System Optimization - How to Tailor</title>
         <link href="../../css/bootstrap.min.css" rel="stylesheet">
         <link href="../../css/fontawesome.min.css" rel="stylesheet">
         <link href="../../css/brands.min.css" rel="stylesheet">
@@ -46,7 +46,7 @@
 </li>
                                     
 <li>
-    <a href="./" class="dropdown-item active" aria-current="page">Optimisation for a Fleet of Healthcare Vehicles</a>
+    <a href="../example_1/" class="dropdown-item">Optimisation for a Fleet of Healthcare Vehicles</a>
 </li>
                                     
 <li>
@@ -74,7 +74,7 @@
 </li>
                                     
 <li>
-    <a href="../example_16/" class="dropdown-item">Energy System Optimization</a>
+    <a href="./" class="dropdown-item active" aria-current="page">Energy System Optimization</a>
 </li>
                                     
 <li>
@@ -119,12 +119,12 @@
                             </a>
                         </li>
                             <li class="nav-item">
-                                <a rel="prev" href="../" class="nav-link">
+                                <a rel="prev" href="../example_15/" class="nav-link">
                                     <i class="fa fa-arrow-left"></i> Previous
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a rel="next" href="../example_10/" class="nav-link">
+                                <a rel="next" href="../example_2/" class="nav-link">
                                     Next <i class="fa fa-arrow-right"></i>
                                 </a>
                             </li>
@@ -147,7 +147,7 @@
     <div id="toc-collapse" class="navbar-collapse collapse card bg-body-tertiary">
         <ul class="nav flex-column">
             
-            <li class="nav-item" data-bs-level="1"><a href="#optimisation-for-a-fleet-of-healthcare-vehicles" class="nav-link">Optimisation for a Fleet of Healthcare Vehicles</a>
+            <li class="nav-item" data-bs-level="1"><a href="#energy-system-optimization" class="nav-link">Energy System Optimization</a>
               <ul class="nav flex-column">
             <li class="nav-item" data-bs-level="2"><a href="#problem-description" class="nav-link">Problem Description</a>
               <ul class="nav flex-column">
@@ -188,29 +188,50 @@
 </div></div>
                     <div class="col-md-9" role="main">
 
-<h1 id="optimisation-for-a-fleet-of-healthcare-vehicles"><a href="https://dl.acm.org/doi/abs/10.1145/3638530.3664137">Optimisation for a Fleet of Healthcare Vehicles</a><a class="headerlink" href="#optimisation-for-a-fleet-of-healthcare-vehicles" title="Permanent link">&para;</a></h1>
+<h1 id="energy-system-optimization"><a href="https://tulipaenergy.github.io/TulipaEnergyModel.jl/stable/">Energy System Optimization</a><a class="headerlink" href="#energy-system-optimization" title="Permanent link">&para;</a></h1>
 <h2 id="problem-description">Problem Description<a class="headerlink" href="#problem-description" title="Permanent link">&para;</a></h2>
-<p>A healthcare provider in a region of Scotland (Argyll and Bute) wanted to reduce their vehicle fleet size while still being able to cater for all trips. They provided 4 months of historical data about where their existing fleet were based and the trips they conducted, including start and end times and geographic location. We were also given information about the vehicle types and which vehicles were allowed to do which trips.</p>
+<p>Determine the optimal investment and operation decisions  for different types of assets in the energy system (production, consumption, conversion, storage, and transport), while minimizing loss of load. It can support governments and network system operators.</p>
 <h2 id="why-was-tailoring-needed">Why was tailoring needed?<a class="headerlink" href="#why-was-tailoring-needed" title="Permanent link">&para;</a></h2>
-<p>Not too much tailoring was needed but there were some particulars that had to be accounted for:</p>
-<ol>
-<li>Jobs (i.e. trips) have a type of vehicle which (historically) executed them, but if needed certain other types of vehicles can do the trip.  For example, a small car originally did the trip, can be done by a van.</li>
-<li>Vehicles can be swapped between geographical bases if needed and if the swap does not mean that the vehicle home base cannot cover its own trips.</li>
-<li>It does not make sense to try and remove a type of vehicle from a base if there are none there or maybe if there are a small amount there. This led to a semi-guided mutation design.</li>
-</ol>
+<p>Tailoring was needed because of the scale of the problem:
+* Geographically: the power system in Europe is connected, allowing the use of generators in other countries when local generation is low (traded via energy markets). Investment decisions in one country are thus influenced by what happens in other countries. Decisions on investments in transmission capacity require an appropriate model of the high voltage network within each country.
+* Horizon: an investment in a new power plant has an impact for 30-50 years into the future.
+* Time resolution: because electricity used should be equal to electricity produced at all times, and renewable energy production may significantly change from one hour to the next, hourly resolution is needed.
+* Technical details: generation and storage have additional constraints (e.g. ramping and state of charge, respectively), which connect decisions on one time slot to the next.
+* Stochasticity: the computation is based on predictions of demand and weather/climate across the whole horizon, but we have no single perfect prediction for these, so need to take this uncertainty into account, e.g. by taking into account multiple scenarios.
+* Ideally multiple solutions are presented, because of unmodeled preferences
+* Ideally also the time at which the investments should be made is determined, but we usually just use one or two moments for this</p>
 <h2 id="baseline-algorithm">Baseline algorithm<a class="headerlink" href="#baseline-algorithm" title="Permanent link">&para;</a></h2>
-<p>Upper level: stochastic local search; lower level: constructive heuristic.</p>
-<p>Motivations for choice: we wanted to keep it simple as possible and explainable for the user. No need to use fancy algorithms if a simple approach can obtain results.</p>
+<p>The default is to model this as a single mixed-integer linear program, because many decisions are binary (e.g. use a certain production or not) and the objective and some constraints are naturally linear (e.g. balance in the system), while others can be reasonably approximated with a linear constraint (e.g. power flow).</p>
 <h2 id="tailoring-process">Tailoring process<a class="headerlink" href="#tailoring-process" title="Permanent link">&para;</a></h2>
-<p>Adding in constraints (part of the operators); added additional vehicle/machine swap operation; semi-guided mutation.</p>
+<p>Mainly we have been tailoring the model:
+* not use integer / binary variables, so the problem can be represented as an LP
+* From multi-objective to single-objective: although minimizing loss of load (i.e., not meeting demand) is a separate objective to minimizing investment costs and minimizing operational costs, these are all modeled as a single objective.
+* reformulate constraints: more tight formulations (taken from different sources in the literature)
+* from stochastic to deterministic: use a single deterministic input for demand and weather (= renewable capacity) - this was still quite large, so we modeled future periods by a smaller set of representative periods — finding these requires some intelligent preprocessing of the data (still working on doing this for a stochastic model variant)
+* further reduce number of variables and constraints: 
+    * allow the user to decide on the geographical scale/details, time resolution, horizon, and technical details
+    * enable the user to formulate flexible use of time resolution: different time resolutions for different locations (e.g. when deciding on investments for the Netherlands, have 4-hourly time resolution for countries far away)
+<strong>Not successful:</strong>
+* using (primal-dual) learning to predict the outcome or bounds of the operation subproblem/simulation
+* alternatives for finding good representatives periods</p>
 <h2 id="what-was-tailored">What was tailored<a class="headerlink" href="#what-was-tailored" title="Permanent link">&para;</a></h2>
-<p>Aspects of the algorithmic operators were tailored. This included the nature of the mutation operator and how it ensured that mutated solutions are feasible within the specific constraints of the problem.</p>
+<p><em>No response</em></p>
 <h2 id="main-problem-characteristics">Main problem characteristics<a class="headerlink" href="#main-problem-characteristics" title="Permanent link">&para;</a></h2>
-<p>Choose most important ones: low-dimensional at upper level, high-dimensional at lower level; highly constrained (some soft and some hard); offline; there is an existing solution that works(current fleet); is a simplified version of what is eventually sought (optimising routes, carbon as well); low data sensitivity.</p>
+<ul>
+<li>dimensions: millions of variables and constraints (including the “simulator”)</li>
+<li>explicit knowledge of the constraints (the simulator is in fact making the decisions on hour-to-hour operations, which is modeled as part of the optimization problem)</li>
+<li>stochastic/uncertainty in input parameters (…)</li>
+<li>more or less linear constraints and objective</li>
+<li>need to be able to explain decisions to a board of experts/directors, possibly government</li>
+<li>runtime budget: up to a week (but better would be the time to get a cup of coffee)</li>
+</ul>
 <h2 id="references">References<a class="headerlink" href="#references" title="Permanent link">&para;</a></h2>
+<p><a href="https://tulipaenergy.github.io/TulipaEnergyModel.jl/stable/40-scientific-foundation/45-scientific-references/">https://tulipaenergy.github.io/TulipaEnergyModel.jl/stable/40-scientific-foundation/45-scientific-references/</a></p>
+<h3 id="contact-information-optional">Contact information (optional)<a class="headerlink" href="#contact-information-optional" title="Permanent link">&para;</a></h3>
 <p><em>No response</em></p>
 <h2 id="author">Author<a class="headerlink" href="#author" title="Permanent link">&para;</a></h2>
-<p>Sarah Thomson</p></div>
+<p>Mathijs de Weerdt
+<em>No response</em></p></div>
 
   
 
@@ -222,11 +243,11 @@
   <hr>
   <p style="font-size: 0.9em;">
     💡 Found an issue?
-    <a href="https://github.com/TAI-src/how-to-tailor/issues/new?template=edit.yml&title=[Edit]%20examples/example_1.md&page=examples/example_1.md">
+    <a href="https://github.com/TAI-src/how-to-tailor/issues/new?template=edit.yml&title=[Edit]%20examples/example_16.md&page=examples/example_16.md">
       Suggest an edit
     </a>
     or
-    <a href="https://github.com/TAI-src/how-to-tailor/edit/main/how-to-tailor/docs/examples/example_1.md">
+    <a href="https://github.com/TAI-src/how-to-tailor/edit/main/how-to-tailor/docs/examples/example_16.md">
        Edit this page on GitHub
     </a>
   </p>
