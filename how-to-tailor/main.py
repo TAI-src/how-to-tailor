@@ -21,7 +21,7 @@ def glob(pattern, hide=None, page_path=None, current_page=None):
             continue
         # Determine title
         title = f.stem.replace("_", " ").title()
-        authors = []
+        authors = ""
 
         # Read YAML front-matter title if available
         try:
@@ -32,7 +32,7 @@ def glob(pattern, hide=None, page_path=None, current_page=None):
                 yaml_text = text[3:end].strip()
                 data = yaml.safe_load(yaml_text)
                 title = data.get("title", title)
-                authors = ", ".join(data.get("authors", authors))
+                authors = ", ".join(data.get("authors", []))
                 title = data["title"]
         except Exception:
             pass
