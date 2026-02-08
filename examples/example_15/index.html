@@ -6,9 +6,9 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         
         
-        <link rel="canonical" href="https://tai-src.github.io/how-to-tailor/examples/example_9/">
+        <link rel="canonical" href="https://tai-src.github.io/how-to-tailor/examples/example_15/">
         <link rel="shortcut icon" href="../../img/favicon.ico">
-        <title>HPO for a speaker diarization model for emergency medical systems - How to Tailor</title>
+        <title>Electric Motor Design Optimization - How to Tailor</title>
         <link href="../../css/bootstrap.min.css" rel="stylesheet">
         <link href="../../css/fontawesome.min.css" rel="stylesheet">
         <link href="../../css/brands.min.css" rel="stylesheet">
@@ -70,7 +70,7 @@
 </li>
                                     
 <li>
-    <a href="../example_15/" class="dropdown-item">Electric Motor Design Optimization</a>
+    <a href="./" class="dropdown-item active" aria-current="page">Electric Motor Design Optimization</a>
 </li>
                                     
 <li>
@@ -102,7 +102,7 @@
 </li>
                                     
 <li>
-    <a href="./" class="dropdown-item active" aria-current="page">HPO for a speaker diarization model for emergency medical systems</a>
+    <a href="../example_9/" class="dropdown-item">HPO for a speaker diarization model for emergency medical systems</a>
 </li>
                                 </ul>
                             </li>
@@ -115,12 +115,12 @@
                             </a>
                         </li>
                             <li class="nav-item">
-                                <a rel="prev" href="../example_8/" class="nav-link">
+                                <a rel="prev" href="../example_14/" class="nav-link">
                                     <i class="fa fa-arrow-left"></i> Previous
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a rel="next" class="nav-link disabled">
+                                <a rel="next" href="../example_2/" class="nav-link">
                                     Next <i class="fa fa-arrow-right"></i>
                                 </a>
                             </li>
@@ -143,7 +143,7 @@
     <div id="toc-collapse" class="navbar-collapse collapse card bg-body-tertiary">
         <ul class="nav flex-column">
             
-            <li class="nav-item" data-bs-level="1"><a href="#hpo-for-a-speaker-diarization-model-for-emergency-medical-systems" class="nav-link">HPO for a speaker diarization model for emergency medical systems</a>
+            <li class="nav-item" data-bs-level="1"><a href="#electric-motor-design-optimization" class="nav-link">Electric Motor Design Optimization</a>
               <ul class="nav flex-column">
             <li class="nav-item" data-bs-level="2"><a href="#problem-description" class="nav-link">Problem Description</a>
               <ul class="nav flex-column">
@@ -184,31 +184,43 @@
 </div></div>
                     <div class="col-md-9" role="main">
 
-<h1 id="hpo-for-a-speaker-diarization-model-for-emergency-medical-systems"><a href="_No response_">HPO for a speaker diarization model for emergency medical systems</a><a class="headerlink" href="#hpo-for-a-speaker-diarization-model-for-emergency-medical-systems" title="Permanent link">&para;</a></h1>
+<h1 id="electric-motor-design-optimization"><a href="https://dis.ijs.si/tea/Publications/Tusar23Multistep.pdf">Electric Motor Design Optimization</a><a class="headerlink" href="#electric-motor-design-optimization" title="Permanent link">&para;</a></h1>
 <h2 id="problem-description">Problem Description<a class="headerlink" href="#problem-description" title="Permanent link">&para;</a></h2>
-<p>In real-life applications, such as in emergency medical system dialogues, multiple speakers interact in dynamic and noisy environments. Speech processing systems in these settings therefore focus on two main questions: (1) who is speaking at a given time? and (2) what is being said? The first goal is approached by Speaker Diarization systems. 
-Within a collaboration with the Helmholtz Biomedical Institute and in the scope of a bigger project on AI in emergency medicine, a student created a speaker diarization system that would help parse the conversations of paramedics in the field. The optimization problem in our particular use-case was hyperparameter optimization of an open-source pre-trained speech embedding model PyAnnote (see below if this is really tailoring or not).</p>
+<p>The goal was to find a design of a synchronous electric motor for power steering systems that minimizes costs and satisfies all constraints. While computing the costs was rather straightforward, checking the feasibility of solutions required time-consuming simulations.  </p>
 <h2 id="why-was-tailoring-needed">Why was tailoring needed?<a class="headerlink" href="#why-was-tailoring-needed" title="Permanent link">&para;</a></h2>
-<p>According to the discussion about tailoring, this concrete example is either not considered to be proper tailoring (by some) or is considered the “lightest” tailoring approach (by others). In this particular case, the baseline approach worked off-the-shelf already, namely PyAnnote could be fine-tuned on the real-world datasets of interest. The only “tailoring” was applying an automated HPO technique to find a setting yielding better overall accuracy of the model. </p>
+<p>Although the company was already using surrogate-based optimization before our collaboration, the severe constraints were making it hard to find high-quality solutions in reasonable time. The tailoring made it possible to find designs that were 10% cheaper of the ones used by the company. </p>
 <h2 id="baseline-algorithm">Baseline algorithm<a class="headerlink" href="#baseline-algorithm" title="Permanent link">&para;</a></h2>
-<p>We used the HPO facade of SMAC3 (BO with Sobol initial design, RF as surrogate, logEI as AF, and other specific design choices)  to optimize HPs for the segmentation pipeline and for the clustering pipeline separately. We optimized for accuracy, i.e., we minimized the diarization error rate.</p>
+<p>lq-CMA-ES [Hansen2019], which uses a surrogate model and also supports constraints</p>
 <h2 id="tailoring-process">Tailoring process<a class="headerlink" href="#tailoring-process" title="Permanent link">&para;</a></h2>
-<p>Nothing was really tailored, pretty much just applied as is. Leading me to believe that as soon as we can say that we “applied as is” we are not in the tailoring domain anymore.</p>
+<p>Tailoring was performed on the evaluation of solutions rather than the optimization algorithm. The evaluation of solutions was split into five steps. If after any step, the solution was found to be infeasible, the evaluation stopped there and a penalty was added to the objective. The steps were:
+1. Executing a quick Python script to check feasibility with regard to magnet placement. Checking this before evaluating a solution with the simulator was particularly helpful because we could avoid some simulation errors. About 17.5% of solutions were discarded after this step, which spared about 8 minutes of time per solution. 
+2.  Executing a simulation with Ansys to compute the properties of the electrical motor design. This took about 1 minute when successful and considerably longer when the design was infeasible. About 29.4% of solutions were discarded after this step, which spared about 7 minutes of time per solution.
+3. Computing the costs with a quick Python script. 
+4. Checking solution robustness. This consisted of running parallel simulations with Ansys that took about 7 minutes per solution. This step was tailored further (compared to previous experiments done by the company) by adapting the mesh size as some additional experiments showed that we could gain about half the time without losing too much information. 
+5.  Computing some additional properties with a quick Python script and checking final solution feasibility.
+The <strong>objective function</strong> was tailored to accommodate some “soft” constraints as well as penalize infeasible solutions (the earlier a solution was found to be infeasible, the larger the penalty). 
+Because of the limited time at our disposal, we didn’t attempt to tune the optimization algorithm.</p>
 <h2 id="what-was-tailored">What was tailored<a class="headerlink" href="#what-was-tailored" title="Permanent link">&para;</a></h2>
 <p><em>No response</em></p>
 <h2 id="main-problem-characteristics">Main problem characteristics<a class="headerlink" href="#main-problem-characteristics" title="Permanent link">&para;</a></h2>
-<ul>
-<li>Mixed search space (discrete/continuous)</li>
-<li>Low-dimensional</li>
-<li>Medium to high evaluation cost (fine tuning can take hours, inference is a bit fast)</li>
-<li>Parallelisation possible</li>
-</ul>
+<p>Problem definition
+* 13 variables
+    * 12 “continuous” (were discretized in evaluations, but were treated as continuous by the optimization algorithm)
+    * 1 discrete (ordered, not combinatorial)
+* 1 objective (costs)
+* 2 “soft” constraints, whose violation was added to the main objective
+* 10 “hard” constraints
+Other properties 
+* The constraints were multimodal and hard to satisfy
+* While we were working on a single problem instance, the company had many instances to solve that could be handled in the same way
+* We could only afford to run the algorithm a handful of times, for a few thousand evaluations each
+* The code cannot be disclosed</p>
 <h2 id="references">References<a class="headerlink" href="#references" title="Permanent link">&para;</a></h2>
-<p><em>No response</em></p>
+<p>[Hansen2019] Nikolaus Hansen. 2019. A global surrogate assisted CMA-ES. V Proceedings of the 2019 Genetic and Evolutionary Computation Conference. ACM, New York, NY, USA, 664–672. https://doi.org/10.1145/3321707.3321842 </p>
 <h3 id="contact-information-optional">Contact information (optional)<a class="headerlink" href="#contact-information-optional" title="Permanent link">&para;</a></h3>
 <p><em>No response</em></p>
 <h2 id="author">Author<a class="headerlink" href="#author" title="Permanent link">&para;</a></h2>
-<p>Anja Jankovic
+<p>Tea Tušar
 <em>No response</em></p></div>
 
   
@@ -221,11 +233,11 @@ Within a collaboration with the Helmholtz Biomedical Institute and in the scope 
   <hr>
   <p style="font-size: 0.9em;">
     💡 Found an issue?
-    <a href="https://github.com/TAI-src/how-to-tailor/issues/new?template=edit.yml&title=[Edit]%20examples/example_9.md&page=examples/example_9.md">
+    <a href="https://github.com/TAI-src/how-to-tailor/issues/new?template=edit.yml&title=[Edit]%20examples/example_15.md&page=examples/example_15.md">
       Suggest an edit
     </a>
     or
-    <a href="https://github.com/TAI-src/how-to-tailor/edit/main/how-to-tailor/docs/examples/example_9.md">
+    <a href="https://github.com/TAI-src/how-to-tailor/edit/main/how-to-tailor/docs/examples/example_15.md">
        Edit this page on GitHub
     </a>
   </p>
