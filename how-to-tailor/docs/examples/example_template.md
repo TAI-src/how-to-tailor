@@ -3,11 +3,11 @@ title: ${TITLE}
 authors:
   - ${AUTHOR}
 date: ${DATE}
-links: ${LINKS}
+link: ${LINK}
 id: ${ID}
 ---
 
-# [${TITLE}](${LINKS})
+# [${TITLE}](${LINK})
 
 ## Problem Description
 
@@ -32,3 +32,11 @@ ${WHAT}
 ## Main problem characteristics
 
 ${CHAR}
+
+## References
+
+${REFERENCES}
+
+## Author
+
+${AUTHOR} <${CONTACT}>

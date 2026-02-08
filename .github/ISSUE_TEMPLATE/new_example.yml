@@ -11,9 +11,9 @@ body:
     required: true
 
 - type: input
-  id: links
+  id: link
   attributes:
-    label: Links to publication / code
+    label: Link to publication / code
     description: If your example is based on a publication or code repository, please provide the link here
 
 - type: textarea
@@ -52,6 +52,17 @@ body:
     label: Main problem characteristics
     description: Describe the main characteristics of the problem. Provide comma-separated keywords.
 
+- type: textarea
+  id: refs
+  attributes:
+    label: References
+    description: Provide any additional references, links, or citations related to your example.
+
+- type: textinput
+  id: contact
+  attributes:
+    label: Contact information (optional)
+    description: If you would like to be contacted for follow-up questions, please provide your email, website or preferred contact method.
 
 
 
