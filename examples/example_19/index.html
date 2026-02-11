@@ -6,9 +6,9 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         
         
-        <link rel="canonical" href="https://tai-src.github.io/how-to-tailor/examples/example_8/">
+        <link rel="canonical" href="https://tai-src.github.io/how-to-tailor/examples/example_19/">
         <link rel="shortcut icon" href="../../img/favicon.ico">
-        <title>Optimizing Container turnover rate for a container yard by tuning parameters of a blackbox decision support system - How to Tailor</title>
+        <title>Bayesian Optimization with Gaussian Processes for Protein Design - How to Tailor</title>
         <link href="../../css/bootstrap.min.css" rel="stylesheet">
         <link href="../../css/fontawesome.min.css" rel="stylesheet">
         <link href="../../css/brands.min.css" rel="stylesheet">
@@ -86,7 +86,7 @@
 </li>
                                     
 <li>
-    <a href="../example_19/" class="dropdown-item">Bayesian Optimization with Gaussian Processes for Protein Design</a>
+    <a href="./" class="dropdown-item active" aria-current="page">Bayesian Optimization with Gaussian Processes for Protein Design</a>
 </li>
                                     
 <li>
@@ -114,7 +114,7 @@
 </li>
                                     
 <li>
-    <a href="./" class="dropdown-item active" aria-current="page">Optimizing Container turnover rate for a container yard by tuning parameters of a blackbox decision support system</a>
+    <a href="../example_8/" class="dropdown-item">Optimizing Container turnover rate for a container yard by tuning parameters of a blackbox decision support system</a>
 </li>
                                     
 <li>
@@ -131,12 +131,12 @@
                             </a>
                         </li>
                             <li class="nav-item">
-                                <a rel="prev" href="../example_7/" class="nav-link">
+                                <a rel="prev" href="../example_18/" class="nav-link">
                                     <i class="fa fa-arrow-left"></i> Previous
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a rel="next" href="../example_9/" class="nav-link">
+                                <a rel="next" href="../example_2/" class="nav-link">
                                     Next <i class="fa fa-arrow-right"></i>
                                 </a>
                             </li>
@@ -159,7 +159,7 @@
     <div id="toc-collapse" class="navbar-collapse collapse card bg-body-tertiary">
         <ul class="nav flex-column">
             
-            <li class="nav-item" data-bs-level="1"><a href="#optimizing-container-turnover-rate-for-a-container-yard-by-tuning-parameters-of-a-blackbox-decision-support-system" class="nav-link">Optimizing Container turnover rate for a container yard by tuning parameters of a blackbox decision support system</a>
+            <li class="nav-item" data-bs-level="1"><a href="#bayesian-optimization-with-gaussian-processes-for-protein-design" class="nav-link">Bayesian Optimization with Gaussian Processes for Protein Design</a>
               <ul class="nav flex-column">
             <li class="nav-item" data-bs-level="2"><a href="#problem-description" class="nav-link">Problem Description</a>
               <ul class="nav flex-column">
@@ -200,33 +200,35 @@
 </div></div>
                     <div class="col-md-9" role="main">
 
-<h1 id="optimizing-container-turnover-rate-for-a-container-yard-by-tuning-parameters-of-a-blackbox-decision-support-system"><a href="_No response_">Optimizing Container turnover rate for a container yard by tuning parameters of a blackbox decision support system</a><a class="headerlink" href="#optimizing-container-turnover-rate-for-a-container-yard-by-tuning-parameters-of-a-blackbox-decision-support-system" title="Permanent link">&para;</a></h1>
+<h1 id="bayesian-optimization-with-gaussian-processes-for-protein-design"><a href="https://www.mlsb.io/papers_2024/Bayesian_Optimisation_for_Protein_Sequence_Design:_Gaussian_Processes_with_Zero-Shot_Protein_Language_Model_Prior_Mean.pdf">Bayesian Optimization with Gaussian Processes for Protein Design</a><a class="headerlink" href="#bayesian-optimization-with-gaussian-processes-for-protein-design" title="Permanent link">&para;</a></h1>
 <h2 id="problem-description">Problem Description<a class="headerlink" href="#problem-description" title="Permanent link">&para;</a></h2>
-<p>Company running a container yard in port of Antwerp decides where to put incoming containers on the yard based upon a black-box decision support system. The system requires 6 parameters as input, and then decides on the best spot for each container coming in (based on weight, port of destination,...).  The input parameters have been fixed for a long time, and have been decided upon using some rough-cut search. The location decisions  have an important impact on the container turnover rate (= the number of containers that can be handled per hour by the cranes used for put-away/pick-up of containers). The company wishes to optimize the inputs in order to maximize the resulting container turnover rate. A simulation model (expensive in run time) is available to evaluate how a change in inputs affects the outcome. </p>
+<p>From a pool of candidate protein sequences, find the best one. The general search space is mutating an amino acid in the sequence.
+We only target mutating one protein wild type.</p>
 <h2 id="why-was-tailoring-needed">Why was tailoring needed?<a class="headerlink" href="#why-was-tailoring-needed" title="Permanent link">&para;</a></h2>
-<p>Very flat response surface, 6 dimensional space, optimizing MEI using local optimization from different starting points BUT no significant improvements</p>
+<ol>
+<li>Representations could be very long, normally, proteins are represented as the sequence (could get up to 700 dimensions). </li>
+<li>Some form of prior knowledge in the form of protein language models available, so we aim to include this to speed up the optimization.</li>
+</ol>
 <h2 id="baseline-algorithm">Baseline algorithm<a class="headerlink" href="#baseline-algorithm" title="Permanent link">&para;</a></h2>
-<p>LHS design (20 points) as starting design; BO with stochastic kriging (GP with heterogenous noise) as surrogate model and Modified Expected Improvement (MEI) as AF
-Heterogenous noise present (but rather small), number of dimensions doable for GP, continuous inputs and output</p>
+<p>BO with a GP and specific fingerprint/string kernels.</p>
 <h2 id="tailoring-process">Tailoring process<a class="headerlink" href="#tailoring-process" title="Permanent link">&para;</a></h2>
-<ul>
-<li>triangulation points: explodes! So not very useful for this nr of dimensions</li>
-<li>pattern search = very useful</li>
-</ul>
+<ol>
+<li>Identify possible modeling obstacles when using a GP. </li>
+<li>Identify prior knowledge.</li>
+</ol>
 <h2 id="what-was-tailored">What was tailored<a class="headerlink" href="#what-was-tailored" title="Permanent link">&para;</a></h2>
-<p><em>No response</em></p>
+<ol>
+<li>Adapt the representation/encoding: From the raw string representation of the protein as a sequence of amino acids, represent the variant as the mutation code. We only look at single mutations. This reduces the feature vector/dimensions from up to 700 to 3, which is much better consumable by the GP. In addition, by inspecting the protein landscapes from datasets, it is evident, that the location of the mutation plays a major role. Encoding the location directly should assist optimization.</li>
+<li>Use the protein language model's predictions as the prior mean to prime the mode. Interpolate between this prior and a standard constant mean, and adapt this interpolation coefficient based on the observed data (simply included in the fitting process).</li>
+</ol>
 <h2 id="main-problem-characteristics">Main problem characteristics<a class="headerlink" href="#main-problem-characteristics" title="Permanent link">&para;</a></h2>
-<ul>
-<li>Heterogenous noise</li>
-<li>6 dimensions</li>
-<li>continuous search space</li>
-</ul>
+<p>combinatorial, high-dimensional, protein design</p>
 <h2 id="references">References<a class="headerlink" href="#references" title="Permanent link">&para;</a></h2>
-<p><em>No response</em></p>
+<p>Abstract: https://scholar.google.com/citations?view_op=view_citation&amp;hl=de&amp;user=nx_Xq8YAAAAJ&amp;citation_for_view=nx_Xq8YAAAAJ:8k81kl-MbHgC</p>
 <h3 id="contact-information-optional">Contact information (optional)<a class="headerlink" href="#contact-information-optional" title="Permanent link">&para;</a></h3>
 <p><em>No response</em></p>
 <h2 id="author">Author<a class="headerlink" href="#author" title="Permanent link">&para;</a></h2>
-<p>Inneke Van Nieuwenhuyse
+<p>Carolin Benjamins
 <em>No response</em></p></div>
 
   
@@ -239,11 +241,11 @@ Heterogenous noise present (but rather small), number of dimensions doable for G
   <hr>
   <p style="font-size: 0.9em;">
     💡 Found an issue?
-    <a href="https://github.com/TAI-src/how-to-tailor/issues/new?template=edit.yml&title=[Edit]%20examples/example_8.md&page=examples/example_8.md">
+    <a href="https://github.com/TAI-src/how-to-tailor/issues/new?template=edit.yml&title=[Edit]%20examples/example_19.md&page=examples/example_19.md">
       Suggest an edit
     </a>
     or
-    <a href="https://github.com/TAI-src/how-to-tailor/edit/main/how-to-tailor/docs/examples/example_8.md">
+    <a href="https://github.com/TAI-src/how-to-tailor/edit/main/how-to-tailor/docs/examples/example_19.md">
        Edit this page on GitHub
     </a>
   </p>
