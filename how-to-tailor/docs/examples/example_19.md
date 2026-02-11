@@ -4,7 +4,7 @@ authors:
   - Carolin Benjamins
 date: 2026-02-11
 link: https://www.mlsb.io/papers_2024/Bayesian_Optimisation_for_Protein_Sequence_Design:_Gaussian_Processes_with_Zero-Shot_Protein_Language_Model_Prior_Mean.pdf
-id: 18
+id: 19
 ---
 
 # [Bayesian Optimization with Gaussian Processes for Protein Design](https://www.mlsb.io/papers_2024/Bayesian_Optimisation_for_Protein_Sequence_Design:_Gaussian_Processes_with_Zero-Shot_Protein_Language_Model_Prior_Mean.pdf)
