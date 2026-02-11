@@ -6,9 +6,9 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         
         
-        <link rel="canonical" href="https://tai-src.github.io/how-to-tailor/examples/example_9/">
+        <link rel="canonical" href="https://tai-src.github.io/how-to-tailor/examples/example_18/">
         <link rel="shortcut icon" href="../../img/favicon.ico">
-        <title>HPO for a speaker diarization model for emergency medical systems - How to Tailor</title>
+        <title>Closed-loop optimization methods - How to Tailor</title>
         <link href="../../css/bootstrap.min.css" rel="stylesheet">
         <link href="../../css/fontawesome.min.css" rel="stylesheet">
         <link href="../../css/brands.min.css" rel="stylesheet">
@@ -82,7 +82,7 @@
 </li>
                                     
 <li>
-    <a href="../example_18/" class="dropdown-item">Closed-loop optimization methods</a>
+    <a href="./" class="dropdown-item active" aria-current="page">Closed-loop optimization methods</a>
 </li>
                                     
 <li>
@@ -114,7 +114,7 @@
 </li>
                                     
 <li>
-    <a href="./" class="dropdown-item active" aria-current="page">HPO for a speaker diarization model for emergency medical systems</a>
+    <a href="../example_9/" class="dropdown-item">HPO for a speaker diarization model for emergency medical systems</a>
 </li>
                                 </ul>
                             </li>
@@ -127,12 +127,12 @@
                             </a>
                         </li>
                             <li class="nav-item">
-                                <a rel="prev" href="../example_8/" class="nav-link">
+                                <a rel="prev" href="../example_17/" class="nav-link">
                                     <i class="fa fa-arrow-left"></i> Previous
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a rel="next" class="nav-link disabled">
+                                <a rel="next" href="../example_2/" class="nav-link">
                                     Next <i class="fa fa-arrow-right"></i>
                                 </a>
                             </li>
@@ -155,9 +155,9 @@
     <div id="toc-collapse" class="navbar-collapse collapse card bg-body-tertiary">
         <ul class="nav flex-column">
             
-            <li class="nav-item" data-bs-level="1"><a href="#hpo-for-a-speaker-diarization-model-for-emergency-medical-systems" class="nav-link">HPO for a speaker diarization model for emergency medical systems</a>
+            <li class="nav-item" data-bs-level="1"><a href="#closed-loop-optimization-methods" class="nav-link">Closed-loop optimization methods</a>
               <ul class="nav flex-column">
-            <li class="nav-item" data-bs-level="2"><a href="#problem-description" class="nav-link">Problem Description</a>
+            <li class="nav-item" data-bs-level="2"><a href="#problem-description" class="nav-link">Problem description</a>
               <ul class="nav flex-column">
               </ul>
             </li>
@@ -173,7 +173,7 @@
               <ul class="nav flex-column">
               </ul>
             </li>
-            <li class="nav-item" data-bs-level="2"><a href="#what-was-tailored" class="nav-link">What was tailored</a>
+            <li class="nav-item" data-bs-level="2"><a href="#what-was-tailored" class="nav-link">What was tailored?</a>
               <ul class="nav flex-column">
               </ul>
             </li>
@@ -185,7 +185,7 @@
               <ul class="nav flex-column">
               </ul>
             </li>
-            <li class="nav-item" data-bs-level="2"><a href="#author" class="nav-link">Author</a>
+            <li class="nav-item" data-bs-level="2"><a href="#contact-information-optional" class="nav-link">Contact information (optional)</a>
               <ul class="nav flex-column">
               </ul>
             </li>
@@ -196,32 +196,46 @@
 </div></div>
                     <div class="col-md-9" role="main">
 
-<h1 id="hpo-for-a-speaker-diarization-model-for-emergency-medical-systems"><a href="_No response_">HPO for a speaker diarization model for emergency medical systems</a><a class="headerlink" href="#hpo-for-a-speaker-diarization-model-for-emergency-medical-systems" title="Permanent link">&para;</a></h1>
-<h2 id="problem-description">Problem Description<a class="headerlink" href="#problem-description" title="Permanent link">&para;</a></h2>
-<p>In real-life applications, such as in emergency medical system dialogues, multiple speakers interact in dynamic and noisy environments. Speech processing systems in these settings therefore focus on two main questions: (1) who is speaking at a given time? and (2) what is being said? The first goal is approached by Speaker Diarization systems. 
-Within a collaboration with the Helmholtz Biomedical Institute and in the scope of a bigger project on AI in emergency medicine, a student created a speaker diarization system that would help parse the conversations of paramedics in the field. The optimization problem in our particular use-case was hyperparameter optimization of an open-source pre-trained speech embedding model PyAnnote (see below if this is really tailoring or not).</p>
+<h1 id="closed-loop-optimization-methods"><a href="https://dl.acm.org/doi/abs/10.1109/MCI.2009.933095">Closed-loop optimization methods</a><a class="headerlink" href="#closed-loop-optimization-methods" title="Permanent link">&para;</a></h1>
+<h2 id="problem-description">Problem description<a class="headerlink" href="#problem-description" title="Permanent link">&para;</a></h2>
+<p>During the period 2004-2009, I worked with biologists, analytical chemists, and food scientists, developing methods to optimize instruments, experimental protocols, or actual products experimentally, a setup sometimes also called closed-loop optimization.</p>
+<p>I co-authored quite a number of papers during this period, both in applications journals and in the evolutionary computation literature, and supervised the PhD thesis listed above. Some of these works are summarised and collected in the first reference above. It has a lot to do with tailoring (but also aiming for as much generality as possible). </p>
 <h2 id="why-was-tailoring-needed">Why was tailoring needed?<a class="headerlink" href="#why-was-tailoring-needed" title="Permanent link">&para;</a></h2>
-<p>According to the discussion about tailoring, this concrete example is either not considered to be proper tailoring (by some) or is considered the “lightest” tailoring approach (by others). In this particular case, the baseline approach worked off-the-shelf already, namely PyAnnote could be fine-tuned on the real-world datasets of interest. The only “tailoring” was applying an automated HPO technique to find a setting yielding better overall accuracy of the model. </p>
+<p>Tailoring is needed for a cluster of reasons in these kind of applications
+* Very blackbox nature of the problem
+* Limited budget / expensive 
+* Possibility of experiments breaking equipment resulting in no evaluation… or worse
+* Experiments depend on resources that themselves depend on purchasing, storing or manufacturing consumables; construction of subparts of the solution which then becomes a fixed thing (possibly with reuse capability but also shelf-life); storing and planning how to use these partial solutions; scheduling of experimental staff time.
+* Experiments may be anything from one-at-a-time to very highly parallel, but that is dictated by the platform; it’s not a free choice as it is in many simulation environments.</p>
 <h2 id="baseline-algorithm">Baseline algorithm<a class="headerlink" href="#baseline-algorithm" title="Permanent link">&para;</a></h2>
-<p>We used the HPO facade of SMAC3 (BO with Sobol initial design, RF as surrogate, logEI as AF, and other specific design choices)  to optimize HPs for the segmentation pipeline and for the clustering pipeline separately. We optimized for accuracy, i.e., we minimized the diarization error rate.</p>
+<ul>
+<li>We mostly tailored simple EAs, or EAs with niching, or multiobjective EAs. The motivation for this was the blackbox nature of the problems and our familiarity with these methods. However, we looked for generality of the tailoring methods/steps to all the characteristics listed above.</li>
+<li>Later on, we tailored Bayesian optimization methods like ParEGO.</li>
+</ul>
 <h2 id="tailoring-process">Tailoring process<a class="headerlink" href="#tailoring-process" title="Permanent link">&para;</a></h2>
-<p>Nothing was really tailored, pretty much just applied as is. Leading me to believe that as soon as we can say that we “applied as is” we are not in the tailoring domain anymore.</p>
-<h2 id="what-was-tailored">What was tailored<a class="headerlink" href="#what-was-tailored" title="Permanent link">&para;</a></h2>
+<p>In this line of work, we have developed algorithms (or “tailored” methods), and theory (or technical motivation or principles) in the following related areas:</p>
+<ul>
+<li>Ephemeral resource constraints. This is where evaluations depend on resources. If the resources are not there, the experiment (evaluation) cannot be done. (They are a kind of dynamic constraint). We have classified many types and developed methods that work with different EAs.</li>
+<li>Safe optimization. This is where it is possible to permanently lose members of your EA population (e.g., consider the solutions are reconfigurable nano-robots and some of them may break irreplaceably)</li>
+<li>Heterogeneous objectives. Often in closed-loop problems, the objectives of a single solution cannot or may not be evaluated at the same time. (Some may be much cheaper or less time consuming to evaluate than others). So we need better asynchronous EAs or EMO methods to be designed.</li>
+</ul>
+<p>Our tailoring has included the incorporation of reinforcement learning methods, scheduling/planning methods, and other heuristics or procedures, into evolutionary and Bayesian optimization methods.</p>
+<h2 id="what-was-tailored">What was tailored?<a class="headerlink" href="#what-was-tailored" title="Permanent link">&para;</a></h2>
 <p><em>No response</em></p>
 <h2 id="main-problem-characteristics">Main problem characteristics<a class="headerlink" href="#main-problem-characteristics" title="Permanent link">&para;</a></h2>
-<ul>
-<li>Mixed search space (discrete/continuous)</li>
-<li>Low-dimensional</li>
-<li>Medium to high evaluation cost (fine tuning can take hours, inference is a bit fast)</li>
-<li>Parallelisation possible</li>
-</ul>
+<p><em>No response</em></p>
 <h2 id="references">References<a class="headerlink" href="#references" title="Permanent link">&para;</a></h2>
-<p><em>No response</em></p>
-<h3 id="contact-information-optional">Contact information (optional)<a class="headerlink" href="#contact-information-optional" title="Permanent link">&para;</a></h3>
-<p><em>No response</em></p>
-<h2 id="author">Author<a class="headerlink" href="#author" title="Permanent link">&para;</a></h2>
-<p>Anja Jankovic
-<em>No response</em></p></div>
+<ul>
+<li>J. Knowles, "Closed-loop evolutionary multiobjective optimization," in IEEE Computational Intelligence Magazine, vol. 4, no. 3, pp. 77-91, Aug. 2009, doi: <a href="https://dl.acm.org/doi/abs/10.1109/MCI.2009.933095">10.1109/MCI.2009.933095</a>.</li>
+<li>Allmendinger, Richard. Tuning evolutionary search for closed-loop optimization. The University of Manchester (United Kingdom), 2012. <a href="https://staff.cs.manchester.ac.uk/~jknowles/PhD_Richard.pdf">PDF</a></li>
+<li>Allmendinger, Richard, and Joshua D. Knowles. "Evolutionary Search in Lethal Environments." In IJCCI (ECTA-FCTA), pp. 63-72. 2011. <a href="https://www.scitepress.org/Papers/2011/36730/36730.pdf">PDF</a></li>
+<li>Allmendinger, Richard, and Joshua Knowles. "‘Hang on a minute’: Investigations on the effects of delayed objective functions in multiobjective optimization." In International Conference on Evolutionary Multi-Criterion Optimization, pp. 6-20. Berlin, Heidelberg: Springer Berlin Heidelberg, 2013. <a href="https://www.researchgate.net/profile/Joshua-Knowles/publication/259982630_%27Hang_On_a_Minute%27_Investigations_on_the_Effects_of_Delayed_Objective_Functions_in_Multiobjective_Optimization/links/55977b9008ae21086d2216c2/Hang-On-a-Minute-Investigations-on-the-Effects-of-Delayed-Objective-Functions-in-Multiobjective-Optimization.pdf">PDF</a></li>
+<li>Allmendinger, Richard, and Joshua Knowles. "Policy learning in resource-constrained optimization." In Proceedings of the 13th annual conference on Genetic and evolutionary computation, pp. 1971-1978. 2011. https://dl.acm.org/doi/pdf/10.1145/2001576.2001841</li>
+<li>Richard Allmendinger, Joshua Knowles; On Handling Ephemeral Resource Constraints in Evolutionary Search. Evol Comput 2013; 21 (3): 497–531. doi: https://doi.org/10.1162/EVCO_a_00097</li>
+<li>Kim, Youngmin, Richard Allmendinger, and Manuel López-Ibáñez. "Safe learning and optimization techniques: Towards a survey of the state of the art." In International Workshop on the Foundations of Trustworthy AI Integrating Learning, Optimization and Reasoning, pp. 123-139. Cham: Springer International Publishing, 2020. https://arxiv.org/pdf/2101.09505</li>
+</ul>
+<h2 id="contact-information-optional">Contact information (optional)<a class="headerlink" href="#contact-information-optional" title="Permanent link">&para;</a></h2>
+<p>Joshua Knowles</p></div>
 
   
 
@@ -233,11 +247,11 @@ Within a collaboration with the Helmholtz Biomedical Institute and in the scope 
   <hr>
   <p style="font-size: 0.9em;">
     💡 Found an issue?
-    <a href="https://github.com/TAI-src/how-to-tailor/issues/new?template=edit.yml&title=[Edit]%20examples/example_9.md&page=examples/example_9.md">
+    <a href="https://github.com/TAI-src/how-to-tailor/issues/new?template=edit.yml&title=[Edit]%20examples/example_18.md&page=examples/example_18.md">
       Suggest an edit
     </a>
     or
-    <a href="https://github.com/TAI-src/how-to-tailor/edit/main/how-to-tailor/docs/examples/example_9.md">
+    <a href="https://github.com/TAI-src/how-to-tailor/edit/main/how-to-tailor/docs/examples/example_18.md">
        Edit this page on GitHub
     </a>
   </p>
