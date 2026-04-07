@@ -4,7 +4,7 @@ authors:
   - Rodolphe Le Riche
 date: 2026-02-11
 link: https://hal.science/hal-04830176
-id: 20
+id: 24
 ---
 
 # [Optimizing bags of points : example of the windfarm layout optimization](https://hal.science/hal-04830176)
