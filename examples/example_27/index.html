@@ -6,9 +6,9 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         
         
-        <link rel="canonical" href="https://tai-src.github.io/how-to-tailor/examples/example_26/">
+        <link rel="canonical" href="https://tai-src.github.io/how-to-tailor/examples/example_27/">
         <link rel="shortcut icon" href="../../img/favicon.ico">
-        <title>Flexible jobs shop scheduling with additional constraints - How to Tailor</title>
+        <title>Real-time Dispatching of Ambulances - How to Tailor</title>
         <link href="../../css/bootstrap.min.css" rel="stylesheet">
         <link href="../../css/fontawesome.min.css" rel="stylesheet">
         <link href="../../css/brands.min.css" rel="stylesheet">
@@ -127,11 +127,11 @@
 </li>
                                     
 <li>
-    <a href="./" class="dropdown-item active" aria-current="page">Flexible jobs shop scheduling with additional constraints</a>
+    <a href="../example_26/" class="dropdown-item">Flexible jobs shop scheduling with additional constraints</a>
 </li>
                                     
 <li>
-    <a href="../example_27/" class="dropdown-item">Real-time Dispatching of Ambulances</a>
+    <a href="./" class="dropdown-item active" aria-current="page">Real-time Dispatching of Ambulances</a>
 </li>
                                     
 <li>
@@ -172,12 +172,12 @@
                             </a>
                         </li>
                             <li class="nav-item">
-                                <a rel="prev" href="../example_25/" class="nav-link">
+                                <a rel="prev" href="../example_26/" class="nav-link">
                                     <i class="fa fa-arrow-left"></i> Previous
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a rel="next" href="../example_27/" class="nav-link">
+                                <a rel="next" href="../example_3/" class="nav-link">
                                     Next <i class="fa fa-arrow-right"></i>
                                 </a>
                             </li>
@@ -200,7 +200,7 @@
     <div id="toc-collapse" class="navbar-collapse collapse card bg-body-tertiary">
         <ul class="nav flex-column">
             
-            <li class="nav-item" data-bs-level="1"><a href="#flexible-jobs-shop-scheduling-with-additional-constraints" class="nav-link">Flexible jobs shop scheduling with additional constraints</a>
+            <li class="nav-item" data-bs-level="1"><a href="#real-time-dispatching-of-ambulances" class="nav-link">Real-time Dispatching of Ambulances</a>
               <ul class="nav flex-column">
             <li class="nav-item" data-bs-level="2"><a href="#problem-description" class="nav-link">Problem Description</a>
               <ul class="nav flex-column">
@@ -241,29 +241,45 @@
 </div></div>
                     <div class="col-md-9" role="main">
 
-<h1 id="flexible-jobs-shop-scheduling-with-additional-constraints"><a href="https://scholar.google.com/citations?view_op=view_citation&amp;hl=en&amp;user=_Fm9-S8AAAAJ&amp;cstart=20&amp;pagesize=80&amp;sortby=pubdate&amp;citation_for_view=_Fm9-S8AAAAJ:2osOgNQ5qMEC">Flexible jobs shop scheduling with additional constraints</a><a class="headerlink" href="#flexible-jobs-shop-scheduling-with-additional-constraints" title="Permanent link">&para;</a></h1>
+<h1 id="real-time-dispatching-of-ambulances"><a href="https://dl.acm.org/doi/10.1145/3583131.3590434">Real-time Dispatching of Ambulances</a><a class="headerlink" href="#real-time-dispatching-of-ambulances" title="Permanent link">&para;</a></h1>
 <h2 id="problem-description">Problem Description<a class="headerlink" href="#problem-description" title="Permanent link">&para;</a></h2>
-<p>Flexible job shop scheduling problem with sequence-dependent setup times.</p>
+<p>The application context is Emergency Medical Dispatch (EMD), a critical real-world operation managed by Emergency Services Providers (ESPs). The core problem is the real-time allocation of heterogeneous ambulance resources to dynamic and uncertain medical emergencies to minimize response times and, consequently, patient mortality.
+<strong>Specific Challenge</strong>: EMD is an NP-hard dynamic optimization task where decisions must be made instantly as events occur (e.g., a new 111 call or an ambulance becoming free). We aim to automate five specific dispatch decisions (D1–D5):
+D1: Decide whether to dispatch an ambulance immediately to a new emergency.
+D2: Choose which ambulance to dispatch.
+D3: Decide whether to dispatch a newly idle ambulance to a queued emergency.
+D4: Choose which queued emergency to attend.
+D5: Choose which facility an idle ambulance should return to if no emergencies are waiting.</p>
 <h2 id="why-was-tailoring-needed">Why was tailoring needed?<a class="headerlink" href="#why-was-tailoring-needed" title="Permanent link">&para;</a></h2>
-<p>Many constraints and multi-objective.</p>
+<p>Existing methods were insufficient for several reasons:
+<strong>"Black Box" Nature</strong>: Techniques like Deep Reinforcement Learning (DRL) produce models that are incomprehensible to humans. This is unacceptable for ESPs because human dispatchers must be able to explain and audit their decisions, especially after fatal errors.
+<strong>Oversimplification (Representational Gap)</strong>: Previous research often simplified the problem to make it solvable, such as discretizing the road network into grids or ignoring the heterogeneity of ambulances and emergencies. This created a large gap between the academic models and real-world complexity, reducing the practical value of the solutions.
+<strong>Lack of Flexibility</strong>: Existing mathematical optimization techniques are often rigid and cannot easily adjust to the dynamic, uncertain nature of real-time EMD without computationally expensive re-optimization.
+<strong>Incomplete Scope</strong>: Prior works often focused only on specific subsets of decisions (e.g., only relocation or only dispatch logic) rather than the comprehensive set of five decisions required for a holistic EMD policy.</p>
 <h2 id="baseline-algorithm">Baseline algorithm<a class="headerlink" href="#baseline-algorithm" title="Permanent link">&para;</a></h2>
-<p>GCPSO</p>
+<p>We chose Genetic Programming Hyper-Heuristic (GPHH) as our baseline algorithm, due to the following reasons:
+<strong>Interpretability</strong>: Unlike neural networks, GPHH evolves tree-based heuristics that can be read and understood as logic rules (e.g: if distance is X, do Y), meeting the audit requirements of ESPs.
+<strong>Scalability</strong>: GPHH generates heuristics that scale well to large, realistic instances without requiring the problem simplifications (like grid discretization) common in other methods.
+<strong>Provenance</strong>: It has been successfully applied to similar vehicle routing and scheduling domains, making it a strong candidate for EMD.</p>
 <h2 id="tailoring-process">Tailoring process<a class="headerlink" href="#tailoring-process" title="Permanent link">&para;</a></h2>
-<p>The first attempt at handling the constraints was done by means of a penalty function which ended in disaster. All the computational time was used to obtain a feasible solution. Then, a heuristic was implemented to convert the continuous problem representation (job priorities) into a schedule - remaining within the feasible space.</p>
+<p>We tailored the GPHH algorithm through the following steps:
+<strong>Modular Multi-Tree Framework</strong>: We developed a framework where an individual solution consists of five distinct trees (rules), one for each decision point (D1–D5). This allowed them to learn rules either individually (while keeping others fixed to manual defaults) or simultaneously.
+<strong>Domain-Knowledge-Driven Simulation</strong>: To ensure realism, we collaborated with the Wellington Free Ambulance (WFA) service. This partnership helped understand the real-world factors and considerations in this problem, design the simulation environment and the "manual" baseline rules to closely approximate actual human decision-making patterns.
+<strong>Decision-Specific Terminal Sets</strong>: We created distinct sets of terminal nodes (inputs) for each of the five rules. For instance, the rule for choosing an ambulance (D2) uses ambulance-specific features, while the rule for choosing a facility (D5) uses facility-based features.
+<strong>Simultaneous vs. Independent Learning</strong>: We experimented with learning rules in isolation (e.g., GP-D1) versus simultaneously (GP-DA).</p>
 <h2 id="what-was-tailored">What was tailored<a class="headerlink" href="#what-was-tailored" title="Permanent link">&para;</a></h2>
-<p>Encoding of continuous solutions to discrete schedules.</p>
+<p><strong>Genome Representation</strong>: A multi-tree representation was adopted where a single individual contains a vector of up to five different decision trees.
+<strong>Terminal Sets</strong>: Five unique terminal sets were tailored for the specific context of each decision (e.g., AC for ambulance capacity, RTT for response time, EL for escalation level).
+<strong>Simulation Environment (Fitness Evaluation)</strong>: The Decision-Making Process (DMP) simulation was custom-built to mirror real-world dynamics, moving away from grid-based abstractions to a graph-based road network with continuous time.
+<strong>Objective Function</strong>: The fitness function was tailored to minimise the average weighted response time, incorporating urgency weights derived from industry targets.</p>
 <h2 id="main-problem-characteristics">Main problem characteristics<a class="headerlink" href="#main-problem-characteristics" title="Permanent link">&para;</a></h2>
-<ul>
-<li>Discrete variables</li>
-<li>Many constraints</li>
-<li>Multi-objective</li>
-</ul>
+<p>Emergency Medical Dispatch, Dynamic Optimisation, Genetic Programming, Hyper-Heuristic, Heterogeneous Fleet, Real-time Decision Making, Uncertainty, Interpretable AI, Vehicle Routing.</p>
 <h2 id="references">References<a class="headerlink" href="#references" title="Permanent link">&para;</a></h2>
-<p><em>No response</em></p>
+<p>Jordan MacLachlan, Yi Mei, Fangfang Zhang, Mengjie Zhang, and Jessica Signal. Learning emergency medical dispatch policies via genetic programming. In Proceedings of the ACM Genetic and Evolutionary Computation Conference (GECCO), pages 1409--1417. ACM, 2023.</p>
 <h3 id="contact-information-optional">Contact information (optional)<a class="headerlink" href="#contact-information-optional" title="Permanent link">&para;</a></h3>
-<p>jacomine.grobler@gmail.com</p>
+<p>yi.mei@vuw.ac.nz</p>
 <h2 id="author">Author<a class="headerlink" href="#author" title="Permanent link">&para;</a></h2>
-<p>Jacomine Grobler
+<p>Yi Mei
 <em>No response</em></p></div>
 
   
@@ -276,11 +292,11 @@
   <hr>
   <p style="font-size: 0.9em;">
     💡 Found an issue?
-    <a href="https://github.com/TAI-src/how-to-tailor/issues/new?template=edit.yml&title=[Edit]%20examples/example_26.md&page=examples/example_26.md">
+    <a href="https://github.com/TAI-src/how-to-tailor/issues/new?template=edit.yml&title=[Edit]%20examples/example_27.md&page=examples/example_27.md">
       Suggest an edit
     </a>
     or
-    <a href="https://github.com/TAI-src/how-to-tailor/edit/main/how-to-tailor/docs/examples/example_26.md">
+    <a href="https://github.com/TAI-src/how-to-tailor/edit/main/how-to-tailor/docs/examples/example_27.md">
        Edit this page on GitHub
     </a>
   </p>
