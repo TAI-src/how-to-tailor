@@ -6,9 +6,9 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         
         
-        <link rel="canonical" href="https://tai-src.github.io/how-to-tailor/examples/example_15/">
+        <link rel="canonical" href="https://tai-src.github.io/how-to-tailor/examples/example_21/">
         <link rel="shortcut icon" href="../../img/favicon.ico">
-        <title>Electric Motor Design Optimization - How to Tailor</title>
+        <title>Tune SVM with Gaussian Kernel - How to Tailor</title>
         <link href="../../css/bootstrap.min.css" rel="stylesheet">
         <link href="../../css/fontawesome.min.css" rel="stylesheet">
         <link href="../../css/brands.min.css" rel="stylesheet">
@@ -79,7 +79,7 @@
 </li>
                                     
 <li>
-    <a href="./" class="dropdown-item active" aria-current="page">Electric Motor Design Optimization</a>
+    <a href="../example_15/" class="dropdown-item">Electric Motor Design Optimization</a>
 </li>
                                     
 <li>
@@ -107,7 +107,7 @@
 </li>
                                     
 <li>
-    <a href="../example_21/" class="dropdown-item">Tune SVM with Gaussian Kernel</a>
+    <a href="./" class="dropdown-item active" aria-current="page">Tune SVM with Gaussian Kernel</a>
 </li>
                                     
 <li>
@@ -148,12 +148,12 @@
                             </a>
                         </li>
                             <li class="nav-item">
-                                <a rel="prev" href="../example_14/" class="nav-link">
+                                <a rel="prev" href="../example_20/" class="nav-link">
                                     <i class="fa fa-arrow-left"></i> Previous
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a rel="next" href="../example_16/" class="nav-link">
+                                <a rel="next" href="../example_3/" class="nav-link">
                                     Next <i class="fa fa-arrow-right"></i>
                                 </a>
                             </li>
@@ -176,7 +176,7 @@
     <div id="toc-collapse" class="navbar-collapse collapse card bg-body-tertiary">
         <ul class="nav flex-column">
             
-            <li class="nav-item" data-bs-level="1"><a href="#electric-motor-design-optimization" class="nav-link">Electric Motor Design Optimization</a>
+            <li class="nav-item" data-bs-level="1"><a href="#tune-svm-with-gaussian-kernel" class="nav-link">Tune SVM with Gaussian Kernel</a>
               <ul class="nav flex-column">
             <li class="nav-item" data-bs-level="2"><a href="#problem-description" class="nav-link">Problem Description</a>
               <ul class="nav flex-column">
@@ -217,43 +217,41 @@
 </div></div>
                     <div class="col-md-9" role="main">
 
-<h1 id="electric-motor-design-optimization"><a href="https://dis.ijs.si/tea/Publications/Tusar23Multistep.pdf">Electric Motor Design Optimization</a><a class="headerlink" href="#electric-motor-design-optimization" title="Permanent link">&para;</a></h1>
+<h1 id="tune-svm-with-gaussian-kernel"><a href="_No response_">Tune SVM with Gaussian Kernel</a><a class="headerlink" href="#tune-svm-with-gaussian-kernel" title="Permanent link">&para;</a></h1>
 <h2 id="problem-description">Problem Description<a class="headerlink" href="#problem-description" title="Permanent link">&para;</a></h2>
-<p>The goal was to find a design of a synchronous electric motor for power steering systems that minimizes costs and satisfies all constraints. While computing the costs was rather straightforward, checking the feasibility of solutions required time-consuming simulations.  </p>
+<p>When training a support vector machine with Gaussian kernel, (at least) two parameters need tuning: the regularization parameter $ and the parameter $\gamma$ of the Gaussian kernel (x, x') = \exp(-\gamma |x'-x|^2)$. We have a large body of prior knowledge about this problem, partly coming from experience, partly from theoretical analysis.</p>
 <h2 id="why-was-tailoring-needed">Why was tailoring needed?<a class="headerlink" href="#why-was-tailoring-needed" title="Permanent link">&para;</a></h2>
-<p>Although the company was already using surrogate-based optimization before our collaboration, the severe constraints were making it hard to find high-quality solutions in reasonable time. The tailoring made it possible to find designs that were 10% cheaper of the ones used by the company. </p>
+<p>Tailoring makes sense because there is a lot of prior knowledge that can be exploitet. When done naively, the runtime can be excessive, and it is dominated by very few evaluations.
+The kernel parameter $\sigma$ is related to $\gamma$ through $\gamma = \frac{1}{2\sigma^2}$. A good starting point for $\sigma$ is a quantile of the distribution of pairwise distances of data points, but it may deviate by, say, an order of magniture. On the other hand, there is no good guideline for an initial value or a range of $.
+The parameters do not need high precision. Both of them can be restricted to a grid on a log-scale, i.e., to powers of two. This also indicates that we may wish to work with $\log_2(C)$ and $\log_2(\gamma)$, restricted to the lattice $\mathbb{Z}^2$.
+A wider kernel (smaller $\gamma$) usually requires a larger value of $, and the relationship is roughly linear on the log-scale: good configurations are usually found on a line of the form $\log(C) + \log(\gamma) = \text{const}$.
+The established (naive) standard procedure for tuning the parameters is grid search, with a validation (or cross-validation) error as the objective function. The landscape is typically (mostly) unimodal, with the bottom of the valley mostly consisting of noise (static noise coming from the data split for cross validation). There may be a (bad) local optimum at one of the bounds, in the form of an unbounded plateau, corresponding to undesirable classifiers (constrant classifier following the majority class, or one-nearest-neighbor). It is easy to check such solutions and to stop the grid from extending further in that direction.
+The evalation time can depend in an extremely non-linear fashion on the configuration, ranging from seconds to days. Training a single model with small $\gamma$ and large $ often takes the lion's share of the overall time. Evaluating such configurations without need should therefore be avoided.</p>
 <h2 id="baseline-algorithm">Baseline algorithm<a class="headerlink" href="#baseline-algorithm" title="Permanent link">&para;</a></h2>
-<p>lq-CMA-ES [Hansen2019], which uses a surrogate model and also supports constraints</p>
+<p>The baseline is to run grid search with a step size of one on a rather large grid, or on a grid that extends dynamically if the optimum is on the boundary. Since grid search is embarassingly parallel, multi-core systems can be leveraged.</p>
 <h2 id="tailoring-process">Tailoring process<a class="headerlink" href="#tailoring-process" title="Permanent link">&para;</a></h2>
-<p>Tailoring was performed on the evaluation of solutions rather than the optimization algorithm. The evaluation of solutions was split into five steps. If after any step, the solution was found to be infeasible, the evaluation stopped there and a penalty was added to the objective. The steps were:
-1. Executing a quick Python script to check feasibility with regard to magnet placement. Checking this before evaluating a solution with the simulator was particularly helpful because we could avoid some simulation errors. About 17.5% of solutions were discarded after this step, which spared about 8 minutes of time per solution. 
-2.  Executing a simulation with Ansys to compute the properties of the electrical motor design. This took about 1 minute when successful and considerably longer when the design was infeasible. About 29.4% of solutions were discarded after this step, which spared about 7 minutes of time per solution.
-3. Computing the costs with a quick Python script. 
-4. Checking solution robustness. This consisted of running parallel simulations with Ansys that took about 7 minutes per solution. This step was tailored further (compared to previous experiments done by the company) by adapting the mesh size as some additional experiments showed that we could gain about half the time without losing too much information. 
-5.  Computing some additional properties with a quick Python script and checking final solution feasibility.
-The <strong>objective function</strong> was tailored to accommodate some “soft” constraints as well as penalize infeasible solutions (the earlier a solution was found to be infeasible, the larger the penalty). 
-Because of the limited time at our disposal, we didn’t attempt to tune the optimization algorithm.</p>
+<p>All of the above can be cast into an optimiization strategy as follows: start with a coarse grid search on a wide grid, say, in steps of three (factors of ^3 = 8$), centered on a reasonable guess for $\gamma$ based on the data and on  = 1$. Extend the grid as long as the optimum is on the boundary, hence avoinding computationally costly data points unless the objective guides us there. Once we found a local optimum, refine the grid to a step size of one. Reuse solutions already evaluated on the coarse grid. Potentially refine by moving along the above-mentioned diagonal.
+Of course, the problem can also be solved with an EA, with Bayesian optimization, or other techniques. In that case, the log-encoding should be used and the step size should be lower bounded by one. Care should be taken to avoid the evaluation of unnecessarily expensive data points.</p>
 <h2 id="what-was-tailored">What was tailored<a class="headerlink" href="#what-was-tailored" title="Permanent link">&para;</a></h2>
-<p><em>No response</em></p>
+<ul>
+<li>problem encoding, using log-scale for both variables</li>
+<li>multi-stage strategy, coarse to fine</li>
+<li>avoid extremely costly evaluations if possible</li>
+</ul>
 <h2 id="main-problem-characteristics">Main problem characteristics<a class="headerlink" href="#main-problem-characteristics" title="Permanent link">&para;</a></h2>
-<p>Problem definition
-* 13 variables
-    * 12 “continuous” (were discretized in evaluations, but were treated as continuous by the optimization algorithm)
-    * 1 discrete (ordered, not combinatorial)
-* 1 objective (costs)
-* 2 “soft” constraints, whose violation was added to the main objective
-* 10 “hard” constraints
-Other properties 
-* The constraints were multimodal and hard to satisfy
-* While we were working on a single problem instance, the company had many instances to solve that could be handled in the same way
-* We could only afford to run the algorithm a handful of times, for a few thousand evaluations each
-* The code cannot be disclosed</p>
+<ul>
+<li>mostly unimodal structure</li>
+<li>a bit noisy, so fine-tuning is meaningless</li>
+<li>reasonable starting point and range known for one parameter</li>
+<li>target precision is known</li>
+<li>evaluation costs depend on the search point, with extreme differences</li>
+</ul>
 <h2 id="references">References<a class="headerlink" href="#references" title="Permanent link">&para;</a></h2>
-<p>[Hansen2019] Nikolaus Hansen. 2019. A global surrogate assisted CMA-ES. V Proceedings of the 2019 Genetic and Evolutionary Computation Conference. ACM, New York, NY, USA, 664–672. https://doi.org/10.1145/3321707.3321842 </p>
+<p>There is excessive literature on tuning SVM kernel parameters with various methods, e.g., by minimizing generalization bounds. However, the robust standard techique of grid search and cross-validation is featured in many papers, most of which focus on something else in their experiments.</p>
 <h3 id="contact-information-optional">Contact information (optional)<a class="headerlink" href="#contact-information-optional" title="Permanent link">&para;</a></h3>
 <p><em>No response</em></p>
 <h2 id="author">Author<a class="headerlink" href="#author" title="Permanent link">&para;</a></h2>
-<p>Tea Tušar
+<p>Tobias Glasmachers
 <em>No response</em></p></div>
 
   
@@ -266,11 +264,11 @@ Other properties
   <hr>
   <p style="font-size: 0.9em;">
     💡 Found an issue?
-    <a href="https://github.com/TAI-src/how-to-tailor/issues/new?template=edit.yml&title=[Edit]%20examples/example_15.md&page=examples/example_15.md">
+    <a href="https://github.com/TAI-src/how-to-tailor/issues/new?template=edit.yml&title=[Edit]%20examples/example_21.md&page=examples/example_21.md">
       Suggest an edit
     </a>
     or
-    <a href="https://github.com/TAI-src/how-to-tailor/edit/main/how-to-tailor/docs/examples/example_15.md">
+    <a href="https://github.com/TAI-src/how-to-tailor/edit/main/how-to-tailor/docs/examples/example_21.md">
        Edit this page on GitHub
     </a>
   </p>
