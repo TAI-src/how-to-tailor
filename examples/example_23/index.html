@@ -6,9 +6,9 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         
         
-        <link rel="canonical" href="https://tai-src.github.io/how-to-tailor/examples/example_3/">
+        <link rel="canonical" href="https://tai-src.github.io/how-to-tailor/examples/example_23/">
         <link rel="shortcut icon" href="../../img/favicon.ico">
-        <title>Combined Topology and Fibre-Orientation via Moving Morphable Components and Lamination Parameters - How to Tailor</title>
+        <title>Sum of squares data clustering problems - How to Tailor</title>
         <link href="../../css/bootstrap.min.css" rel="stylesheet">
         <link href="../../css/fontawesome.min.css" rel="stylesheet">
         <link href="../../css/brands.min.css" rel="stylesheet">
@@ -115,11 +115,11 @@
 </li>
                                     
 <li>
-    <a href="../example_23/" class="dropdown-item">Sum of squares data clustering problems</a>
+    <a href="./" class="dropdown-item active" aria-current="page">Sum of squares data clustering problems</a>
 </li>
                                     
 <li>
-    <a href="./" class="dropdown-item active" aria-current="page">Combined Topology and Fibre-Orientation via Moving Morphable Components and Lamination Parameters</a>
+    <a href="../example_3/" class="dropdown-item">Combined Topology and Fibre-Orientation via Moving Morphable Components and Lamination Parameters</a>
 </li>
                                     
 <li>
@@ -156,12 +156,12 @@
                             </a>
                         </li>
                             <li class="nav-item">
-                                <a rel="prev" href="../example_23/" class="nav-link">
+                                <a rel="prev" href="../example_22/" class="nav-link">
                                     <i class="fa fa-arrow-left"></i> Previous
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a rel="next" href="../example_4/" class="nav-link">
+                                <a rel="next" href="../example_3/" class="nav-link">
                                     Next <i class="fa fa-arrow-right"></i>
                                 </a>
                             </li>
@@ -184,7 +184,7 @@
     <div id="toc-collapse" class="navbar-collapse collapse card bg-body-tertiary">
         <ul class="nav flex-column">
             
-            <li class="nav-item" data-bs-level="1"><a href="#combined-topology-and-fibre-orientation-via-moving-morphable-components-and-lamination-parameters" class="nav-link">Combined Topology and Fibre-Orientation via Moving Morphable Components and Lamination Parameters</a>
+            <li class="nav-item" data-bs-level="1"><a href="#sum-of-squares-data-clustering-problems" class="nav-link">Sum of squares data clustering problems</a>
               <ul class="nav flex-column">
             <li class="nav-item" data-bs-level="2"><a href="#problem-description" class="nav-link">Problem Description</a>
               <ul class="nav flex-column">
@@ -225,34 +225,51 @@
 </div></div>
                     <div class="col-md-9" role="main">
 
-<h1 id="combined-topology-and-fibre-orientation-via-moving-morphable-components-and-lamination-parameters"><a href="https://github.com/BayesOptApp/Topology_Optimization/tree/main">Combined Topology and Fibre-Orientation via Moving Morphable Components and Lamination Parameters</a><a class="headerlink" href="#combined-topology-and-fibre-orientation-via-moving-morphable-components-and-lamination-parameters" title="Permanent link">&para;</a></h1>
+<h1 id="sum-of-squares-data-clustering-problems"><a href="https://marcusgal.github.io/ess_clustering.html">Sum of squares data clustering problems</a><a class="headerlink" href="#sum-of-squares-data-clustering-problems" title="Permanent link">&para;</a></h1>
 <h2 id="problem-description">Problem Description<a class="headerlink" href="#problem-description" title="Permanent link">&para;</a></h2>
-<p>The idea is to optimize the topology or layout of a structure and the internal material layout. The topology was modelled via Moving Morphable Components (MMCs) wherein prescribed shapes are used to deform and move throughout a design 2D space. On the other hand, the fiber orientation was optimized by using the Lamination Parameter Formulation, which requires setting two parameters with global effects at some master nodes and the local fiber orientations are found by interpolation of these two parameters with respect to proximality to the master nodes.</p>
+<p>Clustering is a very common problem in machine learning and data analysis. It is closely related to the facility location problem, assuming a continuous search space and uncapacitated facilities.  Given a finite dataset of n data points located in p-dimensional continuous space together with a second set of k points (aka cluster centers), the clustering problem is to determine the positions of the cluster centers such that the mean sum of Euclidean distances (L2 Norm) between each data point and its nearest cluster center is minimized.  This is an unconstrained, continuous optimization problem of dimensionality kp. A candidate solution vector, x' can be represented by concatenating the p-dimensional coordinates of the cluster centers. An instance of this problem type is uniquely specified by a dataset and choosing a value of k.</p>
 <h2 id="why-was-tailoring-needed">Why was tailoring needed?<a class="headerlink" href="#why-was-tailoring-needed" title="Permanent link">&para;</a></h2>
-<ul>
-<li>Normally, Topology Optimization requires more than 1000 design variables in most used formulations for this matter. Therefore, the Moving Morphable Components formulation was used to reduce dimensionality in a way that is tractable for black-box optimizers, but paying the cost of a much more reduced solution space.</li>
-<li>Simulation malfunctions required to be included as “objective constraints” since some design combinations are numerically infeasible in the way the structure became kinematic and the underlying boundary conditions of the Finite Element solver weren’t fulfilled. By evaluating the target for those sections of the search space, the algorithms get stuck since the target values are uninformative. For surrogate assisted optimization this is a big problem due to spurious correlations and discontinuities.</li>
-</ul>
+<p>The amount of tailoring required is perhaps relatively small compared to many real-world optimisation problems. It is needed to avoid some difficulties with the sensibility of the search space and objective function.
+(i) Data range, search space bounds.
+The problem is unconstrained, but the range of the data should be considered. If cluster centers are placed well outside the range of the data, they will not be closest for any center and therefore have no effect on the objective function (i.e. neutral/flat regions on the landscape). This suggests that the algorithm should be initialised within the data range. Soft boundary constraints can also be used if the algorithm requires or can benefit from them.
+(ii) Edge case: equal values.
+If two cluster centers have exactly the same value, the computation of the objective function is unclear because there is not a unique minimum distance for some data points. For example, cluster centers cannot be all initially placed at the origin.
+(iii) Feasible solutions?
+If one of more cluster centers are not closest to any data point, they are effectively not part of the solution. If a solution must include exactly k cluster centers, this would need to be included as a constraint. This is typical in facility location in operations research but atypical in clustering. Not enforcing this means that the effective dimensionality of the final solutions is not fixed.</p>
 <h2 id="baseline-algorithm">Baseline algorithm<a class="headerlink" href="#baseline-algorithm" title="Permanent link">&para;</a></h2>
-<p><em>No response</em></p>
+<p>Focus was on the problems rather than algorithms. CMA-ES, k-means (though not black box) because it is very standard in ML.</p>
 <h2 id="tailoring-process">Tailoring process<a class="headerlink" href="#tailoring-process" title="Permanent link">&para;</a></h2>
-<ul>
-<li>Changed the target into a piecewise definition by evaluating first if the underlying structure complied with the boundary conditions. In other words, at least there was material connecting the structure from the support and there was material next to the load application.</li>
-<li>We adapted the function to handle constraints in an Augmented Lagrangian Fashion. We observed not so many works in the intersection of small feasible regions of search spaces and high-dimensional settings. However this may be counterproductive for Bayesian Optimization due to the discontinuity of the intersection of the feasible and unfeasible regions.</li>
-</ul>
-<p><img width=554 height=649 alt=Image src="https://github.com/user-attachments/assets/d2045a44-795e-414e-aa53-a79aea2b0fb0" /></p>
+<p>A soft boundary calculated in two ways: (i) using the maximum range over all data variables; (ii) normalizing the data and then using [0,1] as the bound.
+Random initialization (standard so not really tailoring)
+Checks to raise a warning during runs if the algorithm was finding solutions that did not use all k cluster centers.</p>
 <h2 id="what-was-tailored">What was tailored<a class="headerlink" href="#what-was-tailored" title="Permanent link">&para;</a></h2>
-<p><em>No response</em></p>
+<p>Soft boundary constraints
+Check on solution sensibility during run, possibly resulting in early termination or restarts.</p>
 <h2 id="main-problem-characteristics">Main problem characteristics<a class="headerlink" href="#main-problem-characteristics" title="Permanent link">&para;</a></h2>
-<ul>
-<li>Continuous formulation of an inherent combinatorial high-dimensional space.</li>
-<li>Small feasible region or highly constrained</li>
-<li>Not all the search space can be evaluated and are meaningful.</li>
-</ul>
+<p>Continuous, unconstrained, multi-modal, data-driven; scalable</p>
 <h2 id="references">References<a class="headerlink" href="#references" title="Permanent link">&para;</a></h2>
-<p><em>No response</em></p>
+<p>@article{gallagher2016towards,
+  title={Towards improved benchmarking of black-box optimization algorithms using clustering problems},
+  author={Gallagher, Marcus},
+  journal={Soft Computing},
+  volume={20},
+  number={10},
+  pages={3835--3849},
+  year={2016},
+  publisher={Springer Berlin Heidelberg Berlin/Heidelberg}
+}
+@inproceedings{vermetten2025standardized,
+  title={A standardized benchmark set of clustering problem instances for comparing black-box optimizers},
+  author={Vermetten, Diederick and Dinu, Catalin-Viorel and Gallagher, Marcus},
+  booktitle={Proceedings of the 18th ACM/SIGEVO Conference on Foundations of Genetic Algorithms},
+  pages={297--307},
+  year={2025}
+}</p>
+<h3 id="contact-information-optional">Contact information (optional)<a class="headerlink" href="#contact-information-optional" title="Permanent link">&para;</a></h3>
+<p>marcusg@uq.edu.au</p>
 <h2 id="author">Author<a class="headerlink" href="#author" title="Permanent link">&para;</a></h2>
-<p>Iván Olarte Rodríguez, Gokhan Serhat, Mariusz Bujny, Thomas Baeck, Elena Raponi</p></div>
+<p>Marcus Gallagher
+<em>No response</em></p></div>
 
   
 
@@ -264,11 +281,11 @@
   <hr>
   <p style="font-size: 0.9em;">
     💡 Found an issue?
-    <a href="https://github.com/TAI-src/how-to-tailor/issues/new?template=edit.yml&title=[Edit]%20examples/example_3.md&page=examples/example_3.md">
+    <a href="https://github.com/TAI-src/how-to-tailor/issues/new?template=edit.yml&title=[Edit]%20examples/example_23.md&page=examples/example_23.md">
       Suggest an edit
     </a>
     or
-    <a href="https://github.com/TAI-src/how-to-tailor/edit/main/how-to-tailor/docs/examples/example_3.md">
+    <a href="https://github.com/TAI-src/how-to-tailor/edit/main/how-to-tailor/docs/examples/example_23.md">
        Edit this page on GitHub
     </a>
   </p>
