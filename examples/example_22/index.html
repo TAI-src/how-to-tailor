@@ -6,9 +6,9 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         
         
-        <link rel="canonical" href="https://tai-src.github.io/how-to-tailor/examples/example_14/">
+        <link rel="canonical" href="https://tai-src.github.io/how-to-tailor/examples/example_22/">
         <link rel="shortcut icon" href="../../img/favicon.ico">
-        <title>Engine design optimization - How to Tailor</title>
+        <title>Kriging-Assisted Level Set Topology Optimization for Crashworthiness - How to Tailor</title>
         <link href="../../css/bootstrap.min.css" rel="stylesheet">
         <link href="../../css/fontawesome.min.css" rel="stylesheet">
         <link href="../../css/brands.min.css" rel="stylesheet">
@@ -75,7 +75,7 @@
 </li>
                                     
 <li>
-    <a href="./" class="dropdown-item active" aria-current="page">Engine design optimization</a>
+    <a href="../example_14/" class="dropdown-item">Engine design optimization</a>
 </li>
                                     
 <li>
@@ -111,7 +111,7 @@
 </li>
                                     
 <li>
-    <a href="../example_22/" class="dropdown-item">Kriging-Assisted Level Set Topology Optimization for Crashworthiness</a>
+    <a href="./" class="dropdown-item active" aria-current="page">Kriging-Assisted Level Set Topology Optimization for Crashworthiness</a>
 </li>
                                     
 <li>
@@ -152,12 +152,12 @@
                             </a>
                         </li>
                             <li class="nav-item">
-                                <a rel="prev" href="../example_13/" class="nav-link">
+                                <a rel="prev" href="../example_21/" class="nav-link">
                                     <i class="fa fa-arrow-left"></i> Previous
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a rel="next" href="../example_15/" class="nav-link">
+                                <a rel="next" href="../example_3/" class="nav-link">
                                     Next <i class="fa fa-arrow-right"></i>
                                 </a>
                             </li>
@@ -180,7 +180,7 @@
     <div id="toc-collapse" class="navbar-collapse collapse card bg-body-tertiary">
         <ul class="nav flex-column">
             
-            <li class="nav-item" data-bs-level="1"><a href="#engine-design-optimization" class="nav-link">Engine design optimization</a>
+            <li class="nav-item" data-bs-level="1"><a href="#kriging-assisted-level-set-topology-optimization-for-crashworthiness" class="nav-link">Kriging-Assisted Level Set Topology Optimization for Crashworthiness</a>
               <ul class="nav flex-column">
             <li class="nav-item" data-bs-level="2"><a href="#problem-description" class="nav-link">Problem Description</a>
               <ul class="nav flex-column">
@@ -221,38 +221,56 @@
 </div></div>
                     <div class="col-md-9" role="main">
 
-<h1 id="engine-design-optimization"><a href="https://doi.org/10.1016/j.ejor.2022.08.032">Engine design optimization</a><a class="headerlink" href="#engine-design-optimization" title="Permanent link">&para;</a></h1>
+<h1 id="kriging-assisted-level-set-topology-optimization-for-crashworthiness"><a href="https://www.sciencedirect.com/science/article/pii/S0045782519300726">Kriging-Assisted Level Set Topology Optimization for Crashworthiness</a><a class="headerlink" href="#kriging-assisted-level-set-topology-optimization-for-crashworthiness" title="Permanent link">&para;</a></h1>
 <h2 id="problem-description">Problem Description<a class="headerlink" href="#problem-description" title="Permanent link">&para;</a></h2>
-<p>Optimization of the hardware and control system for a new 1.0 litre 3-cylinder gasoline direct injection (GDI) turbocharged engine with a low-pressure exhaust gas recirculation (LP EGR) system for Ford Motor Company
-A multi-objective optimization problem seeking to minimize fuel consumption and NOx emissions over a two-minute dynamic duty cycle, subject to five constraints (turbine inlet temperature, number of knock occurrences, peak cylinder pressure, peak cylinder pressure rise, total work). Seven decision variables are defined: four define the hardware choices of cylinder compression ratio, turbo machinery and EGR cooler sizing; three relate to control variables that parameterise the engine control logic.</p>
+<p>The problem concerns topology optimization of mechanical structures under static and dynamic loading, with particular focus on crashworthiness. The goal is to determine the optimal material distribution within a prescribed design domain while satisfying a volume constraint and structural connectivity requirements.
+In the static case, compliance minimization of a cantilever beam is considered. In the dynamic crash case, the objective is to minimize pole intrusion during impact, modeled via nonlinear finite element simulations.
+The structure is represented using Moving Morphable Components (MMCs) embedded in a Level Set framework, resulting in a reduced design space. Evaluations require high-fidelity FEM simulations (CalculiX or LS-DYNA), making each function call computationally expensive.
+<a href="https://github.com/user-attachments/files/25231852/Raponi.et.al.-.2019.-.Kriging-assisted.topology.optimization.of.crash.st.pdf">Raponi et al. - 2019 - Kriging-assisted topology optimization of crash st.pdf</a></p>
 <h2 id="why-was-tailoring-needed">Why was tailoring needed?<a class="headerlink" href="#why-was-tailoring-needed" title="Permanent link">&para;</a></h2>
-<p>Combination of problem features not yet addressed by an available algorithm: multi-objective, constrained, mixed-integer, expensive</p>
+<p>The first reason why tailoring was needed was to reduce the dimensionality of the problem. A level-set based parametrization using MMCs allows to control multiple points of a discretized design space (on which we want to find the optimal material distribution) simultaneously.
+The second reason was to enforce connectivity (inactive) and volume (active) constraints efficiently, in order to avoid wasting expensive evaluations in infeasible regions.</p>
 <h2 id="baseline-algorithm">Baseline algorithm<a class="headerlink" href="#baseline-algorithm" title="Permanent link">&para;</a></h2>
-<p>ParEGO (was already implemented in the Tigon library that underpins our Liger open-source MCDM workflow tool being developed in collaboration with Ford)</p>
+<p>The baseline algorithm is the standard Efficient Global Optimization (EGO) framework, belonging to the Bayesian optimization (BO) algorithm class, using:
+- Initial Design of Experiments (Optimal Latin Hypercube Sampling),
+- Kriging/Gaussian process regression (GPR) surrogate modeling with MLE hyperparameter estimation,
+- Standard Expected Improvement (EI) acquisition function,
+- Infill point selection via global optimization (Differential Evolution),
+For comparison, CMA-ES with exterior penalty for constraints was also used as a non-surrogate baseline.
+The choice of the BO algorithm was dictated by the high cost of function evaluations, that are based on runs of a numerical simulator. BO is particularly well suited for low-budget scenarios.</p>
 <h2 id="tailoring-process">Tailoring process<a class="headerlink" href="#tailoring-process" title="Permanent link">&para;</a></h2>
+<h3 id="parametrization">PARAMETRIZATION:<a class="headerlink" href="#parametrization" title="Permanent link">&para;</a></h3>
+<p>The structural parametrization was critical to make surrogate-based optimization feasible. 
+- A natural starting point in topology optimization is a density-based representation (e.g., SIMP), where each finite element has an associated density variable. This makes the number of variables extremely large (thousands of elements) and GPR surrogates (and BO in general) scale poorly in high dimensions.
+- To enable surrogate modeling, the representation was tailored to use Moving Morphable Components (MMCs) within a Level Set framework. A drawback of this parametrization is that it is heavily tailored to the application because it only allows for obtaining beam-like structures (for example, car chassis portions) which does not cover different types of material distributions, required by other specific applications.</p>
+<h3 id="constraints">CONSTRAINTS:<a class="headerlink" href="#constraints" title="Permanent link">&para;</a></h3>
 <ul>
-<li>The Tigon ParEGO implementation uses ACROMUSE as the internal optimizer (this is standard for Tigon but not the vanilla ParEGO)</li>
-<li>Integrated two constraint handling alternatives: penalty function and probability of feasibility (the penalty function approach turned out to be more effective)</li>
-<li>For the mixed integer representation, the surrogate assumed a continuous surface based on an integer coding, but ACROMUSE was fitted with existing discrete variation operators from the literature: Yu &amp; Gen’s discrete crossover and Rudolph’s discrete mutation</li>
-<li>For the evaluation, we collaborated with Hartree to develop an HPC plug-in for the Liger workflow software</li>
-<li>Benchmarking (against existing Ford methods: DoE and NSGA-II) was done using the speed reducer and OSY problems (which have similar features to the real-world problem, although only the speed reducer problem has a (single) discrete decision variable)</li>
+<li>Initial attempt: Standard EI not considering connectivity constraint. Applying standard EGO with standard constrained expected improvement (CEI) only considering the volume (active) constraint still led to many infill points in disconnected regions. CEI uses a probabilistic model of the volume constraint and combines it multiplicatively with EI to guide search toward feasible regions. Most likely this initial attempt did not work because of the out-of-scale objective values of disconnected structures, which were difficult to model by the surrogate model. This wasted expensive evaluations.</li>
+<li>Filtering infeasible DoE samples: Infeasible designs were removed before surrogate construction. This improved model quality but did not prevent infeasible infill proposals.</li>
+<li>Penalty inside objective (unsuccessful for crash case): Adding penalty terms directly to the objective degraded surrogate quality and created landscapes alternating almost flat landscapes and high jumps at the boundaries between feasibility and feasibility, which hindered acquisition optimization.</li>
+<li>Development of Expected Improvement for Connected Designs (EICD): A graph-based connectivity check was introduced. Disconnected candidates were penalized at the acquisition level rather than the objective level. This avoided FEM calls for infeasible structures. This worked and the tailoring (connectivity check) was highly specific to the considered application.</li>
+<li>Final combined acquisition (EICD + CEI): The tailored acquisition ensured both connectivity and volume feasibility before committing to expensive FEM evaluation. These two constraints were handled with different techniques, EICD and CEI respectively, because of their different way of influencing the search of the optimum. Not standard practice. This progression led to a significantly improved convergence behavior under the limited evaluation budget.</li>
 </ul>
 <h2 id="what-was-tailored">What was tailored<a class="headerlink" href="#what-was-tailored" title="Permanent link">&para;</a></h2>
-<p><em>No response</em></p>
-<h2 id="main-problem-characteristics">Main problem characteristics<a class="headerlink" href="#main-problem-characteristics" title="Permanent link">&para;</a></h2>
 <ul>
-<li>Multi-objective (discovered post hoc to have a convex Pareto front - we used an infinity norm for the scalarising function but the problem would likely benefit from using the 1-norm)</li>
-<li>Constrained (discovered post hoc that four constraints are active)</li>
-<li>Mixed-integer (four discrete and three continuous)</li>
-<li>Expensive (several hours to evaluate a single design over HPC; nominal budget of 500 design alternatives)</li>
-<li>Nominal candidate design available (which turned out to be dominated)</li>
+<li>Acquisition function: Modified from standard EI to Expected Improvement for Connected Designs (EICD), Constrained Expected Improvement (CEI), and a final combined feasibility-aware acquisition (EICD + CEI).</li>
+<li>Constraint handling: Connectivity handled at acquisition level using graph-based representation.Volume handled probabilistically via surrogate modeling.</li>
+<li>Problem representation: Adoption of Moving Morphable Components within a Level Set framework to reduce dimensionality and make surrogate modeling tractable.</li>
+<li>Initialization strategy: Feasible-only DoE filtering.
+The surrogate model itself (Kriging) and the algorithm used to optimize the acquisition function (DE) remained standard; tailoring focused on feasibility-aware infill and structural representation.</li>
 </ul>
+<h2 id="main-problem-characteristics">Main problem characteristics<a class="headerlink" href="#main-problem-characteristics" title="Permanent link">&para;</a></h2>
+<p>engineering, topology optimization, nonlinear, expensive evaluations, high-dimensional, discontinuous</p>
 <h2 id="references">References<a class="headerlink" href="#references" title="Permanent link">&para;</a></h2>
-<p>https://doi.org/10.1016/j.ejor.2022.08.032; https://doi.org/10.1016/j.asoc.2020.106851; https://github.com/ligerdev/liger; https://www.apcuk.co.uk/impact/funded-projects/ford-motor-company-dynamo/ (note that the engine model is proprietary to Ford; the model was developed by collaborators at the University of Bath as part of the project and is implemented in Mathworks Matlab Simulink, including a physics-based co-simulation model developed in Ricardo WAVE-RT).</p>
+<p>X. Guo, W. Zhang, W. Zhong, Doing topology optimization explicitly and geometrically - A new moving morphable components based
+framework, J. Appl. Mech. 81 (8) (2014) 081009, http://dx.doi.org/10.1115/1.4027609.
+M.P. Bendsøe, O. Sigmund, Topology Optimization - Theory, Methods, and Applications, second ed., Springer, 2004.
+M. Bujny, N. Aulig, M. Olhofer, F. Duddeck, Identification of optimal topologies for crashworthiness with the evolutionary level set method,
+Int. J. Crashworthiness 23 (4) (2018) 395–416, http://dx.doi.org/10.1080/13588265.2017.1331493.</p>
 <h3 id="contact-information-optional">Contact information (optional)<a class="headerlink" href="#contact-information-optional" title="Permanent link">&para;</a></h3>
-<p><em>No response</em></p>
+<p>e.raponi@liacs.leidenuniv.nl</p>
 <h2 id="author">Author<a class="headerlink" href="#author" title="Permanent link">&para;</a></h2>
-<p>Robin Purshouse
+<p>Elena Raponi
 <em>No response</em></p></div>
 
   
@@ -265,11 +283,11 @@ A multi-objective optimization problem seeking to minimize fuel consumption and 
   <hr>
   <p style="font-size: 0.9em;">
     💡 Found an issue?
-    <a href="https://github.com/TAI-src/how-to-tailor/issues/new?template=edit.yml&title=[Edit]%20examples/example_14.md&page=examples/example_14.md">
+    <a href="https://github.com/TAI-src/how-to-tailor/issues/new?template=edit.yml&title=[Edit]%20examples/example_22.md&page=examples/example_22.md">
       Suggest an edit
     </a>
     or
-    <a href="https://github.com/TAI-src/how-to-tailor/edit/main/how-to-tailor/docs/examples/example_14.md">
+    <a href="https://github.com/TAI-src/how-to-tailor/edit/main/how-to-tailor/docs/examples/example_22.md">
        Edit this page on GitHub
     </a>
   </p>
