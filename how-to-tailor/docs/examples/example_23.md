@@ -4,7 +4,7 @@ authors:
   - Marcus Gallagher
 date: 2026-02-11
 link: https://marcusgal.github.io/ess_clustering.html
-id: 20
+id: 23
 ---
 
 # [Sum of squares data clustering problems](https://marcusgal.github.io/ess_clustering.html)
