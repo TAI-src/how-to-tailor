@@ -4,7 +4,7 @@ authors:
   - Juergen Branke
 date: 2026-02-11
 link: https://www.tandfonline.com/doi/abs/10.1080/00207540500077140
-id: 20
+id: 25
 ---
 
 # [Anticipation and flexibility in dynamic scheduling](https://www.tandfonline.com/doi/abs/10.1080/00207540500077140)
