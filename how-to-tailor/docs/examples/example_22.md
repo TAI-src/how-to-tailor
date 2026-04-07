@@ -4,7 +4,7 @@ authors:
   - Elena Raponi
 date: 2026-02-11
 link: https://www.sciencedirect.com/science/article/pii/S0045782519300726
-id: 20
+id: 22
 ---
 
 # [Kriging-Assisted Level Set Topology Optimization for Crashworthiness](https://www.sciencedirect.com/science/article/pii/S0045782519300726)
