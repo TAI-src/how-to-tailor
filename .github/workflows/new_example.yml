@@ -13,8 +13,6 @@ jobs:
       - name: Parse issue fields and export
         shell: bash
         run: |
-          BODY="${{ github.event.issue.body }}"
-
           # Fields and headers
           FIELDS=("AUTHOR" "LINK" "PROBLEM" "WHY" "BASELINE" "PROCESS" "WHAT" "CHAR" "REFERENCES" "CONTACT")
           HEADERS=("Author Name" "Link to publication / code" "Problem description" "Why was tailoring needed?" "Baseline algorithm" "Tailoring process" "What was tailored?" "Main problem characteristics" "References" "Contact information (optional)")
@@ -53,6 +51,8 @@ jobs:
           done
           # Also export the list of fields for later iteration
           echo "FIELDS=${FIELDS[*]}" >> $GITHUB_ENV
+        env:
+            BODY: ${{ github.event.issue.body }}
 
       - name: Create Markdown from template
         run: |
