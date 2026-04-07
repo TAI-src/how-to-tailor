@@ -28,11 +28,11 @@ The workshop targets researchers and practitioners working on optimization for r
 
 ## Submission Details
 
-We solicit submissions in the form of extended abstracts (max 2 A4 pages, references excluded) describing real-world optimization problems, modeling choices, or tailoring experiences. Contributions may include practical case studies, methodological insights, or reflections on challenges encountered in real-world settings.
+We solicit submissions in the form of extended abstracts (max 4 pages, references included) describing real-world optimization problems, modeling choices, or tailoring experiences. Contributions may include practical case studies, methodological insights, or reflections on challenges encountered in real-world settings. Please follow the [PPSN submission guidelines](https://ppsn2026.disi.unitn.it/#calls).
 
 Accepted contributions will be presented as short talks (10 + 5 minutes) and will feed into the interactive sessions and panel discussions of the workshop.
 
-Please submit a plain-text document by email to Elena Raponi (e.raponi@liacs.leidenuniv.nl) with a message header following the format [PPSN26: TAILORING WORKSHOP].
+Please submit a PDF document by email to Elena Raponi (e.raponi@liacs.leidenuniv.nl) with a message header following the format [PPSN26: TAILORING WORKSHOP].
 
 ## Contact details and short CV of the organizers
 
