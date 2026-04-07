@@ -6,9 +6,9 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         
         
-        <link rel="canonical" href="https://tai-src.github.io/how-to-tailor/examples/example_14/">
+        <link rel="canonical" href="https://tai-src.github.io/how-to-tailor/examples/example_26/">
         <link rel="shortcut icon" href="../../img/favicon.ico">
-        <title>Engine design optimization - How to Tailor</title>
+        <title>Flexible jobs shop scheduling with additional constraints - How to Tailor</title>
         <link href="../../css/bootstrap.min.css" rel="stylesheet">
         <link href="../../css/fontawesome.min.css" rel="stylesheet">
         <link href="../../css/brands.min.css" rel="stylesheet">
@@ -75,7 +75,7 @@
 </li>
                                     
 <li>
-    <a href="./" class="dropdown-item active" aria-current="page">Engine design optimization</a>
+    <a href="../example_14/" class="dropdown-item">Engine design optimization</a>
 </li>
                                     
 <li>
@@ -127,7 +127,7 @@
 </li>
                                     
 <li>
-    <a href="../example_26/" class="dropdown-item">Flexible jobs shop scheduling with additional constraints</a>
+    <a href="./" class="dropdown-item active" aria-current="page">Flexible jobs shop scheduling with additional constraints</a>
 </li>
                                     
 <li>
@@ -168,12 +168,12 @@
                             </a>
                         </li>
                             <li class="nav-item">
-                                <a rel="prev" href="../example_13/" class="nav-link">
+                                <a rel="prev" href="../example_25/" class="nav-link">
                                     <i class="fa fa-arrow-left"></i> Previous
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a rel="next" href="../example_15/" class="nav-link">
+                                <a rel="next" href="../example_3/" class="nav-link">
                                     Next <i class="fa fa-arrow-right"></i>
                                 </a>
                             </li>
@@ -196,7 +196,7 @@
     <div id="toc-collapse" class="navbar-collapse collapse card bg-body-tertiary">
         <ul class="nav flex-column">
             
-            <li class="nav-item" data-bs-level="1"><a href="#engine-design-optimization" class="nav-link">Engine design optimization</a>
+            <li class="nav-item" data-bs-level="1"><a href="#flexible-jobs-shop-scheduling-with-additional-constraints" class="nav-link">Flexible jobs shop scheduling with additional constraints</a>
               <ul class="nav flex-column">
             <li class="nav-item" data-bs-level="2"><a href="#problem-description" class="nav-link">Problem Description</a>
               <ul class="nav flex-column">
@@ -237,38 +237,29 @@
 </div></div>
                     <div class="col-md-9" role="main">
 
-<h1 id="engine-design-optimization"><a href="https://doi.org/10.1016/j.ejor.2022.08.032">Engine design optimization</a><a class="headerlink" href="#engine-design-optimization" title="Permanent link">&para;</a></h1>
+<h1 id="flexible-jobs-shop-scheduling-with-additional-constraints"><a href="https://scholar.google.com/citations?view_op=view_citation&amp;hl=en&amp;user=_Fm9-S8AAAAJ&amp;cstart=20&amp;pagesize=80&amp;sortby=pubdate&amp;citation_for_view=_Fm9-S8AAAAJ:2osOgNQ5qMEC">Flexible jobs shop scheduling with additional constraints</a><a class="headerlink" href="#flexible-jobs-shop-scheduling-with-additional-constraints" title="Permanent link">&para;</a></h1>
 <h2 id="problem-description">Problem Description<a class="headerlink" href="#problem-description" title="Permanent link">&para;</a></h2>
-<p>Optimization of the hardware and control system for a new 1.0 litre 3-cylinder gasoline direct injection (GDI) turbocharged engine with a low-pressure exhaust gas recirculation (LP EGR) system for Ford Motor Company
-A multi-objective optimization problem seeking to minimize fuel consumption and NOx emissions over a two-minute dynamic duty cycle, subject to five constraints (turbine inlet temperature, number of knock occurrences, peak cylinder pressure, peak cylinder pressure rise, total work). Seven decision variables are defined: four define the hardware choices of cylinder compression ratio, turbo machinery and EGR cooler sizing; three relate to control variables that parameterise the engine control logic.</p>
+<p>Flexible job shop scheduling problem with sequence-dependent setup times.</p>
 <h2 id="why-was-tailoring-needed">Why was tailoring needed?<a class="headerlink" href="#why-was-tailoring-needed" title="Permanent link">&para;</a></h2>
-<p>Combination of problem features not yet addressed by an available algorithm: multi-objective, constrained, mixed-integer, expensive</p>
+<p>Many constraints and multi-objective.</p>
 <h2 id="baseline-algorithm">Baseline algorithm<a class="headerlink" href="#baseline-algorithm" title="Permanent link">&para;</a></h2>
-<p>ParEGO (was already implemented in the Tigon library that underpins our Liger open-source MCDM workflow tool being developed in collaboration with Ford)</p>
+<p>GCPSO</p>
 <h2 id="tailoring-process">Tailoring process<a class="headerlink" href="#tailoring-process" title="Permanent link">&para;</a></h2>
-<ul>
-<li>The Tigon ParEGO implementation uses ACROMUSE as the internal optimizer (this is standard for Tigon but not the vanilla ParEGO)</li>
-<li>Integrated two constraint handling alternatives: penalty function and probability of feasibility (the penalty function approach turned out to be more effective)</li>
-<li>For the mixed integer representation, the surrogate assumed a continuous surface based on an integer coding, but ACROMUSE was fitted with existing discrete variation operators from the literature: Yu &amp; Gen’s discrete crossover and Rudolph’s discrete mutation</li>
-<li>For the evaluation, we collaborated with Hartree to develop an HPC plug-in for the Liger workflow software</li>
-<li>Benchmarking (against existing Ford methods: DoE and NSGA-II) was done using the speed reducer and OSY problems (which have similar features to the real-world problem, although only the speed reducer problem has a (single) discrete decision variable)</li>
-</ul>
+<p>The first attempt at handling the constraints was done by means of a penalty function which ended in disaster. All the computational time was used to obtain a feasible solution. Then, a heuristic was implemented to convert the continuous problem representation (job priorities) into a schedule - remaining within the feasible space.</p>
 <h2 id="what-was-tailored">What was tailored<a class="headerlink" href="#what-was-tailored" title="Permanent link">&para;</a></h2>
-<p><em>No response</em></p>
+<p>Encoding of continuous solutions to discrete schedules.</p>
 <h2 id="main-problem-characteristics">Main problem characteristics<a class="headerlink" href="#main-problem-characteristics" title="Permanent link">&para;</a></h2>
 <ul>
-<li>Multi-objective (discovered post hoc to have a convex Pareto front - we used an infinity norm for the scalarising function but the problem would likely benefit from using the 1-norm)</li>
-<li>Constrained (discovered post hoc that four constraints are active)</li>
-<li>Mixed-integer (four discrete and three continuous)</li>
-<li>Expensive (several hours to evaluate a single design over HPC; nominal budget of 500 design alternatives)</li>
-<li>Nominal candidate design available (which turned out to be dominated)</li>
+<li>Discrete variables</li>
+<li>Many constraints</li>
+<li>Multi-objective</li>
 </ul>
 <h2 id="references">References<a class="headerlink" href="#references" title="Permanent link">&para;</a></h2>
-<p>https://doi.org/10.1016/j.ejor.2022.08.032; https://doi.org/10.1016/j.asoc.2020.106851; https://github.com/ligerdev/liger; https://www.apcuk.co.uk/impact/funded-projects/ford-motor-company-dynamo/ (note that the engine model is proprietary to Ford; the model was developed by collaborators at the University of Bath as part of the project and is implemented in Mathworks Matlab Simulink, including a physics-based co-simulation model developed in Ricardo WAVE-RT).</p>
-<h3 id="contact-information-optional">Contact information (optional)<a class="headerlink" href="#contact-information-optional" title="Permanent link">&para;</a></h3>
 <p><em>No response</em></p>
+<h3 id="contact-information-optional">Contact information (optional)<a class="headerlink" href="#contact-information-optional" title="Permanent link">&para;</a></h3>
+<p>jacomine.grobler@gmail.com</p>
 <h2 id="author">Author<a class="headerlink" href="#author" title="Permanent link">&para;</a></h2>
-<p>Robin Purshouse
+<p>Jacomine Grobler
 <em>No response</em></p></div>
 
   
@@ -281,11 +272,11 @@ A multi-objective optimization problem seeking to minimize fuel consumption and 
   <hr>
   <p style="font-size: 0.9em;">
     💡 Found an issue?
-    <a href="https://github.com/TAI-src/how-to-tailor/issues/new?template=edit.yml&title=[Edit]%20examples/example_14.md&page=examples/example_14.md">
+    <a href="https://github.com/TAI-src/how-to-tailor/issues/new?template=edit.yml&title=[Edit]%20examples/example_26.md&page=examples/example_26.md">
       Suggest an edit
     </a>
     or
-    <a href="https://github.com/TAI-src/how-to-tailor/edit/main/how-to-tailor/docs/examples/example_14.md">
+    <a href="https://github.com/TAI-src/how-to-tailor/edit/main/how-to-tailor/docs/examples/example_26.md">
        Edit this page on GitHub
     </a>
   </p>
