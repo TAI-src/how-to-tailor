@@ -1,5 +1,5 @@
 ---
-title: Optimizing bags of points : example of the windfarm layout optimization
+title: Optimizing bags of points - example of the windfarm layout optimization
 authors:
   - Rodolphe Le Riche
 date: 2026-02-11
