@@ -4,7 +4,7 @@ authors:
   - Tobias Glasmachers
 date: 2026-02-11
 link: _No response_
-id: 20
+id: 21
 ---
 
 # [Tune SVM with Gaussian Kernel](_No response_)
