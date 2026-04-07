@@ -4,7 +4,7 @@ authors:
   - Jacomine Grobler
 date: 2026-02-11
 link: https://scholar.google.com/citations?view_op=view_citation&hl=en&user=_Fm9-S8AAAAJ&cstart=20&pagesize=80&sortby=pubdate&citation_for_view=_Fm9-S8AAAAJ:2osOgNQ5qMEC
-id: 20
+id: 26
 ---
 
 # [Flexible jobs shop scheduling with additional constraints](https://scholar.google.com/citations?view_op=view_citation&hl=en&user=_Fm9-S8AAAAJ&cstart=20&pagesize=80&sortby=pubdate&citation_for_view=_Fm9-S8AAAAJ:2osOgNQ5qMEC)
