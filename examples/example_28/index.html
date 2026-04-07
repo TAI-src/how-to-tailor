@@ -6,9 +6,9 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         
         
-        <link rel="canonical" href="https://tai-src.github.io/how-to-tailor/examples/example_21/">
+        <link rel="canonical" href="https://tai-src.github.io/how-to-tailor/examples/example_28/">
         <link rel="shortcut icon" href="../../img/favicon.ico">
-        <title>Tune SVM with Gaussian Kernel - How to Tailor</title>
+        <title>Optimal control of combined heat and power station operation - How to Tailor</title>
         <link href="../../css/bootstrap.min.css" rel="stylesheet">
         <link href="../../css/fontawesome.min.css" rel="stylesheet">
         <link href="../../css/brands.min.css" rel="stylesheet">
@@ -107,7 +107,7 @@
 </li>
                                     
 <li>
-    <a href="./" class="dropdown-item active" aria-current="page">Tune SVM with Gaussian Kernel</a>
+    <a href="../example_21/" class="dropdown-item">Tune SVM with Gaussian Kernel</a>
 </li>
                                     
 <li>
@@ -135,7 +135,7 @@
 </li>
                                     
 <li>
-    <a href="../example_28/" class="dropdown-item">Optimal control of combined heat and power station operation</a>
+    <a href="./" class="dropdown-item active" aria-current="page">Optimal control of combined heat and power station operation</a>
 </li>
                                     
 <li>
@@ -176,12 +176,12 @@
                             </a>
                         </li>
                             <li class="nav-item">
-                                <a rel="prev" href="../example_20/" class="nav-link">
+                                <a rel="prev" href="../example_27/" class="nav-link">
                                     <i class="fa fa-arrow-left"></i> Previous
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a rel="next" href="../example_22/" class="nav-link">
+                                <a rel="next" href="../example_3/" class="nav-link">
                                     Next <i class="fa fa-arrow-right"></i>
                                 </a>
                             </li>
@@ -204,7 +204,7 @@
     <div id="toc-collapse" class="navbar-collapse collapse card bg-body-tertiary">
         <ul class="nav flex-column">
             
-            <li class="nav-item" data-bs-level="1"><a href="#tune-svm-with-gaussian-kernel" class="nav-link">Tune SVM with Gaussian Kernel</a>
+            <li class="nav-item" data-bs-level="1"><a href="#optimal-control-of-combined-heat-and-power-station-operation" class="nav-link">Optimal control of combined heat and power station operation</a>
               <ul class="nav flex-column">
             <li class="nav-item" data-bs-level="2"><a href="#problem-description" class="nav-link">Problem Description</a>
               <ul class="nav flex-column">
@@ -245,41 +245,30 @@
 </div></div>
                     <div class="col-md-9" role="main">
 
-<h1 id="tune-svm-with-gaussian-kernel"><a href="_No response_">Tune SVM with Gaussian Kernel</a><a class="headerlink" href="#tune-svm-with-gaussian-kernel" title="Permanent link">&para;</a></h1>
+<h1 id="optimal-control-of-combined-heat-and-power-station-operation"><a href="https://doi.org/10.1007/s11081-023-09848-2">Optimal control of combined heat and power station operation</a><a class="headerlink" href="#optimal-control-of-combined-heat-and-power-station-operation" title="Permanent link">&para;</a></h1>
 <h2 id="problem-description">Problem Description<a class="headerlink" href="#problem-description" title="Permanent link">&para;</a></h2>
-<p>When training a support vector machine with Gaussian kernel, (at least) two parameters need tuning: the regularization parameter $ and the parameter $\gamma$ of the Gaussian kernel (x, x') = \exp(-\gamma |x'-x|^2)$. We have a large body of prior knowledge about this problem, partly coming from experience, partly from theoretical analysis.</p>
+<p>Scheduling of the operations of an combined heat and power station (used in a district heating network).</p>
 <h2 id="why-was-tailoring-needed">Why was tailoring needed?<a class="headerlink" href="#why-was-tailoring-needed" title="Permanent link">&para;</a></h2>
-<p>Tailoring makes sense because there is a lot of prior knowledge that can be exploitet. When done naively, the runtime can be excessive, and it is dominated by very few evaluations.
-The kernel parameter $\sigma$ is related to $\gamma$ through $\gamma = \frac{1}{2\sigma^2}$. A good starting point for $\sigma$ is a quantile of the distribution of pairwise distances of data points, but it may deviate by, say, an order of magniture. On the other hand, there is no good guideline for an initial value or a range of $.
-The parameters do not need high precision. Both of them can be restricted to a grid on a log-scale, i.e., to powers of two. This also indicates that we may wish to work with $\log_2(C)$ and $\log_2(\gamma)$, restricted to the lattice $\mathbb{Z}^2$.
-A wider kernel (smaller $\gamma$) usually requires a larger value of $, and the relationship is roughly linear on the log-scale: good configurations are usually found on a line of the form $\log(C) + \log(\gamma) = \text{const}$.
-The established (naive) standard procedure for tuning the parameters is grid search, with a validation (or cross-validation) error as the objective function. The landscape is typically (mostly) unimodal, with the bottom of the valley mostly consisting of noise (static noise coming from the data split for cross validation). There may be a (bad) local optimum at one of the bounds, in the form of an unbounded plateau, corresponding to undesirable classifiers (constrant classifier following the majority class, or one-nearest-neighbor). It is easy to check such solutions and to stop the grid from extending further in that direction.
-The evalation time can depend in an extremely non-linear fashion on the configuration, ranging from seconds to days. Training a single model with small $\gamma$ and large $ often takes the lion's share of the overall time. Evaluating such configurations without need should therefore be avoided.</p>
+<p>One could possibly write the whole problem as one large mixed-integer programming problem and try and use an off-the-shelf solver. The problem with this approach is twofold - coming up with a proper formulation is nontrivial and the resulting problem will be very large (in terms of numbers of variables, constraints).</p>
 <h2 id="baseline-algorithm">Baseline algorithm<a class="headerlink" href="#baseline-algorithm" title="Permanent link">&para;</a></h2>
-<p>The baseline is to run grid search with a step size of one on a rather large grid, or on a grid that extends dynamically if the optimum is on the boundary. Since grid search is embarassingly parallel, multi-core systems can be leveraged.</p>
+<p>N/A</p>
 <h2 id="tailoring-process">Tailoring process<a class="headerlink" href="#tailoring-process" title="Permanent link">&para;</a></h2>
-<p>All of the above can be cast into an optimiization strategy as follows: start with a coarse grid search on a wide grid, say, in steps of three (factors of ^3 = 8$), centered on a reasonable guess for $\gamma$ based on the data and on  = 1$. Extend the grid as long as the optimum is on the boundary, hence avoinding computationally costly data points unless the objective guides us there. Once we found a local optimum, refine the grid to a step size of one. Reuse solutions already evaluated on the coarse grid. Potentially refine by moving along the above-mentioned diagonal.
-Of course, the problem can also be solved with an EA, with Bayesian optimization, or other techniques. In that case, the log-encoding should be used and the step size should be lower bounded by one. Care should be taken to avoid the evaluation of unnecessarily expensive data points.</p>
+<p>The tailoring process entailed decomposition of the problem into two separate levels that could both be efficiently solved by standard methods. 
+The lower-level (optimal operational setup for a given configuration) was a small-scale MILP that was solved by multiparametric programming (https://en.wikipedia.org/wiki/Parametric_programming, specifically MPT3 https://www.mpt3.org/). 
+The upper-level problem (scheduling of the operations of specific parts of the system) could then be formulated as a dynamic programming problem and solved by a standard DP routine (there was uncertainty in the formulation, but it only concerned the objective values, not the state transitions, so the algorithm could also be run in a forward regime).
+The (possibly infinite-time) problem was then solved in a standard rolling-horizon fashion.
+Possible pitfalls
+The main pitfall in the approach is the assumption that the state space for the upper level problem is not too large. Adding components that need to be considered in the upper level problem leads to exponential explosion of the state space (the "curse of dimensionality" in DP). There are approaches to address this, but would require substantial modification of the upper-level problem.</p>
 <h2 id="what-was-tailored">What was tailored<a class="headerlink" href="#what-was-tailored" title="Permanent link">&para;</a></h2>
-<ul>
-<li>problem encoding, using log-scale for both variables</li>
-<li>multi-stage strategy, coarse to fine</li>
-<li>avoid extremely costly evaluations if possible</li>
-</ul>
+<p>Problem formulation, decomposition and selection of appropriate methods.</p>
 <h2 id="main-problem-characteristics">Main problem characteristics<a class="headerlink" href="#main-problem-characteristics" title="Permanent link">&para;</a></h2>
-<ul>
-<li>mostly unimodal structure</li>
-<li>a bit noisy, so fine-tuning is meaningless</li>
-<li>reasonable starting point and range known for one parameter</li>
-<li>target precision is known</li>
-<li>evaluation costs depend on the search point, with extreme differences</li>
-</ul>
+<p>operational scheduling; time-depended constraints; energy system</p>
 <h2 id="references">References<a class="headerlink" href="#references" title="Permanent link">&para;</a></h2>
-<p>There is excessive literature on tuning SVM kernel parameters with various methods, e.g., by minimizing generalization bounds. However, the robust standard techique of grid search and cross-validation is featured in many papers, most of which focus on something else in their experiments.</p>
-<h3 id="contact-information-optional">Contact information (optional)<a class="headerlink" href="#contact-information-optional" title="Permanent link">&para;</a></h3>
 <p><em>No response</em></p>
+<h3 id="contact-information-optional">Contact information (optional)<a class="headerlink" href="#contact-information-optional" title="Permanent link">&para;</a></h3>
+<p>jakub.kudela@vutbr.cz</p>
 <h2 id="author">Author<a class="headerlink" href="#author" title="Permanent link">&para;</a></h2>
-<p>Tobias Glasmachers
+<p>Jakub Kudela
 <em>No response</em></p></div>
 
   
@@ -292,11 +281,11 @@ Of course, the problem can also be solved with an EA, with Bayesian optimization
   <hr>
   <p style="font-size: 0.9em;">
     💡 Found an issue?
-    <a href="https://github.com/TAI-src/how-to-tailor/issues/new?template=edit.yml&title=[Edit]%20examples/example_21.md&page=examples/example_21.md">
+    <a href="https://github.com/TAI-src/how-to-tailor/issues/new?template=edit.yml&title=[Edit]%20examples/example_28.md&page=examples/example_28.md">
       Suggest an edit
     </a>
     or
-    <a href="https://github.com/TAI-src/how-to-tailor/edit/main/how-to-tailor/docs/examples/example_21.md">
+    <a href="https://github.com/TAI-src/how-to-tailor/edit/main/how-to-tailor/docs/examples/example_28.md">
        Edit this page on GitHub
     </a>
   </p>
