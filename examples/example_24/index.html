@@ -6,9 +6,9 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         
         
-        <link rel="canonical" href="https://tai-src.github.io/how-to-tailor/examples/example_15/">
+        <link rel="canonical" href="https://tai-src.github.io/how-to-tailor/examples/example_24/">
         <link rel="shortcut icon" href="../../img/favicon.ico">
-        <title>Electric Motor Design Optimization - How to Tailor</title>
+        <title>Example 24 - How to Tailor</title>
         <link href="../../css/bootstrap.min.css" rel="stylesheet">
         <link href="../../css/fontawesome.min.css" rel="stylesheet">
         <link href="../../css/brands.min.css" rel="stylesheet">
@@ -79,7 +79,7 @@
 </li>
                                     
 <li>
-    <a href="./" class="dropdown-item active" aria-current="page">Electric Motor Design Optimization</a>
+    <a href="../example_15/" class="dropdown-item">Electric Motor Design Optimization</a>
 </li>
                                     
 <li>
@@ -119,7 +119,7 @@
 </li>
                                     
 <li>
-    <a href="../example_24/" class="dropdown-item">Example 24</a>
+    <a href="./" class="dropdown-item active" aria-current="page">Example 24</a>
 </li>
                                     
 <li>
@@ -160,12 +160,12 @@
                             </a>
                         </li>
                             <li class="nav-item">
-                                <a rel="prev" href="../example_14/" class="nav-link">
+                                <a rel="prev" href="../example_23/" class="nav-link">
                                     <i class="fa fa-arrow-left"></i> Previous
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a rel="next" href="../example_16/" class="nav-link">
+                                <a rel="next" href="../example_3/" class="nav-link">
                                     Next <i class="fa fa-arrow-right"></i>
                                 </a>
                             </li>
@@ -188,7 +188,7 @@
     <div id="toc-collapse" class="navbar-collapse collapse card bg-body-tertiary">
         <ul class="nav flex-column">
             
-            <li class="nav-item" data-bs-level="1"><a href="#electric-motor-design-optimization" class="nav-link">Electric Motor Design Optimization</a>
+            <li class="nav-item" data-bs-level="1"><a href="#optimizing-bags-of-points-example-of-the-windfarm-layout-optimization" class="nav-link">Optimizing bags of points : example of the windfarm layout optimization</a>
               <ul class="nav flex-column">
             <li class="nav-item" data-bs-level="2"><a href="#problem-description" class="nav-link">Problem Description</a>
               <ul class="nav flex-column">
@@ -229,43 +229,45 @@
 </div></div>
                     <div class="col-md-9" role="main">
 
-<h1 id="electric-motor-design-optimization"><a href="https://dis.ijs.si/tea/Publications/Tusar23Multistep.pdf">Electric Motor Design Optimization</a><a class="headerlink" href="#electric-motor-design-optimization" title="Permanent link">&para;</a></h1>
+<hr />
+<p>title: Optimizing bags of points : example of the windfarm layout optimization
+authors:
+  - Rodolphe Le Riche
+date: 2026-02-11
+link: https://hal.science/hal-04830176
+id: 24</p>
+<hr />
+<h1 id="optimizing-bags-of-points-example-of-the-windfarm-layout-optimization"><a href="https://hal.science/hal-04830176">Optimizing bags of points : example of the windfarm layout optimization</a><a class="headerlink" href="#optimizing-bags-of-points-example-of-the-windfarm-layout-optimization" title="Permanent link">&para;</a></h1>
 <h2 id="problem-description">Problem Description<a class="headerlink" href="#problem-description" title="Permanent link">&para;</a></h2>
-<p>The goal was to find a design of a synchronous electric motor for power steering systems that minimizes costs and satisfies all constraints. While computing the costs was rather straightforward, checking the feasibility of solutions required time-consuming simulations.  </p>
+<p>In the windfarm layout problem, one is looking for the number and positions of wind turbines that maximize power production, minimize cost and respect constraints on the turbine positions (exclusion regions). The difficulty comes, in part, from the nature of the optimization variables which are sets of continuous vectors. In other terms, we optimize over the space of sets of points. The number of points is an integer, each point is a continuous vector, there are symetries since the numbering of the points (turbines) does not matter. </p>
 <h2 id="why-was-tailoring-needed">Why was tailoring needed?<a class="headerlink" href="#why-was-tailoring-needed" title="Permanent link">&para;</a></h2>
-<p>Although the company was already using surrogate-based optimization before our collaboration, the severe constraints were making it hard to find high-quality solutions in reasonable time. The tailoring made it possible to find designs that were 10% cheaper of the ones used by the company. </p>
+<p>The nature of the variables (set of points) is not traditional 
+The objective function is potentially costly to calculate if a true aerodynamic simulation is carried out.
+The constraints are nonconvex. The feasible domain can be made of islands.
+The objective function is black box (no specific mathematical properties besides the symetry with respect to point labelling)</p>
 <h2 id="baseline-algorithm">Baseline algorithm<a class="headerlink" href="#baseline-algorithm" title="Permanent link">&para;</a></h2>
-<p>lq-CMA-ES [Hansen2019], which uses a surrogate model and also supports constraints</p>
+<p>A generic evolutionary algorithm and a generic Bayesian optimization algorithm</p>
 <h2 id="tailoring-process">Tailoring process<a class="headerlink" href="#tailoring-process" title="Permanent link">&para;</a></h2>
-<p>Tailoring was performed on the evaluation of solutions rather than the optimization algorithm. The evaluation of solutions was split into five steps. If after any step, the solution was found to be infeasible, the evaluation stopped there and a penalty was added to the objective. The steps were:
-1. Executing a quick Python script to check feasibility with regard to magnet placement. Checking this before evaluating a solution with the simulator was particularly helpful because we could avoid some simulation errors. About 17.5% of solutions were discarded after this step, which spared about 8 minutes of time per solution. 
-2.  Executing a simulation with Ansys to compute the properties of the electrical motor design. This took about 1 minute when successful and considerably longer when the design was infeasible. About 29.4% of solutions were discarded after this step, which spared about 7 minutes of time per solution.
-3. Computing the costs with a quick Python script. 
-4. Checking solution robustness. This consisted of running parallel simulations with Ansys that took about 7 minutes per solution. This step was tailored further (compared to previous experiments done by the company) by adapting the mesh size as some additional experiments showed that we could gain about half the time without losing too much information. 
-5.  Computing some additional properties with a quick Python script and checking final solution feasibility.
-The <strong>objective function</strong> was tailored to accommodate some “soft” constraints as well as penalize infeasible solutions (the earlier a solution was found to be infeasible, the larger the penalty). 
-Because of the limited time at our disposal, we didn’t attempt to tune the optimization algorithm.</p>
+<p>The basic idea is to handle set of points as discrete probability measures. This takes care of the peculiar nature of these variables, e.g., there is no longer any question about the labelling of points (of turbines in the application). 
+Then the problem is to move is the space of discrete measures. The key ingredient to do this is through Wasserstein barycenters.
+Evolutionary operators were redefined with Wasserstein barycenters.
+Kernels handling discrete probability measures were created through sliced-Wasserstein distance and Maximum Mean Discrepancy.</p>
 <h2 id="what-was-tailored">What was tailored<a class="headerlink" href="#what-was-tailored" title="Permanent link">&para;</a></h2>
-<p><em>No response</em></p>
+<p>For evolutionary optimization : the variation operators and the encoding, together.
+For Bayesian optimization : the Gaussian process kernel.</p>
 <h2 id="main-problem-characteristics">Main problem characteristics<a class="headerlink" href="#main-problem-characteristics" title="Permanent link">&para;</a></h2>
-<p>Problem definition
-* 13 variables
-    * 12 “continuous” (were discretized in evaluations, but were treated as continuous by the optimization algorithm)
-    * 1 discrete (ordered, not combinatorial)
-* 1 objective (costs)
-* 2 “soft” constraints, whose violation was added to the main objective
-* 10 “hard” constraints
-Other properties 
-* The constraints were multimodal and hard to satisfy
-* While we were working on a single problem instance, the company had many instances to solve that could be handled in the same way
-* We could only afford to run the algorithm a handful of times, for a few thousand evaluations each
-* The code cannot be disclosed</p>
+<p>Handle sets of points through discrete probability densities and search operators adapted to such variables.
+Applications to windfarm layout problem. Would apply to any problem of sensors/actuator location.</p>
 <h2 id="references">References<a class="headerlink" href="#references" title="Permanent link">&para;</a></h2>
-<p>[Hansen2019] Nikolaus Hansen. 2019. A global surrogate assisted CMA-ES. V Proceedings of the 2019 Genetic and Evolutionary Computation Conference. ACM, New York, NY, USA, 664–672. https://doi.org/10.1145/3321707.3321842 </p>
+<ul>
+<li>Babacar Sow, Rodolphe Le Riche, Julien Pelamatti, Sanaa Zannane and Merlin Keller, <a href="https://2023.uncecomp.org/proceedings/pdf/19939.pdf">Learning functions defined over sets of vectors with kernel methods</a>, 5 th ECCOMAS Thematic Conference on Uncertainty Quantification in Computational Sciences and Engineering (UNCECOMP 2023), Jun 2023, Athene, Greece. (also available as <a href="https://hal.science/emse-04043206">HAL document emse-04043206.</a>)</li>
+<li>Babacar Sow, Rodolphe Le Riche, Julien Pelamatti, Merlin Keller, Sanaa Zannane, <a href="https://hal.science/hal-04830176">Optimization and metamodeling of functions defined over clouds of points</a>, talk of R. Le Riche and J. Pelamatti at the <a href="https://uq.math.cnrs.fr/dec24#leriche">Workshop SAMOURAI</a> Dec 2024, Institut Henri Poincaré, Paris, France Slides as HAL document no. hal-04830176.</li>
+<li>Babacar Sow, Rodolphe Le Riche, Julien Pelamatti, Merlin Keller and Sanaa Zannane, <a href="https://doi.org/10.3390/app14177916">Wasserstein-Based Evolutionary Operators for Optimizing Sets of Points: Application to Wind-Farm Layout Design</a>, Applied Sciences (as part of the Special Issue New Insights into Multidisciplinary Design Optimization), vol. 14, no. 7916, https://doi.org/10.3390/app14177916 , Sept. 2024.</li>
+</ul>
 <h3 id="contact-information-optional">Contact information (optional)<a class="headerlink" href="#contact-information-optional" title="Permanent link">&para;</a></h3>
-<p><em>No response</em></p>
+<p>leriche@emse.fr</p>
 <h2 id="author">Author<a class="headerlink" href="#author" title="Permanent link">&para;</a></h2>
-<p>Tea Tušar
+<p>Rodolphe Le Riche
 <em>No response</em></p></div>
 
   
@@ -278,11 +280,11 @@ Other properties
   <hr>
   <p style="font-size: 0.9em;">
     💡 Found an issue?
-    <a href="https://github.com/TAI-src/how-to-tailor/issues/new?template=edit.yml&title=[Edit]%20examples/example_15.md&page=examples/example_15.md">
+    <a href="https://github.com/TAI-src/how-to-tailor/issues/new?template=edit.yml&title=[Edit]%20examples/example_24.md&page=examples/example_24.md">
       Suggest an edit
     </a>
     or
-    <a href="https://github.com/TAI-src/how-to-tailor/edit/main/how-to-tailor/docs/examples/example_15.md">
+    <a href="https://github.com/TAI-src/how-to-tailor/edit/main/how-to-tailor/docs/examples/example_24.md">
        Edit this page on GitHub
     </a>
   </p>
