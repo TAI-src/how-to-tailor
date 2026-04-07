@@ -6,9 +6,9 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         
         
-        <link rel="canonical" href="https://tai-src.github.io/how-to-tailor/examples/example_12/">
+        <link rel="canonical" href="https://tai-src.github.io/how-to-tailor/examples/example_20/">
         <link rel="shortcut icon" href="../../img/favicon.ico">
-        <title>Identifying several diverse solutions rather than a single good one - How to Tailor</title>
+        <title>Drone and truck scheduling - How to Tailor</title>
         <link href="../../css/bootstrap.min.css" rel="stylesheet">
         <link href="../../css/fontawesome.min.css" rel="stylesheet">
         <link href="../../css/brands.min.css" rel="stylesheet">
@@ -67,7 +67,7 @@
 </li>
                                     
 <li>
-    <a href="./" class="dropdown-item active" aria-current="page">Identifying several diverse solutions rather than a single good one</a>
+    <a href="../example_12/" class="dropdown-item">Identifying several diverse solutions rather than a single good one</a>
 </li>
                                     
 <li>
@@ -103,7 +103,7 @@
 </li>
                                     
 <li>
-    <a href="../example_20/" class="dropdown-item">Drone and truck scheduling</a>
+    <a href="./" class="dropdown-item active" aria-current="page">Drone and truck scheduling</a>
 </li>
                                     
 <li>
@@ -144,12 +144,12 @@
                             </a>
                         </li>
                             <li class="nav-item">
-                                <a rel="prev" href="../example_11/" class="nav-link">
+                                <a rel="prev" href="../example_2/" class="nav-link">
                                     <i class="fa fa-arrow-left"></i> Previous
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a rel="next" href="../example_13/" class="nav-link">
+                                <a rel="next" href="../example_3/" class="nav-link">
                                     Next <i class="fa fa-arrow-right"></i>
                                 </a>
                             </li>
@@ -172,7 +172,7 @@
     <div id="toc-collapse" class="navbar-collapse collapse card bg-body-tertiary">
         <ul class="nav flex-column">
             
-            <li class="nav-item" data-bs-level="1"><a href="#identifying-several-diverse-solutions-rather-than-a-single-good-one" class="nav-link">Identifying several diverse solutions rather than a single good one</a>
+            <li class="nav-item" data-bs-level="1"><a href="#drone-and-truck-scheduling" class="nav-link">Drone and truck scheduling</a>
               <ul class="nav flex-column">
             <li class="nav-item" data-bs-level="2"><a href="#problem-description" class="nav-link">Problem Description</a>
               <ul class="nav flex-column">
@@ -213,34 +213,43 @@
 </div></div>
                     <div class="col-md-9" role="main">
 
-<h1 id="identifying-several-diverse-solutions-rather-than-a-single-good-one"><a href="https://arxiv.org/abs/2502.13730">Identifying several diverse solutions rather than a single good one</a><a class="headerlink" href="#identifying-several-diverse-solutions-rather-than-a-single-good-one" title="Permanent link">&para;</a></h1>
+<h1 id="drone-and-truck-scheduling"><a href="_No response_">Drone and truck scheduling</a><a class="headerlink" href="#drone-and-truck-scheduling" title="Permanent link">&para;</a></h1>
 <h2 id="problem-description">Problem Description<a class="headerlink" href="#problem-description" title="Permanent link">&para;</a></h2>
-<p><em>No response</em></p>
+<p>One or more purpose-built trucks transports one or more drones with the purpose of completing customer deliveries. The optimisation process is concerned with allocating a customer delivery to either a drone or a truck and determining the best routes for all drones and trucks.
+Various versions of the problem exist. Multiple trucks can be used resulting in a vehicle routing problem with drones. Interception models may apply e.g. the drone can intercept the truck en route to deliveries. Other constraints such as single deliveries per launch or time windows may also apply.</p>
 <h2 id="why-was-tailoring-needed">Why was tailoring needed?<a class="headerlink" href="#why-was-tailoring-needed" title="Permanent link">&para;</a></h2>
-<p>Rather than outputting a single good solution, users (for example in engineering) may prefer to see a set of diverse solutions that are all reasonable alternatives. Common approaches such as multimodal optimizers or quality-diversity algorithms don't have a guarantee on the diversity in the configuration space, which we request to be a minimal distance between any two solutions in the batch that is output. We also investigated the quality of the batches that can be obtained from the search trajectories of high-performing solvers such as cma-es. Since none of these approaches gave satisfying results, we developed a parallel CMA-ES variant that uses cascading taboo regions that encode the diversity criterion. </p>
+<p>It is a discrete problem with many constraints. A problem-specific repair mechanism was needed.</p>
 <h2 id="baseline-algorithm">Baseline algorithm<a class="headerlink" href="#baseline-algorithm" title="Permanent link">&para;</a></h2>
-<p>CMA-ES, because
-1.  it is known to perform well when searching for a single good solution, 
-2.  it is easy to adapt (well-maintained and documented code),
-3. we are familiar enough with the algorithm to adjust it (and to trust its performance)</p>
+<p>Continuous CMAES, GCPSO, SaNSDE.</p>
 <h2 id="tailoring-process">Tailoring process<a class="headerlink" href="#tailoring-process" title="Permanent link">&para;</a></h2>
-<p>We tried several other ideas such as repelling swarm algorithms but after some initial tests decided to go with this algorithm and to tailor it. Some specific details had to be figured out, we used standard benchmarking routines in the development process. 
-What was tailored (Problem model, mutation operator)
-Algorithm (new: parallelization and cascading taboo regions)</p>
+<ol>
+<li>Problem representation - for the allocation variables the continuous search space was discretised and for the permutation variables a priority-based encoding was used.</li>
+<li>Initialisation - population was initialised with heuristics e.g. nearest-neighbour and other constructive heuristics</li>
+<li>Repair mechanism - specifically used for the constraint that only one drone delivery may be completed between two truck deliveries. Consecutive drone deliveries were converted to truck deliveries or the permutation was updated.</li>
+<li>Problem-specific operators - these were designed to improve the efficiency of the search and address the issue that multiple solutions in continuous space maps to the same solution in the problem space. The operators designed were, for example, swop operators (swopping drone and truck deliveries or swopping two deliveries in the permutation).</li>
+</ol>
 <h2 id="what-was-tailored">What was tailored<a class="headerlink" href="#what-was-tailored" title="Permanent link">&para;</a></h2>
-<p><em>No response</em></p>
+<ol>
+<li>Problem representation </li>
+<li>Initialisation</li>
+<li>Repair mechanism for constraint handling</li>
+<li>Problem-specific operators</li>
+</ol>
 <h2 id="main-problem-characteristics">Main problem characteristics<a class="headerlink" href="#main-problem-characteristics" title="Permanent link">&para;</a></h2>
 <ul>
-<li>Choose most important ones</li>
-<li>Interest in having batches of diverse solutions came from infeasibility constraints that are not encoded in the objective function (e.g., manufacturing constraints)</li>
+<li>Up to 1000 discrete variables</li>
+<li>Many complicated constraints</li>
+<li>Cheap fitness function</li>
+<li>Single and multi-objective versions</li>
+<li>8 hrs of solving time allowed</li>
 </ul>
 <h2 id="references">References<a class="headerlink" href="#references" title="Permanent link">&para;</a></h2>
-<p>https://arxiv.org/abs/2502.13730 for an algorithm 
-https://arxiv.org/abs/2408.16393 for why tailoring was needed</p>
+<p>https://scholar.google.com/citations?view_op=view_citation&amp;hl=en&amp;user=_Fm9-S8AAAAJ&amp;sortby=pubdate&amp;citation_for_view=_Fm9-S8AAAAJ:qUcmZB5y_30C
+https://scholar.google.com/citations?view_op=view_citation&amp;hl=en&amp;user=_Fm9-S8AAAAJ&amp;sortby=pubdate&amp;citation_for_view=_Fm9-S8AAAAJ:L8Ckcad2t8MC</p>
 <h3 id="contact-information-optional">Contact information (optional)<a class="headerlink" href="#contact-information-optional" title="Permanent link">&para;</a></h3>
-<p><em>No response</em></p>
+<p>Jacomine.grobler@gmail.com</p>
 <h2 id="author">Author<a class="headerlink" href="#author" title="Permanent link">&para;</a></h2>
-<p>Carola Doerr
+<p>Jacomine Grobler
 <em>No response</em></p></div>
 
   
@@ -253,11 +262,11 @@ https://arxiv.org/abs/2408.16393 for why tailoring was needed</p>
   <hr>
   <p style="font-size: 0.9em;">
     💡 Found an issue?
-    <a href="https://github.com/TAI-src/how-to-tailor/issues/new?template=edit.yml&title=[Edit]%20examples/example_12.md&page=examples/example_12.md">
+    <a href="https://github.com/TAI-src/how-to-tailor/issues/new?template=edit.yml&title=[Edit]%20examples/example_20.md&page=examples/example_20.md">
       Suggest an edit
     </a>
     or
-    <a href="https://github.com/TAI-src/how-to-tailor/edit/main/how-to-tailor/docs/examples/example_12.md">
+    <a href="https://github.com/TAI-src/how-to-tailor/edit/main/how-to-tailor/docs/examples/example_20.md">
        Edit this page on GitHub
     </a>
   </p>
