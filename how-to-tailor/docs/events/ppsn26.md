@@ -34,6 +34,15 @@ Accepted contributions will be presented as short talks and will feed into the i
 
 Please submit a PDF document by email to Elena Raponi (e.raponi@liacs.leidenuniv.nl) with a message header following the format [PPSN26: TAILORING WORKSHOP].
 
+## Important Dates
+
+* Submission deadline: June 5, 2026
+* Notification: June 30, 2026
+* Camera-ready: July 31, 2026
+* Author's mandatory registration: July 31, 2026
+* Workshop: During PPSN 26, August 29 / 30, 2026
+
+
 ## Contact details and short CV of the organizers
 
 **Elena Raponi** is an Assistant professor in Bayesian optimization at the Leiden Institute of Advanced Computer Science (LIACS) of Leiden University, in the Natural Computing research cluster. Previously, she held postdoctoral positions at LIACS, the Technical University of Munich (TUM), and Sorbonne Université. She received her PhD in Applied Mathematics from the University of Camerino, Italy, in 2021. Her research focuses on surrogate-based optimization, with a particular emphasis on constrained, high-dimensional Bayesian Optimization in continuous domains, and automated algorithm design and configuration assisted by LLMs. She works on the development of analytical and numerical modeling techniques for optimization in structural mechanics. Her hybrid research profile enables algorithm design inspired by concrete challenges emerging from real-world applications. She co-organized Dagstuhl seminars on AutoML and engineering design, as well as on leveraging domain knowledge in optimization. She also served on the organizing team of the AutoML Conference (2024–2025) and is Program Chair of the upcoming edition.
