@@ -37,8 +37,8 @@ Please submit a PDF document by email to Elena Raponi (e.raponi@liacs.leidenuniv
 ## Important Dates
 
 * Submission deadline: ~~June 5, 2026~~ June 30, 2026
-* Notification: ~~June 30, 2026~~ July 20, 2026
-* Camera-ready: ~~July 31, 2026~~ August 15, 2026
+* Notification: ~~June 30, 2026~~ July 10, 2026
+* Camera-ready: ~~July 31, 2026~~ August 1, 2026
 * Author's mandatory registration: July 31, 2026
 * Workshop: During PPSN 26, August 29 / 30, 2026
 
