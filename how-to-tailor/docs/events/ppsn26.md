@@ -1,5 +1,27 @@
 # PPSN 2026 Workshop: Tailoring Optimization Approaches with Domain Knowledge
 
+**Sunday, August 30, 2026, from 16:00 to 17:15 in Room 3 at PPSN**
+
+## Schedule
+
+* 16:00–16:05: Welcome and introduction
+* 16:05–16:35: Contributed talks
+* 16:35–17:05: Panel discussion
+* 17:05–17:15: General takeaways and closing
+
+### Contributed talks:
+
+* Furong Ye, “Tailoring MaxSAT Local Search Solvers through Black-box Optimization Techniques”
+* Paweł B. Myszkowski, “Tailoring Optimization Approaches with Domain Knowledge in Industry Process for Meta-heuristic Development”
+* Anna Kononova, “Reusable Modelling Pattern for Multidisciplinary Design Optimization”
+
+### Panelists:
+
+* Nelishia Pillay (University of Pretoria, ZA)
+* Francesco Gallo (Hexaly, FR)
+* Arnaud Liefooghe (Université du Littoral Côte d'Opale, FR)
+
+
 ## Workshop Description
 Optimization research has traditionally focused on improving algorithms from a theoretical perspective or through benchmarking studies. While this has led to powerful general-purpose methods, practitioners solving real-world problems rarely face well-defined benchmark settings. Instead, optimization problems arrive in messy forms: objectives may be unclear, constraints incomplete, data uncertain, and evaluation pipelines complex. In practice, success often depends less on selecting the “best” algorithm and more on understanding the application and tailoring the optimization process accordingly.
 
@@ -13,26 +35,6 @@ Ultimately, the outcome will be a step toward a modern “recipe book” for rea
 ## Target Audience
 The workshop targets researchers and practitioners working on optimization for real-world problems, including evolutionary computation, Bayesian optimization, metaheuristics, and automated machine learning. It is particularly relevant for participants interested in moving beyond benchmark settings toward application-driven algorithm design. We welcome both algorithm developers seeking principled ways to incorporate domain knowledge, and application experts facing complex optimization pipelines in practical fields. 
 
-## Planned Schedule
-
-**Duration:** 2 hours  
-**Format:** In-person  
-
-| Time Allocation | Activity                          |
-|-----------------|----------------------------------|
-| 5 minutes       | Opening Remarks                  |
-| 25 minutes      | Invited Talk                     |
-| 45 minutes      | 3 Contributed Talks              |
-| 30 minutes      | Panel Discussion                 |
-| 15 minutes      | Interactive Discussion & Closing |
-
-## Submission Details
-
-We solicit submissions in the form of extended abstracts (max 4 pages, references included) describing real-world optimization problems, modeling choices, or tailoring experiences. Contributions may include practical case studies, methodological insights, or reflections on challenges encountered in real-world settings. Please follow the [PPSN submission guidelines](https://ppsn2026.disi.unitn.it/#calls).
-
-Accepted contributions will be presented as short talks and will feed into the interactive sessions and panel discussions of the workshop.
-
-Please submit a PDF document by email to Elena Raponi (e.raponi@liacs.leidenuniv.nl) with a message header following the format [PPSN26: TAILORING WORKSHOP].
 
 ## Important Dates
 
