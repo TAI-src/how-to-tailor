@@ -1,6 +1,6 @@
 # PPSN 2026 Workshop: Tailoring Optimization Approaches with Domain Knowledge
 
-** Sunday, August 30, 2026, from 16:00 to 17:15 in Room 3 at PPSN **
+**Sunday, August 30, 2026, from 16:00 to 17:15 in Room 3 at PPSN**
 
 ## Schedule
 
