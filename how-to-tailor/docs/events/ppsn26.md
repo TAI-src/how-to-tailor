@@ -12,7 +12,7 @@
 ### Contributed talks:
 
 * Furong Ye, “Tailoring MaxSAT Local Search Solvers through Black-box Optimization Techniques”
-* Paweł B. Myszkowski, “Tailoring Optimization Approaches with Domain Knowledge in Industry Process for Meta-heuristic Development”
+* Konrad Gmyrek, “Tailoring Optimization Approaches with Domain Knowledge in Industry Process for Meta-heuristic Development”
 * Anna Kononova, “Reusable Modelling Pattern for Multidisciplinary Design Optimization”
 
 ### Panelists:
